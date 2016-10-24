@@ -1,0 +1,20 @@
+{
+	"lists":[
+		{
+			"imgsrc":"images/r_img_01.jpg",
+			"inf":"全民枪战复活币100枚",
+			"date":"11:13  11-25",
+			"num":"999"
+		},{
+			"imgsrc":"images/jf_img_02.jpg",
+			"inf":"全民枪战复活币50枚",
+			"date":"11:13  11-25",
+			"num":"888"
+		},{
+			"imgsrc":"images/jf_img_03.jpg",
+			"inf":"全民枪战复活币00枚",
+			"date":"11:13  11-25",
+			"num":"777"
+		}
+	]
+}

@@ -1,0 +1,251 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'E:\\node\\node.exe',
+1 verbose cli   'E:\\node\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--save-dev',
+1 verbose cli   'vue-infinite-scroll' ]
+2 info using npm@2.15.5
+3 info using node@v4.4.5
+4 verbose install initial load of E:\www\svn\match\2.0\package.json
+5 warn package.json vuetest@0.0.1 No repository field.
+6 warn package.json vuetest@0.0.1 No README data
+7 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel\package.json
+8 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel-core\package.json
+9 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel-loader\package.json
+10 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel-plugin-transform-runtime\package.json
+11 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel-preset-es2015\package.json
+12 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\babel-runtime\package.json
+13 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\css-loader\package.json
+14 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\extract-text-webpack-plugin\package.json
+15 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\file-loader\package.json
+16 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp\package.json
+17 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-clean\package.json
+18 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-concat\package.json
+19 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-header\package.json
+20 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-if\package.json
+21 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-minify-css\package.json
+22 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-rename\package.json
+23 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-rev-hash\package.json
+24 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-uglify\package.json
+25 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\gulp-util\package.json
+26 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\html-loader\package.json
+27 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\jquery\package.json
+28 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\minimist\package.json
+29 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\mockjs\package.json
+30 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\path\package.json
+31 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\style-loader\package.json
+32 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\url-loader\package.json
+33 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue\package.json
+34 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-animated-list\package.json
+35 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-awesome-swiper\package.json
+36 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-devtools\package.json
+37 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-hot-reload-api\package.json
+38 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-html-loader\package.json
+39 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-infinite-scroll\package.json
+40 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-loader\package.json
+41 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-resource\package.json
+42 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-router\package.json
+43 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vue-style-loader\package.json
+44 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\vuex\package.json
+45 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\webpack\package.json
+46 verbose installManyTop reading scoped package data from E:\www\svn\match\2.0\node_modules\webpack-stream\package.json
+47 info package.json gulp-rename@1.2.2 No license field.
+48 info package.json gulp-minify-css@1.2.4 No repository field.
+49 info package.json path@0.12.7 path is also the name of a node core module.
+50 info package.json vue-html-loader@1.2.3 No license field.
+51 info package.json mockjs@1.0.1-beta3 No license field.
+52 verbose readDependencies loading dependencies from E:\www\svn\match\2.0\package.json
+53 verbose install vue-infinite-scroll is installed as 0.2.3
+54 silly cache add args [ 'vue-infinite-scroll', null ]
+55 verbose cache add spec vue-infinite-scroll
+56 silly cache add parsed spec Result {
+56 silly cache add   raw: 'vue-infinite-scroll',
+56 silly cache add   scope: null,
+56 silly cache add   name: 'vue-infinite-scroll',
+56 silly cache add   rawSpec: '',
+56 silly cache add   spec: 'latest',
+56 silly cache add   type: 'tag' }
+57 silly addNamed vue-infinite-scroll@latest
+58 verbose addNamed "latest" is being treated as a dist-tag for vue-infinite-scroll
+59 info addNameTag [ 'vue-infinite-scroll', 'latest' ]
+60 silly mapToRegistry name vue-infinite-scroll
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry data Result {
+63 silly mapToRegistry   raw: 'vue-infinite-scroll',
+63 silly mapToRegistry   scope: null,
+63 silly mapToRegistry   name: 'vue-infinite-scroll',
+63 silly mapToRegistry   rawSpec: '',
+63 silly mapToRegistry   spec: 'latest',
+63 silly mapToRegistry   type: 'tag' }
+64 silly mapToRegistry uri https://registry.npmjs.org/vue-infinite-scroll
+65 verbose addNameTag registry:https://registry.npmjs.org/vue-infinite-scroll not in flight; fetching
+66 verbose request uri https://registry.npmjs.org/vue-infinite-scroll
+67 verbose request no auth needed
+68 info attempt registry request try #1 at 15:13:10
+69 verbose request id 08e13115d009776d
+70 verbose etag "VKTXEOUNZW6S094IMY54RVJJ"
+71 http request GET https://registry.npmjs.org/vue-infinite-scroll
+72 http 304 https://registry.npmjs.org/vue-infinite-scroll
+73 verbose headers { date: 'Mon, 24 Oct 2016 07:13:07 GMT',
+73 verbose headers   via: '1.1 varnish',
+73 verbose headers   'cache-control': 'max-age=300',
+73 verbose headers   etag: '"VKTXEOUNZW6S094IMY54RVJJ"',
+73 verbose headers   age: '0',
+73 verbose headers   connection: 'keep-alive',
+73 verbose headers   'x-served-by': 'cache-lcy1123-LCY',
+73 verbose headers   'x-cache': 'HIT',
+73 verbose headers   'x-cache-hits': '1',
+73 verbose headers   'x-timer': 'S1477293187.884075,VS0,VE90',
+73 verbose headers   vary: 'Accept-Encoding' }
+74 silly get cb [ 304,
+74 silly get   { date: 'Mon, 24 Oct 2016 07:13:07 GMT',
+74 silly get     via: '1.1 varnish',
+74 silly get     'cache-control': 'max-age=300',
+74 silly get     etag: '"VKTXEOUNZW6S094IMY54RVJJ"',
+74 silly get     age: '0',
+74 silly get     connection: 'keep-alive',
+74 silly get     'x-served-by': 'cache-lcy1123-LCY',
+74 silly get     'x-cache': 'HIT',
+74 silly get     'x-cache-hits': '1',
+74 silly get     'x-timer': 'S1477293187.884075,VS0,VE90',
+74 silly get     vary: 'Accept-Encoding' } ]
+75 verbose etag https://registry.npmjs.org/vue-infinite-scroll from cache
+76 verbose get saving vue-infinite-scroll to C:\Users\Administrator\AppData\Roaming\npm-cache\registry.npmjs.org\vue-infinite-scroll\.cache.json
+77 verbose correctMkdir C:\Users\Administrator\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+78 silly addNameTag next cb for vue-infinite-scroll with tag latest
+79 silly addNamed vue-infinite-scroll@0.2.3
+80 verbose addNamed "0.2.3" is a plain semver version for vue-infinite-scroll
+81 silly cache afterAdd vue-infinite-scroll@0.2.3
+82 verbose afterAdd C:\Users\Administrator\AppData\Roaming\npm-cache\vue-infinite-scroll\0.2.3\package\package.json not in flight; writing
+83 verbose correctMkdir C:\Users\Administrator\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+84 verbose afterAdd C:\Users\Administrator\AppData\Roaming\npm-cache\vue-infinite-scroll\0.2.3\package\package.json written
+85 silly install resolved [ { name: 'vue-infinite-scroll',
+85 silly install resolved     version: '0.2.3',
+85 silly install resolved     description: 'An infinite scroll directive for vue.js.',
+85 silly install resolved     main: 'vue-infinite-scroll.js',
+85 silly install resolved     'jsnext:main': './src/index.js',
+85 silly install resolved     scripts:
+85 silly install resolved      { test: 'npm run build && xo src/**/* && karma start',
+85 silly install resolved        build: 'rollup -c',
+85 silly install resolved        prepublish: 'npm run build' },
+85 silly install resolved     repository:
+85 silly install resolved      { type: 'git',
+85 silly install resolved        url: 'git+https://github.com/ElemeFE/vue-infinite-scroll.git' },
+85 silly install resolved     keywords: [ 'infinite-scroll', 'vue' ],
+85 silly install resolved     author: { name: 'long.zhang@ele.me' },
+85 silly install resolved     license: 'MIT',
+85 silly install resolved     peerDependencies: { vue: '^1.0.10' },
+85 silly install resolved     devDependencies:
+85 silly install resolved      { 'babel-preset-es2015-rollup': '^1.1.1',
+85 silly install resolved        'jasmine-core': '^2.4.1',
+85 silly install resolved        karma: '^0.13.21',
+85 silly install resolved        'karma-chrome-launcher': '^0.2.2',
+85 silly install resolved        'karma-jasmine': '^0.3.7',
+85 silly install resolved        'karma-phantomjs-launcher': '^1.0.0',
+85 silly install resolved        'karma-rollup-preprocessor': '^2.0.1',
+85 silly install resolved        'phantomjs-prebuilt': '^2.1.5',
+85 silly install resolved        rollup: '^0.25.4',
+85 silly install resolved        'rollup-plugin-babel': '^2.4.0',
+85 silly install resolved        'rollup-plugin-commonjs': '^2.2.1',
+85 silly install resolved        'rollup-plugin-env': '^0.21.2',
+85 silly install resolved        'rollup-plugin-node-resolve': '^1.5.0',
+85 silly install resolved        xo: '^0.12.1' },
+85 silly install resolved     xo: { envs: [Object], space: true },
+85 silly install resolved     gitHead: '49b2ed3d70489cef227cf06f89cf5f96acf109f8',
+85 silly install resolved     bugs: { url: 'https://github.com/ElemeFE/vue-infinite-scroll/issues' },
+85 silly install resolved     homepage: 'https://github.com/ElemeFE/vue-infinite-scroll#readme',
+85 silly install resolved     _id: 'vue-infinite-scroll@0.2.3',
+85 silly install resolved     _shasum: '9eb9fa1972e363e69a572edb66a7a06f5ff8dc42',
+85 silly install resolved     _from: 'vue-infinite-scroll@latest',
+85 silly install resolved     _npmVersion: '3.5.3',
+85 silly install resolved     _nodeVersion: '5.5.0',
+85 silly install resolved     _npmUser: { name: 'long.zhang', email: 'long.zhang@me.com' },
+85 silly install resolved     dist:
+85 silly install resolved      { shasum: '9eb9fa1972e363e69a572edb66a7a06f5ff8dc42',
+85 silly install resolved        tarball: 'https://registry.npmjs.org/vue-infinite-scroll/-/vue-infinite-scroll-0.2.3.tgz' },
+85 silly install resolved     maintainers: [ [Object] ],
+85 silly install resolved     _npmOperationalInternal:
+85 silly install resolved      { host: 'packages-16-east.internal.npmjs.com',
+85 silly install resolved        tmp: 'tmp/vue-infinite-scroll-0.2.3.tgz_1461760241724_0.8295988591853529' },
+85 silly install resolved     directories: {},
+85 silly install resolved     _resolved: 'https://registry.npmjs.org/vue-infinite-scroll/-/vue-infinite-scroll-0.2.3.tgz',
+85 silly install resolved     readme: 'ERROR: No README data found!' } ]
+86 info install vue-infinite-scroll@0.2.3 into E:\www\svn\match\2.0
+87 info installOne vue-infinite-scroll@0.2.3
+88 verbose installOne of vue-infinite-scroll to E:\www\svn\match\2.0 not in flight; installing
+89 verbose correctMkdir C:\Users\Administrator\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+90 verbose lock using C:\Users\Administrator\AppData\Roaming\npm-cache\_locks\vue-infinite-scroll-96a3dac16d6f7173.lock for E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+91 silly install write writing vue-infinite-scroll 0.2.3 to E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+92 verbose unbuild node_modules\vue-infinite-scroll
+93 info preuninstall vue-infinite-scroll@0.2.3
+94 info uninstall vue-infinite-scroll@0.2.3
+95 verbose unbuild rmStuff vue-infinite-scroll@0.2.3 from E:\www\svn\match\2.0\node_modules
+96 info postuninstall vue-infinite-scroll@0.2.3
+97 silly gentlyRm E:\www\svn\match\2.0\node_modules\vue-infinite-scroll is being purged from base E:\www\svn\match\2.0
+98 verbose gentlyRm don't care about contents; nuking E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+99 silly vacuum-fs purging E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+100 silly vacuum-fs quitting because other entries in E:\www\svn\match\2.0\node_modules
+101 verbose tar unpack C:\Users\Administrator\AppData\Roaming\npm-cache\vue-infinite-scroll\0.2.3\package.tgz
+102 verbose tar unpacking to E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+103 silly gentlyRm E:\www\svn\match\2.0\node_modules\vue-infinite-scroll is being purged
+104 verbose gentlyRm don't care about contents; nuking E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+105 silly gunzTarPerm modes [ '777', '666' ]
+106 silly gunzTarPerm extractEntry package.json
+107 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+108 silly gunzTarPerm extractEntry .npmignore
+109 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+110 silly gunzTarPerm extractEntry vue-infinite-scroll.js
+111 silly gunzTarPerm modified mode [ 'vue-infinite-scroll.js', 420, 438 ]
+112 silly gunzTarPerm extractEntry rollup.config.js
+113 silly gunzTarPerm modified mode [ 'rollup.config.js', 420, 438 ]
+114 silly gunzTarPerm extractEntry karma.conf.js
+115 silly gunzTarPerm modified mode [ 'karma.conf.js', 420, 438 ]
+116 silly gunzTarPerm extractEntry README.MD
+117 silly gunzTarPerm modified mode [ 'README.MD', 420, 438 ]
+118 silly gunzTarPerm extractEntry example/index.html
+119 silly gunzTarPerm modified mode [ 'example/index.html', 420, 438 ]
+120 silly gunzTarPerm extractEntry .editorconfig
+121 silly gunzTarPerm modified mode [ '.editorconfig', 420, 438 ]
+122 silly gunzTarPerm extractEntry src/directive.js
+123 silly gunzTarPerm modified mode [ 'src/directive.js', 420, 438 ]
+124 silly gunzTarPerm extractEntry src/index.js
+125 silly gunzTarPerm modified mode [ 'src/index.js', 420, 438 ]
+126 silly gunzTarPerm extractEntry test/unit/vue-infinite-scroll.test.js
+127 silly gunzTarPerm modified mode [ 'test/unit/vue-infinite-scroll.test.js', 420, 438 ]
+128 verbose write writing to E:\www\svn\match\2.0\node_modules\vue-infinite-scroll\package.json
+129 info preinstall vue-infinite-scroll@0.2.3
+130 verbose readDependencies loading dependencies from E:\www\svn\match\2.0\node_modules\vue-infinite-scroll\package.json
+131 verbose readDependencies loading dependencies from E:\www\svn\match\2.0\node_modules\vue-infinite-scroll\package.json
+132 silly install resolved []
+133 verbose about to build E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+134 info build E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+135 info linkStuff vue-infinite-scroll@0.2.3
+136 silly linkStuff vue-infinite-scroll@0.2.3 has E:\www\svn\match\2.0\node_modules as its parent node_modules
+137 verbose linkBins vue-infinite-scroll@0.2.3
+138 verbose linkMans vue-infinite-scroll@0.2.3
+139 verbose rebuildBundles vue-infinite-scroll@0.2.3
+140 info install vue-infinite-scroll@0.2.3
+141 info postinstall vue-infinite-scroll@0.2.3
+142 verbose unlock done using C:\Users\Administrator\AppData\Roaming\npm-cache\_locks\vue-infinite-scroll-96a3dac16d6f7173.lock for E:\www\svn\match\2.0\node_modules\vue-infinite-scroll
+143 verbose validateInstall loading E:\www\svn\match\2.0\package.json for validation
+144 verbose stack Error: The package vue-hot-reload-api@2.0.6 does not satisfy its siblings' peerDependencies requirements!
+144 verbose stack     at E:\node\node_modules\npm\lib\install.js:125:32
+144 verbose stack     at E:\node\node_modules\npm\lib\install.js:268:7
+144 verbose stack     at E:\node\node_modules\npm\node_modules\read-installed\read-installed.js:142:5
+144 verbose stack     at E:\node\node_modules\npm\node_modules\read-installed\read-installed.js:263:14
+144 verbose stack     at cb (E:\node\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+144 verbose stack     at E:\node\node_modules\npm\node_modules\read-installed\read-installed.js:263:14
+144 verbose stack     at cb (E:\node\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+144 verbose stack     at E:\node\node_modules\npm\node_modules\read-installed\read-installed.js:263:14
+144 verbose stack     at cb (E:\node\node_modules\npm\node_modules\slide\lib\async-map.js:47:24)
+144 verbose stack     at E:\node\node_modules\npm\node_modules\read-installed\read-installed.js:263:14
+145 verbose cwd E:\www\svn\match\2.0
+146 error Windows_NT 6.1.7601
+147 error argv "E:\\node\\node.exe" "E:\\node\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save-dev" "vue-infinite-scroll"
+148 error node v4.4.5
+149 error npm  v2.15.5
+150 error code EPEERINVALID
+151 error peerinvalid The package vue-hot-reload-api@2.0.6 does not satisfy its siblings' peerDependencies requirements!
+151 error peerinvalid Peer vue-loader@8.5.4 wants vue-hot-reload-api@^1.2.0
+152 verbose exit [ 1, true ]
