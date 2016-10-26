@@ -1,5 +1,77 @@
+<style soped>
+
+a{
+    text-decoration: none;
+   
+}
+.content{
+    padding-left: 50px;
+    position: relative;
+    padding-bottom: 45px;
+    color: #fff;
+}
+.content .nav{
+    width: 100%;
+    overflow: hidden;
+}
+.content .nav li{
+    float: left;
+    width: 33%;
+    text-align: center;
+    background: #eee;
+}
+.content .nav li a{
+    font-size: 30px;
+    color: red; 
+}
+
+.match-match-hed{
+    width: 100%;
+    padding: 8px 0 7px 33px; 
+    background: #1a212e;
+    overflow: hidden;
+    position: fixed;
+    left: 50px;
+    top: 0;
+    z-index: 4;
+}
+.match-match-hed span{
+    color: #fff;
+    width: 80px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin-left: 30px;
+    float: left;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-decoration: none;
+    border: #fff solid 1px;
+}
+.match-match-hed span:first-child{
+    margin-left: 0;
+}
+.match-match-hed span.on{
+   background: #1d9618;
+   border: #1d9618 solid 1px;
+}
+.match-match-main{
+    padding-top: 40px;
+}
+</style>
 <template>
-    <ul class="nav">
+<div class="match-match-hed">
+    <span v-for="item in matchTab" :class="{on:item.iscur}" @click="setCur($index)">{{item.text}}</span>
+</div>
+
+<div class="match-match-main" id="xxxx">
+    
+    <match-list-child  :tabs="tabs" v-ref:child></match-list-child>
+</div>
+
+
+<!--     <ul class="nav">
         <li v-for="list of lists">
             <a href="#">{{list.msg}}</a>
         </li>
@@ -24,45 +96,30 @@
         <a v-link="{path:'/rank'}">rank</a>
         <a v-link="{path:'/mine'}">mine</a>
         <a v-link="{path:'/'}">match</a>
-    </div>
+    </div>  -->
     
 </template>
-<style soped>
-.content{
-	padding-left: 50px;
-}
-.content .nav{
-    width: 100%;
-    overflow: hidden;
-}
-.content .nav li{
-    float: left;
-    width: 33%;
-    text-align: center;
-    background: #eee;
-}
-.content .nav li a{
-    font-size: 30px;
-    color: red; 
-}
-</style>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
+
+var matchlist = require('./matchlist');
+//import matchlist from 'matchlist'
+
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
 var match = Vue.extend({
-	name: 'match',
 	data: function() {
 		return {
-			lists: [
-                {msg: '视频'},
-                {msg: '赛程'},
-                {msg: '介绍'}
+			matchTab :[
+                 {text:"显示全部",iscur:true,raceway:0},
+                 {text:"HPL赛事",iscur:false,raceway:1},
+                 {text:"线上比赛",iscur:false,raceway:2}
             ],
-            ajaxdata: {}
+            raceway:0
 		};
 	},
     store: store,
@@ -75,23 +132,23 @@ var match = Vue.extend({
         actions: actions
     },
 	ready: function() {
-        var _this = this;
-        $(".nav").click(function(){
-            alert('yes')
-        })
-        $.getJSON({
-            url: 'http://10.0.11.19/cs/vuetest/src/json/sum.json',
-            success: function(data) {
-                _this.ajaxdata = data;
-                // console.log(_this.ajaxdata.lists)
-                
-            },
-            error: function() {
-                alert('error')
-            }
-        })
+
 	},
+    components:{
+         "match-list-child":matchlist   
+    },
     methods: {
+        a:function(){
+            alert(this.raceway)
+        },
+        setCur: function (index) {
+            var vm = this;
+            vm.matchTab.map(function (v,i) {
+                i==index? (v.iscur=true,vm.raceway = v.raceway,vm.Page=1): v.iscur=false
+            });
+            window.scrollTo(0, 0);
+            console.log(vm.raceway);
+        },
         change: function(){
             actions.alert(store,{show:true,msg:'我是alizeegod!',type:'info'})
         }

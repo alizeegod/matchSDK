@@ -22,7 +22,7 @@
   		</div>
   		<div class="prank-con">
   			<ul>
-  				<li class="prank-item item" v-link="{path:allRank.url}"
+  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.id}}"
   				v-for="allRank in allRanks" transition="item">
   					<p class="p1"><span>{{allRank.rank}}</span></p>
 		  			<p class="p2">
@@ -230,7 +230,8 @@ Mock.mock('http://allrank.cn',{
         'user'     		 : '@name',
         'area'     		 : '@region',
         'power|1-1000'	 : 1,
-        'url'     		 : '/mine/gamedetail'
+        'url'     		 : '/mine/gamedetail',
+        'id|1-3'         : 1
     }]
 });
 
@@ -251,7 +252,7 @@ var rank = Vue.extend({
             dataType: 'json',
             success: function(data) {
                 _this.mineRank = data.array;
-                console.log(_this.mineRank)
+                console.log(JSON.stringify(data))
             }
         })
         $.ajax({
@@ -259,7 +260,7 @@ var rank = Vue.extend({
             dataType: 'json',
             success: function(data) {
                 _this.allRanks = data.array;
-                console.log(data.array)
+                console.log(JSON.stringify(data))
             }
         })
 

@@ -1,5 +1,5 @@
 <template>
-    <ul class="nav">
+    <!-- <ul class="nav">
         <li v-for="list of lists">
             <a href="#">{{list.msg}}</a>
         </li>
@@ -24,7 +24,7 @@
         <a v-link="{path:'/rank'}">rank</a>
         <a v-link="{path:'/mine'}">mine</a>
         <a v-link="{path:'/'}">match</a>
-    </div>
+    </div> -->
     <div class="match-wrap">
         <router-view></router-view>
     </div>
@@ -78,21 +78,21 @@ var match = Vue.extend({
         actions: actions
     },
 	ready: function() {
-        var _this = this;
-        $(".nav").click(function(){
-            alert('yes')
-        })
-        $.getJSON({
-            url: 'http://10.0.11.19/cs/vuetest/src/json/sum.json',
-            success: function(data) {
-                _this.ajaxdata = data;
-                // console.log(_this.ajaxdata.lists)
+        // var _this = this;
+        // $(".nav").click(function(){
+        //     alert('yes')
+        // })
+        // $.getJSON({
+        //     url: 'http://10.0.11.19/cs/vuetest/src/json/sum.json',
+        //     success: function(data) {
+        //         _this.ajaxdata = data;
+        //         // console.log(_this.ajaxdata.lists)
                 
-            },
-            error: function() {
-                alert('error')
-            }
-        })
+        //     },
+        //     error: function() {
+        //         alert('error')
+        //     }
+        // })
 	},
     methods: {
         change: function(){

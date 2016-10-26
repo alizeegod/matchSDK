@@ -1,7 +1,7 @@
 <template>
     <div class="rank-wrap">
         <section class="rank-top">
-            <h3 v-if="rankTitle">排行榜</h3>
+            <h3 v-if="rankTitle" v-touch:tap="alert">排行榜</h3>
             <h3 v-else>战队榜单</h3>
             <ul class="rank-nav">
                 <li v-link="{path:'/rank/perrank'}" @click="isPer"><span>个人榜</span></li>
@@ -21,9 +21,8 @@
 .rank-top{
     width: 100%;
     position: fixed;
-    left: 0;
+    left: 50px;
     top: 0;
-    padding-left: 50px;
     background: #1A212E;
     z-index: 1000;
 }
@@ -91,6 +90,9 @@ var rankbox = Vue.extend({
         },
         isTeam: function(){
             this.rankTitle = false;
+        },
+        alert: function(){
+            alert(123)
         }
     }
 });

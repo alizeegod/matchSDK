@@ -16,7 +16,7 @@
       </div>
       <div class="ml_detail">
         <ul>
-          <li><i></i><span>战斗力: <em>{{mineData.ml_num_zdl}}</em><a v-link="{path:'/mine/rankrules'}">？</a></span></li>
+          <li><i></i><span>战斗力: <em>{{mineData.ml_num_zdl}}</em><a>？</a></span></li>
           <li><i></i><span>国内排行: <em>{{mineData.ml_num_ph}}</em></span></li>
           <li><i></i><span>已参加比赛数: <em>{{mineData.ml_num_ss}}</em></span></li>
         </ul>
@@ -33,7 +33,8 @@
               <i class="on" v-if="ok">比赛中</i>
               <i v-else>已结束</i>
             </p>
-            <p>{{m_list.powertil}}<em class="mine_num1">+{{m_list.mine_num1}}</em></p>
+            <p v-if="ok">{{m_list.powertil}}<em class="mine_num1">+{{m_list.mine_num1}}</em></p>
+            <p v-else></p>
             <p>{{m_list.rank}}<em class="mine_num2">{{m_list.mine_num2}}</em></p>
             <p></p>
           </a>
@@ -160,6 +161,7 @@
   border: 1px solid #27436f;
   border-radius: 10px;
   padding: 0 8px;
+  color: #fff;
 }
 .minelink .ml_detail ul li:nth-of-type(1) a{
   display: inline-block;
@@ -338,14 +340,14 @@ var mine = Vue.extend({
       mineData:{},
       ok: true,
       show:true,
-      'mine_maintil':'我的比赛'
+      mine_maintil:'我的比赛'
 		};
 	},
 	store: store,
 	vuex: {
 		getters: {
-			alertConfig: function() {
-				return store.state.alertConfig;
+			userInf: function() {
+				return store.state.userInf;
 			}
 		},
 		actions: actions
@@ -368,7 +370,15 @@ var mine = Vue.extend({
     })
   },
 	ready: function() {
-		// this.msg = this.alertConfig.msg;
+		let a = this.$route.query.id;
+    let b = this.userInf.id;
+    if (a == b) {
+      this.show = true;
+    } else {
+      this.show = false;
+    }
+    console.log(this.$route.query.id)
+    console.log(this.userInf.id)
 
 	},
     methods: {

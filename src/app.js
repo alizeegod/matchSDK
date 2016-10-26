@@ -2,11 +2,9 @@
 var Vue = require('Vue');
 var $ = require('jQuery');
 var VueRouter = require('vue-router');
-var AwesomeSwiper = require('vue-awesome-swiper')
 
 
 // use
-Vue.use(AwesomeSwiper)
 Vue.use(VueRouter);
 
 // for jq plugin and debug
@@ -19,7 +17,7 @@ var App = Vue.extend({});
 var Index = require('./components/index.vue');
 
 var MatchContainer = require('./components/match/container.vue');
-var Match = require('./components/match/main.vue');
+// var Match = require('./components/match/main.vue');
 var Offline1 = require('./components/match/offline1.vue');
 var Offline2 = require('./components/match/offline2.vue');
 var Online = require('./components/match/online.vue');
@@ -52,7 +50,6 @@ var Rule = require('./components/common/rule.vue');
 var Erro = require('./components/404.vue');
 
 
-var Swiper = require('./components/match/swiper.vue');
 
 var router = new VueRouter({hashbang: false});
 router.mode = 'html5';
@@ -73,9 +70,9 @@ router.map({
 			'/match': {
 				component: MatchContainer,
 				subRoutes: {
-					'/': {
-						component: Match
-					},
+					// '/': {
+					// 	component: Match
+					// },
 					'/offline1': {
 						component: Offline1
 					},
@@ -97,6 +94,7 @@ router.map({
 				component: MineContainer,
 				subRoutes: {
 					'/': {
+						name: 'mine',
 						component: Mine
 					},
 					'/setcof': {

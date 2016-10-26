@@ -8,6 +8,9 @@ var state = {
         show: false,
         msg: '提示信息',
         type: 'info'
+    },
+    userInf: {
+        id: 3
     }
     // modalTableData: {
     //     show: false,
@@ -52,6 +55,10 @@ mutations.ALERT = function(state, params) {
 
 mutations.HIDEALERT = function(state) {
     state.alertConfig.show = false;
+}
+
+mutations.SAVE = function(state, params) {
+    state.userInf.id = params.id;
 }
 
 // mutations.MODALTABLE = function(state, params){

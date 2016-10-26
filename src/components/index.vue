@@ -26,6 +26,24 @@
     </div>
 </template>
 <style soped>
+body,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,fieldset,legend,input,select,textarea,button,th,td,blockquote,address,pre{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6,input,textarea,select,button,label{font-size:100%;vertical-align:middle;}
+ul,dl,ol{list-style:none;}
+a{text-decoration: none;}
+img,fieldset{border:none;}
+img{display:inline-block;overflow:hidden;vertical-align:top;}
+em,address{font-style:normal;}
+sup,sub{vertical-align:baseline;}
+table{border-collapse:collapse;border-spacing:0;}
+q:before{content:"";}
+q:after{content:"";}
+button{cursor:pointer;}
+select{-webkit-appearance: none;-moz-appearance: none;-o-appearance: none;}
+textarea{word-wrap:break-word;resize:none;}
+.clearfix:after { content: ".";display: block;height: 0;clear: both;visibility: hidden; } 
+.clear{clear: both;}
+.fl{float: left;}
+.fr{float: right;}
 *{margin: 0; padding: 0; -webkit-text-size-adjust: none;} ol,ul,i{list-style: none; font-style: normal;}
  a{text-decoration: none; } a, button, input,div {-webkit-tap-highlight-color: rgba(255,0,0,0); } 
  html,body{height: 100%; } body{font-family:"微软雅黑"; height: 100%; } 
