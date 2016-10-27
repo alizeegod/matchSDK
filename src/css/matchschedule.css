@@ -436,6 +436,3 @@
 .tournament-grid-wrap .first-four-img {
     background-image: url(/static/widget/tournament/grid/grid_z_3d76675.png)
 }
-.swiss-control #swissPointStatistics .swissPointTable .glyphicon-question-sign:hover, .swiss-control .round-btn:active, .swiss-control .round-btn:hover, .tournament-grid-wrap .no-link {
-    text-decoration:none
-}

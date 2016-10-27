@@ -30,27 +30,14 @@ var rootPath = __dirname;
 // });
 var webpackConfig = {
     entry: {
-        match: './src/app.js'
+        match: './src/app.js',
+        iscroll: './src/js/iscroll-lite.js',
         // vendor: [
-        //     pwd + '/src/js/lib/vue.min.js',
-        //     pwd + '/src/js/lib/vuex.min.js',
-        //     pwd + '/src/js/lib/jquery.min.js',
-        //     pwd + '/src/js/lib/bootstrap.min.js',
-        //     pwd + '/src/js/lib/metisMenu.min.js',
-        //     pwd + '/src/js/lib/moment.min.js',
-        //     pwd + '/src/js/lib/datePicker.min.js',
-        //     pwd + '/src/js/lib/jquery-table.min.js',
-        //     'vue-router',
-        //     'echarts/lib/echarts',
-        //     'echarts/lib/chart/bar',
-        //     'echarts/lib/chart/line',
-        //     'echarts/lib/chart/pie',
-        //     'echarts/lib/component/legend',
-        //     'echarts/lib/component/tooltip',
+        //     pwd + './src/js/iscroll-lite.js',
         // ]
     },
     output: {
-        path: path.join(__dirname, '/dist'),
+        // path: path.join(__dirname, '/dist'),
         filename: '[name].min.js'
     },
     module: {
@@ -72,11 +59,7 @@ var webpackConfig = {
     // resolve: {
     //     extensions: ['', '.js', '.json', '.scss'],
     //     alias: {
-    //         'Vue': pwd + '/src/js/lib/vue.min.js',
-    //         'jQuery': pwd + '/src/js/lib/jquery.min.js',
-    //         '$': pwd + '/src/js/lib/jquery.min.js',
-    //         'utils': pwd + '/src/js/utils/index.js',
-    //         'Vuex': pwd + '/src/js/lib/vuex.min.js'
+    //         'iscroll': pwd + '/src/js/iscroll-lite.js'
     //     }
     // },
 };

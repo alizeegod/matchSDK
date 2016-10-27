@@ -1,5 +1,6 @@
 <template>
     <div class="online-wrap">
+        <match-schedule></match-schedule>
         <match-intro :matchintro="matchintro"></match-intro>
         <match-prize :matchprizes="matchprizes"></match-prize>
         <match-team :matchteams="matchteams"></match-team>
@@ -18,6 +19,7 @@ var $ = require('jQuery');
 var matchIntro = require('./matchintro.vue');
 var matchPrize = require('./matchprize.vue');
 var matchTeam = require('./matchteam.vue');
+var matchSchedule = require('./matchschedule.vue');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
@@ -104,7 +106,8 @@ var online = Vue.extend({
     components: {
         "match-team" : matchTeam,
         "match-intro" : matchIntro,
-        "match-prize" : matchPrize
+        "match-prize" : matchPrize,
+        "match-schedule" : matchSchedule
     },
     store: store,
     vuex: {
