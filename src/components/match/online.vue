@@ -118,6 +118,9 @@ var online = Vue.extend({
         },
         actions: actions
     },
+    created: function() {
+
+    },
     ready: function() {
         
     },
