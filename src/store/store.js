@@ -11,6 +11,9 @@ var state = {
     },
     userInf: {
         id: 3
+    },
+    msmatch: {
+        msdata: null
     }
     // modalTableData: {
     //     show: false,
@@ -59,6 +62,9 @@ mutations.HIDEALERT = function(state) {
 
 mutations.SAVE = function(state, params) {
     state.userInf.id = params.id;
+}
+mutations.GET = function(state, params) {
+    state.msmatch.msdata = params.msdata;
 }
 
 // mutations.MODALTABLE = function(state, params){

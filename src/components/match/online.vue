@@ -1,6 +1,6 @@
 <template>
     <div class="online-wrap">
-        <match-schedule></match-schedule>
+        <match-schedule :msdata="msdata"></match-schedule>
         <match-intro :matchintro="matchintro"></match-intro>
         <match-prize :matchprizes="matchprizes"></match-prize>
         <match-team :matchteams="matchteams"></match-team>
@@ -15,6 +15,7 @@
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
+
 
 var matchIntro = require('./matchintro.vue');
 var matchPrize = require('./matchprize.vue');
@@ -100,7 +101,191 @@ var online = Vue.extend({
                 imgurl: 'http://10.0.11.19/svn/match/2.0/src/images/mt-img01.png',
                 name: 'IG',
                 teamurl: '/match/team'
-            }]
+            }],
+            msdata: {
+                msType: 2,       //'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
+                mslists: [{       //对应不同淘汰赛class不同，''代表单败淘汰赛，'loser'代表双败淘汰赛败者组，'win'代表双败淘汰赛胜者组
+                    title: '胜者组第一轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: 0  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: 1  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: 2  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: 0  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第二轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第三轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第四轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    },{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第五轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第六轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]},{
+                    title: '胜者组第七轮',
+                    row: [{
+                        team: [{
+                            name: '焦作人',
+                            score: '2'
+                        },{
+                            name: '焦作人',
+                            score: '0'
+                        }],
+                        inf: '11月11日 11:11',
+                        link: '/match/team',
+                        result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
+                    }]
+                }]
+            }
         };
     },
     components: {
@@ -118,8 +303,8 @@ var online = Vue.extend({
         },
         actions: actions
     },
-    created: function() {
-
+    created: function(){
+        var _this = this;
     },
     ready: function() {
         

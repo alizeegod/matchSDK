@@ -9,6 +9,9 @@ actions.alert = function(store, params) {
 actions.save = function(store, params) {
     store.dispatch('SAVE', params);
 }
+actions.get = function(store, params) {
+    store.dispatch('GET', params);
+}
 
 // actions.modalTable = function(store, params) {
 //     store.dispatch('MODALTABLE', params);

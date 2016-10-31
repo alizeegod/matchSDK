@@ -1,43 +1,89 @@
 <template>
     <div class="name">
-      <h3 class="name_til">{{nametil}}</h3>
-      <p class="name_tip">{{nametip}}</p>
-      <ul class="name_main">
-        <li v-for='namelist in namelists'>
-          <a>
-            <span><img :src="namelist.image" /></span>
-            <span class="name_ico"></span>
-          </a>
-        </li>
-      </ul>
+        <h3 class="set_til"><span></span>{{nametil}}</h3>
+        <div class="name_main">
+            <p>{{nametip}}</p>
+            <ul>
+              <li>
+                <a>
+                  <img :src="namedata.name_image1" />
+                  <span class="name_ico"></span>
+                  <p>{{namedata.name_who1}}</p>
+                  <p>{{namedata.name_time1}}</p>
+                  <i></i>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <img :src="namedata.name_image2" />
+                  <span class="name_ico"></span>
+                  <p>{{namedata.name_who2}}</p>
+                  <p>{{namedata.name_time2}}</p>
+                  <i></i>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <img :src="namedata.name_image3" />
+                  <span class="name_ico"></span>
+                  <p>{{namedata.name_who3}}</p>
+                  <p>{{namedata.name_time3}}</p>
+                  <i></i>
+                </a>
+              </li>
+            </ul>
+        </div>
     </div>
 </template>
 <style soped>
   li,ul{list-style: none}
-  .name_til{
-    height: 80px;
-    text-align: center;
-    line-height: 80px;
-    background: #1d2532;
-    color: #fff;
-    font-size: 32px;
+  .name{
+    width: 100%;
+    position: relative;
   }
-  .name_main{
+  .set_til{
+    height: 56px;
+    text-align: center;
+    line-height: 56px;
+    background: #1a212e;
+    color: #fff;
+    font-size: 24px;
+    font-weight: normal;
+  }
+  .name_main ul{
     -webkit-display: flex;
     width: 100%;
-    height: 210px;
+    height: 147px;
   }
-  .name_main li{
+  .name_main ul li{
     -webkit-flex: 1;
-    width: 255px;
-    height: 204px;
+    width: 178px;
+    height: 141px;
     float: left;
-    border: 3px solid #309ed9;
+    border: 3px solid #2f9ed9;
+    position: relative;
   }
-  .name_main li img{
-    width: 255px;
-    height: 204px;
+  .name_main ul li img{
+    width: 100%;
+    height: 34px;
+    display: block;
+    margin: 25px auto 35px;
   }
+ .name_main ul li p{
+  font-size: 16px;
+  color: #999;
+  margin-left: 7px;
+ }
+ .name_main ul li i{
+  display: block;
+  background: url(../../images/name_ico.png) no-repeat;
+  background-size: 100% 100%;
+  width: 71px;
+  height: 48px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+ }
 </style>
 <script>
 var Vue = require('Vue');
@@ -47,11 +93,18 @@ var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 var Mock = require('mockjs');
 
-Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
 Mock.mock('http://name.cn',{
-    "array|3":[{
-        'image': '@image'
-    }]
+    "array":{
+        'name_image1': '@image',
+        'name_who1':'排位赛-冷血杀神冠军',
+        'name_time1':'2016.05.21获得',
+        'name_image2': '@image',
+        'name_who2':'排位赛-冷血杀神冠军',
+        'name_time2':'2016.05.21获得',
+        'name_image3': '@image',
+        'name_who3':'排位赛-冷血杀神冠军',
+        'name_time3':'2016.05.21获得',
+    }
 });
 var name = Vue.extend({
     name: 'name',
@@ -59,7 +112,7 @@ var name = Vue.extend({
         return {
           nametil:'修改称号',
           nametip:'称号最多选两个：',
-          namelists:null
+          namedata:''
         };
     },
     store: store,
@@ -77,8 +130,7 @@ var name = Vue.extend({
           url: 'http://name.cn',
           dataType: 'json',
           success: function(data) {
-              _this.namelists = data.array;
-              console.log(data);
+              _this.namedata = data.array;
           }
       })
     },

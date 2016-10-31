@@ -10,7 +10,7 @@
     font-size: 40px;
 }
 .ms-content{
-    width: 150%;
+    min-width: 100%;
     margin: 0 auto;
     text-align: center;
 }
@@ -88,6 +88,30 @@
     background: #7B99AD;
     right: 0;
     top: 0;
+}
+.ms-content.win .ms-round:nth-last-child(2) .one-match:before{
+    content: ' ';
+    position: absolute;
+    box-sizing: border-box;
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #7B99AD;
+    right: 0;
+    top: 50%;
+    margin-top: -0.5px;
+}
+.ms-content.win .ms-round:nth-last-child(2) .one-match:after{
+    content: ' ';
+    position: absolute;
+    box-sizing: border-box;
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #7B99AD;
+    right: 0;
+    top: 50%;
+    margin-top: -0.5px;
 }
 .ms-content .one-match.final:before,.ms-content .one-match.final:after{
     width: 0;
@@ -270,7 +294,22 @@
     width: 0;
     height: 0;
 }
-
+.ms-control{
+    padding: 10px 40px;
+}
+.ms-control a{
+    font-size: 16px;
+    color: #fff;
+    padding: 5px 10px;
+    background: #222A37;
+    display: block;
+    float: left;
+    margin-right: 30px;
+    border-radius: 4px;
+}
+.ms-control a.active{
+    background: #4566A8;
+}
 
 
 .toe {
@@ -282,10 +321,14 @@
 }
 </style>
 <template>
+    <div class="ms-control clearfix" v-show="msdata.msType == 3 ? false : true">
+        <a href="javascript:" :class="{'active':msdata.msType == 2}" @click="getMswin">胜者组</a>
+        <a href="javascript:" :class="{'active':msdata.msType == 1}" @click="getMslose">败者组</a>
+    </div>
     <div class="matchschedule" id="iscroll">
-        <div class="ms-content loser">
+        <div class="ms-content" :class="msClass">
             <div class="one-ms normal-group">
-                <div class="ms-round" v-for="(index,mslist) in mslists" :class="'ms-row-'+(index >= isLoser ? isLoser : (index + 1))">
+                <div class="ms-round" v-for="(index,mslist) in msdata.mslists" :class="'ms-row-'+(index >= isType ? isType : (index + 1))">
                     <h3 class="ms-row-title">{{mslist.title}}</h3>
                     <div class="one-match" v-for="row in mslist.row" :class="isFinal == index ? 'final' : ''">
                         <div class="players" v-link="{path:row.link}">
@@ -312,226 +355,52 @@ var Vue = require('Vue');
 var $ = require('jQuery');
 var IScroll = require('iscroll');
 
-
-
-var store = require('../../store/store.js');
-var actions = require('../../store/actions.js');
-
 var matchschedule = Vue.extend({
-    name: 'matchschedule',
+    'name': 'matchschedule',
     data: function() {
-        return {
-            mslists: [{
-                title: '胜者组第一轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: 0  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: 1  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: 2  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: 0  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第二轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第三轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第四轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                },{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第五轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第六轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]},{
-                title: '胜者组第七轮',
-                row: [{
-                    team: [{
-                        name: '焦作人',
-                        score: '2'
-                    },{
-                        name: '焦作人',
-                        score: '0'
-                    }],
-                    inf: '11月11日 11:11',
-                    link: '/match/team',
-                    result: '0'  // 0代表team[0]胜，1代表team[1]胜，2代表未开始
-                }]
-            }]
+        return {  
+            msClass: ''
         };
     },
     computed:{
-        isFinal: function(){
-            return this.mslists.length - 1;
+        isFinal: function(){  //判断是否为最后一轮比赛
+            return this.msdata.mslists.length - 1;
         },
-        isLoser: function(){
-            return this.mslists.length - 2
+        isType: function(){    //比赛模式计算
+            if (this.msdata.msType == 1) {
+                this.msClass = 'loser';
+                return this.msdata.mslists.length - 2;
+            } else if (this.msdata.msType == 2) {
+                this.msClass = 'win';
+                return this.msdata.mslists.length - 1;
+            } else {
+                this.msClass = '';
+                return 1000;
+            }
         }
     },
-    props: ['matchschedule'],
-    store: store,
-    vuex: {
-        getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
-            }
-        },
-        actions: actions
+    props: ['msdata'],
+    init: function(){
+        console.log(this.msdata)
+    },
+    created: function(){
+        console.log(this.msdata)
+        var _this = this;
     },
     ready: function() {
-        console.log(this.mslists.length)
-        let a = this.mslists.length;
-        $(".ms-content").width(a*200+50)
+        let msLength = this.msdata.mslists.length;
+        $(".ms-content").width(msLength*200);
         var myScroll = new IScroll('#iscroll',{
-             scrollX: true, freeScroll: true,click:true
+            scrollX: true, scrollY: true, freeScroll: true,click: true
         });
     },
     methods: {
-        
+        getMswin: function(){
+            // 切换到胜者组
+        },
+        getMslose: function(){
+            // 切换到败者组
+        }
     }
 });
 
