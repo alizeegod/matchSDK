@@ -24,7 +24,7 @@ var Online = require('./components/match/online.vue');
 var Rules = require('./components/match/rules.vue');
 var Team = require('./components/match/team.vue');
 
-
+ 
 
 var MineContainer = require('./components/mine/container.vue');
 var Mine = require('./components/mine/main.vue');

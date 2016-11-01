@@ -12,6 +12,10 @@ var state = {
     userInf: {
         id: 3
     },
+    userCon: {
+        id: 3,
+        iphone: null
+    },
     msmatch: {
         msdata: null
     }
@@ -65,6 +69,10 @@ mutations.SAVE = function(state, params) {
 }
 mutations.GET = function(state, params) {
     state.msmatch.msdata = params.msdata;
+}
+mutations.SETUSERCON = function(state, params) {
+    state.userCon.id = params.id;
+    state.userCon.iphone = params.iphone;
 }
 
 // mutations.MODALTABLE = function(state, params){

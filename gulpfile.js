@@ -21,10 +21,10 @@ var pwd = __dirname;
 var argv = require('minimist')(process.argv.slice(2));
 // var config = require('./config.json');
 
-var rootPath = __dirname;
+var rootPath = __dirname; 
 
 // var vendorPlugin = new webpack.optimize.CommonsChunkPlugin({
-//     name: 'vendor',
+//     name: 'vendor', 
 //     filename: 'vendor.min.js',
 //     minChunks: Infinity,
 // });
@@ -45,7 +45,8 @@ var webpackConfig = {
             test: /.js$/,
             loader: 'babel',
             include: path.join(rootPath, './src'),
-            exclude: path.join(rootPath, '../node_modules/')
+            exclude: path.join(rootPath, '../node_modules/'),
+            query: {presets:['es2015']} 
         },{ 
             test: /\.css$/, loader: "style-loader!css-loader" 
         },{

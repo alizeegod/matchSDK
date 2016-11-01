@@ -1,40 +1,3 @@
-<template>
-    <div class="name">
-        <h3 class="set_til"><span></span>{{nametil}}</h3>
-        <div class="name_main">
-            <p>{{nametip}}</p>
-            <ul>
-              <li>
-                <a>
-                  <img :src="namedata.name_image1" />
-                  <span class="name_ico"></span>
-                  <p>{{namedata.name_who1}}</p>
-                  <p>{{namedata.name_time1}}</p>
-                  <i></i>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <img :src="namedata.name_image2" />
-                  <span class="name_ico"></span>
-                  <p>{{namedata.name_who2}}</p>
-                  <p>{{namedata.name_time2}}</p>
-                  <i></i>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <img :src="namedata.name_image3" />
-                  <span class="name_ico"></span>
-                  <p>{{namedata.name_who3}}</p>
-                  <p>{{namedata.name_time3}}</p>
-                  <i></i>
-                </a>
-              </li>
-            </ul>
-        </div>
-    </div>
-</template>
 <style soped>
   li,ul{list-style: none}
   .name{
@@ -50,29 +13,58 @@
     font-size: 24px;
     font-weight: normal;
   }
+  .name_title{
+    font-size: 24px;
+    color: #fff;
+    line-height: 2;
+    margin-left: 6.6%;
+    margin-top: 20px;
+  }
   .name_main ul{
-    -webkit-display: flex;
     width: 100%;
-    height: 147px;
+    overflow: hidden;
   }
   .name_main ul li{
-    -webkit-flex: 1;
-    width: 178px;
-    height: 141px;
-    float: left;
-    border: 3px solid #2f9ed9;
-    position: relative;
-  }
-  .name_main ul li img{
-    width: 100%;
-    height: 34px;
     display: block;
-    margin: 25px auto 35px;
+    box-sizing: border-box;
+    width: 20%;
+    float: left;
+    border: 3px solid #999999;
+    position: relative;
+    margin: 20px 6.6%;
+  }
+  .name_main ul li.active{
+    border: 3px solid #2F9ED9;
+  }
+  .name_main ul li .name_img_bg{
+    width: 100%;
+    display: block;
+  }
+  .name_main ul li .name_img{
+    width: 90%;
+    display: block;
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    margin-left: -45%;
   }
  .name_main ul li p{
   font-size: 16px;
+  height: 48px;
+  line-height: 48px;
   color: #999;
-  margin-left: 7px;
+  width: 92%;
+  position: absolute;
+  left: 50%;
+  margin-left: -46%;
+ }
+ .name_main ul li p:nth-of-type(2){
+    bottom: 0;
+ }
+ .name_main ul li p:nth-of-type(1){
+    bottom: 48px;
+    height: auto;
+    line-height: 1;
  }
  .name_main ul li i{
   display: block;
@@ -84,7 +76,32 @@
   right: 0;
   bottom: 0;
  }
+ .name_main ul li.active i{
+  background: url(../../images/name_ico_on.png) no-repeat;
+  background-size: 100% 100%;
+ }
 </style>
+<template>
+    <div class="name">
+        <h3 class="set_til"><span></span>{{nametil}}</h3>
+        <div class="name_main">
+            <p class="name_title">{{nametip}}</p>
+            <ul id="name-ul">
+              <li v-for="(index,namedata) in namedatas" :class="namedata.ischecked ? 'active' : ''" @click="change(namedata.ischecked,index,$event)">
+                <a>
+                    <img :src="namedata.name_image"  class="name_img" />
+                    <img src="../../images/name_img_bg.png" class="name_img_bg" />
+                    <span class="name_ico"></span>
+                    <p>{{namedata.name_who}}</p>
+                    <p>{{namedata.name_time}}</p>
+                    <i></i>
+                </a>
+              </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
@@ -94,17 +111,12 @@ var actions = require('../../store/actions.js');
 var Mock = require('mockjs');
 
 Mock.mock('http://name.cn',{
-    "array":{
-        'name_image1': '@image',
-        'name_who1':'排位赛-冷血杀神冠军',
-        'name_time1':'2016.05.21获得',
-        'name_image2': '@image',
-        'name_who2':'排位赛-冷血杀神冠军',
-        'name_time2':'2016.05.21获得',
-        'name_image3': '@image',
-        'name_who3':'排位赛-冷血杀神冠军',
-        'name_time3':'2016.05.21获得',
-    }
+    "array|1-10":[{
+        'name_image': 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        'name_who':'排位赛-冷血杀神冠军',
+        'name_time':'2016.05.21获得',
+        'ischecked': true
+    }]
 });
 var name = Vue.extend({
     name: 'name',
@@ -112,7 +124,8 @@ var name = Vue.extend({
         return {
           nametil:'修改称号',
           nametip:'称号最多选两个：',
-          namedata:''
+          namedatas:'',
+          ischecked: false
         };
     },
     store: store,
@@ -124,18 +137,36 @@ var name = Vue.extend({
         },
         actions: actions
     },
+    created: function(){
+        var _this = this;
+        $.ajax({
+            url: 'http://name.cn',
+            dataType: 'json',
+            success: function(data) {
+                _this.namedatas = data.array;
+            }
+        })
+    },
+    computed: {
+        
+    },
     ready: function() {
-      var _this = this;
-      $.ajax({
-          url: 'http://name.cn',
-          dataType: 'json',
-          success: function(data) {
-              _this.namedata = data.array;
-          }
-      })
+      
     },
     methods: {
-
+        change: function(ischecked,index,event){
+            console.log(event.target)
+            console.log(ischecked)
+            let actLength = $("#name-ul li").filter(".active").length;
+            console.log(actLength)
+            if (ischecked == true) {
+                this.namedatas[index].ischecked = false;
+            } else if (ischecked == false && actLength >= 2) {
+                alert("最多只能选择两个称号")
+            } else if (ischecked == false && actLength < 2) {
+                this.namedatas[index].ischecked = true;
+            }
+        }
     }
 });
 

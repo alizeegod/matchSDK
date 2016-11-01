@@ -12,7 +12,9 @@ actions.save = function(store, params) {
 actions.get = function(store, params) {
     store.dispatch('GET', params);
 }
-
+actions.setusercon = function(store, params) {
+    store.dispatch('SETUSERCON', params);
+}
 // actions.modalTable = function(store, params) {
 //     store.dispatch('MODALTABLE', params);
 // }

@@ -21,7 +21,7 @@
 .bind-form{
   margin-left: 40px;
   color: #e1e1e1;
-  font-size: 20px;
+  font-size: 20px; 
 }
 .bind-form label{
   width: 120px;
@@ -39,6 +39,7 @@
   color: #000;
   padding-left: 15px;
   float: left;
+  outline: none;
 }
 .bind-form .bind-yzm,.bind-form .bind-iphone{
   margin: 15px 0;
@@ -88,22 +89,22 @@
   <div class="bind-content">
     <h3 class="bind-title">{{bindtil}}</h3>
     <div class="bind-if">
-        <p v-if="isbing">你当前绑定的手机号；{{bindiphone}}</p>
+        <p v-if="isbing">你当前绑定的手机号:{{userCon.iphone}}</p>
         <p v-else>绑定手机号</p>
     </div>
     <form action="post" class="bind-form">
         <div class="bind-iphone">
             <label>新的手机号：</label>
-            <input type="number">
+            <input number name="userIphone" v-model="from.userIphone">
         </div>
         <div class="bind-yzm">
             <label>短信验证码：</label>
-            <input type="number">
-            <span>获取验证码</span>
+            <input number name="userCode" v-model="from.userCode">
+            <span id="bind-tel-code">获取验证码</span>
         </div>
         <div class="bind-btn">
-            <a>完成</a> 
-            <a>取消</a>
+            <a v-on:click="sureBtnTel" title="确定">完成</a> 
+            <a v-on:click="closeBtnTel">取消</a>
         </div>
     </form>
   </div>
@@ -111,7 +112,8 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
+
+import tool from '../../js/tool';
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
@@ -120,26 +122,83 @@ var bind = Vue.extend({
     name: 'bind',
     data: function() {
         return {
-            isbing: false,
             bindtil:'修改绑定手机号',
-            bind_msg01:'新的手机号',
-            bind_msg02:'短信验证码'
+            from :{
+                userIphone:'',
+                userCode:'',
+            }
         };
     },
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userCon: function() {
+                return store.state.userCon;
             }
         },
         actions: actions
     },
+    computed: {
+        isbing: function(){
+            if (this.userCon.iphone == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
     ready: function() {
 
+        // 应用状态修改示例
+        actions.setusercon(store,{id:'4',iphone:'15097553633'})
+        
+        new tool.verification("bind-tel-code",{
+            'endTime' : '0',
+            'startTime': '60',
+            'outColor' : '#fff',
+            'outFontSize' : '16px',
+            'outBackground' : '#7F7F7F',
+            'outText' : '秒后重发',
+            callBack : function(){
+                // ajax回调
+                console.log('ajax报名')
+            }
+        })
     },
     methods: {
-
+        sureBtnTel: function(event){
+            var _this = this;
+              
+            if(!tool.tel($("input[name=userIphone]"))){return}
+            if(!tool.yzm($("input[name=userCode]"))){return}
+                
+            //$.ajax
+            $.ajax({
+                url:'http://10.0.11.19/svn/match/2.0/src/json/a.json',
+                type:'GET',
+                dataType:'jsonp',
+                jsonp:'callback',
+                jsonpCallback:'jsonp'+new Date().getTime(),
+                // data:{userid: _this.userCon.id},
+                success:function(data){
+                    //返回0 注册成功
+                    //返回1 该号码已注册
+                    //返回2 验证码不对
+                    console.log(data.msg);
+                    if(data.msg=="1"){
+                        console.log(data.lists)
+                        alert("注册成功")
+                    }else if(data.msg=="2"){
+                        alert('该号码已注册')
+                    }else if(data.msg=="3"){
+                        alert('验证码不对') 
+                    }
+                }
+            });  
+        },
+        closeBtnTel: function(event){
+          
+        }
     }
 });
 

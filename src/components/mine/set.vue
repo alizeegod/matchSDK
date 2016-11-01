@@ -22,7 +22,7 @@
 </template>
 <style soped>
 .set{
-  width: 100%;
+  width: 100%; 
   position: relative;
 }
 .set_til{
