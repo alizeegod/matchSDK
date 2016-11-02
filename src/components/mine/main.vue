@@ -1,48 +1,3 @@
-<template>
-  <div class="mine_wrap">
-    <div class="minelink clearfix">
-      <div class="ml_top clearfix">
-        <img class="ml_mainimgsrc fl" :src="mineData.src" />
-        <div class="mlink_name fl">
-          <p>{{mineData.minetil}}</p>
-          <p>{{mineData.minecity}}</p>
-        </div>
-        <img class="ml_mainimg fl" :src="mineData.ml_mimg1" />
-        <img class="ml_mainimg fl" :src="mineData.ml_mimg2" />
-        <div class="ml_msg_set fr" v-show='show'>
-          <a v-link="{path:'/mine/tips'}"><span>{{mineData.ml_num}}</span></a>
-          <a v-link="{path:'/mine/set'}"></a>
-        </div>
-      </div>
-      <div class="ml_detail">
-        <ul>
-          <li><i></i><span>战斗力: <em>{{mineData.ml_num_zdl}}</em><a>？</a></span></li>
-          <li><i></i><span>国内排行: <em>{{mineData.ml_num_ph}}</em></span></li>
-          <li><i></i><span>已参加比赛数: <em>{{mineData.ml_num_ss}}</em></span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="mine_mainlist">
-      <h3 class="mine_maintil"><span></span>{{mine_maintil}}</h3>
-      <ul>
-        <li v-for='m_list in m_lists'>
-          <a  v-link="{path:'/mine/gamerank'}">
-            <p>
-              <span class="mine_name">{{m_list.typetil}}-{{m_list.name}}</span>
-              <span class="mine_time"><span class="mt_1">{{m_list.mt_1}}</span>-<span class="mt_2">{{m_list.mt_2}}</span></span>
-              <i class="on" v-if="ok">比赛中</i>
-              <i v-else>已结束</i>
-            </p>
-            <p v-if="ok">{{m_list.powertil}}<em class="mine_num1">+{{m_list.mine_num1}}</em></p>
-            <p v-else></p>
-            <p>{{m_list.rank}}<em class="mine_num2">{{m_list.mine_num2}}</em></p>
-            <p></p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
 <style>
 .fl{float: left}
 .fr{float: right}
@@ -60,7 +15,7 @@
     border-bottom: 1px solid #2d394f;
 }
 .mine_wrap .minelink{
-  padding: 27px 0 10px;
+  padding: 12px 15px 5px;
 }
 .mine_wrap .mine_mainlist{
   margin-top: 10px;
@@ -76,26 +31,26 @@
   position: relative;
 }
 .minelink .mlink_name{
-    font-size: 20px;
+    font-size: 16px;
     padding-top: 4px;
     margin-right: 21px;
 }
 .minelink .ml_mainimgsrc{
     display: block;
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #000;
-    margin: 0 22px 0 27px;
+    margin-right: 10px;
 }
 .minelink .ml_mainimg{
     display: block;
-    width: 137px;
-    height: 42px;
-    margin:8px 0 0 16px;
+    width: 16%;
+    max-height: 30px;
+    margin:8px 16px 0 0;
 }
 .minelink .ml_msg_set a{
   display: inline-block;
-  margin: 10px 42px 0 0;
+  margin: 10px 0 0 42px;
   position: relative;
 }
 .minelink .ml_msg_set a:first-child{
@@ -125,28 +80,26 @@
   text-align: center;
 }
 .minelink .ml_detail{
-  width: 94%;
-  height: 40px;
-  margin-top: 11px;
-  padding: 0 3%;
+  width: 100%;
+  margin-top: 8px;
 }
 .minelink .ml_detail ul{
   display: flex;
   -webkit-display:flex;
+  justify-content: space-between;
 }
 .minelink .ml_detail ul li{
-  height: 32px;
-  line-height: 32px;
-  flex-grow:1;
-  -webkit-flex-grow:1;
+  height: 30px;
+  line-height: 30px;
+  display: -webkit-flex;
+  -webkit-box-flex: 1;
   color: #a09b94;
-  font-size: 17px;
-  font-size: 17px;
+  font-size: 14px;
 }
 .minelink .ml_detail ul li i{
   display: inline-block;
   position: relative;
-  top: 7px;
+  top: 6px;
   margin-right: 10px;
 }
 .minelink .ml_detail ul li em{
@@ -156,10 +109,10 @@
 }
 .minelink .ml_detail ul li:nth-of-type(1) span{
   display: inline-block;
-  height: 31px;
+  height: 28px;
   background: #16273f;
   border: 1px solid #27436f;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 0 8px;
   color: #fff;
 }
@@ -177,20 +130,20 @@
   top: -2px;
 }
 .minelink .ml_detail ul li:nth-of-type(1) i{
-  width: 29px;
-  height: 29px;
+  width: 16px;
+  height: 16px;
   background: url(../../images/mymine_zdl.png) no-repeat;
   background-size: 100% 100%;
 }
 .minelink .ml_detail ul li:nth-of-type(2) i{
-  width: 33px;
-  height: 29px;
+  width: 17px;
+  height: 16px;
   background: url(../../images/mymine_ph.png) no-repeat;
   background-size: 100% 100%;
 }
 .minelink .ml_detail ul li:nth-of-type(3) i{
-  width: 29px;
-  height: 30px;
+  width: 16px;
+  height: 16px;
   background: url(../../images/mymine_cs.png) no-repeat;
   background-size: 100% 100%;
 }
@@ -199,6 +152,7 @@
   height: 49px;
   line-height: 49px;
   margin-left: 18px;
+  font-size: 18px;
 }
 .mine_maintil span{
   display: inline-block;
@@ -216,9 +170,9 @@
   line-height: 91px;
   color: #e1e1e1;
   border-bottom: 1px solid #353c4a;
-  font-size: 18px;
+  font-size: 16px;
 }
-.mine_mainlist ul li:hover{
+.mine_mainlist ul li.active{
   background: #2b3a58;
   border-bottom: 1px solid #2b3a58;
 }
@@ -258,6 +212,9 @@
   width: 15%;
 }
 .mine_mainlist ul li p:nth-of-type(4){
+  width: 15%;
+}
+.mine_mainlist ul li p i:nth-of-type(4){
   width: 17px;
   height: 29px;
   background: url(../../images/prank-ico.png) no-repeat;
@@ -296,6 +253,53 @@
   display: inline-block;
 }
 </style>
+<template>
+  <div class="mine_wrap">
+    <div class="minelink clearfix">
+      <div class="ml_top clearfix">
+        <img class="ml_mainimgsrc fl" :src="mineData.src" />
+        <div class="mlink_name fl">
+          <p>{{mineData.minetil}}</p>
+          <p>{{mineData.minecity}}</p>
+        </div>
+        <img class="ml_mainimg fl" :src="mineData.ml_mimg1" />
+        <img class="ml_mainimg fl" :src="mineData.ml_mimg2" />
+        <div class="ml_msg_set fr" v-if='show'>
+          <a v-link="{path:'/mine/tips'}"><span>{{mineData.ml_num}}</span></a>
+          <a v-link="{path:'/mine/setcof'}"></a>
+        </div>
+      </div>
+      <div class="ml_detail">
+        <ul>
+          <li v-link="{name:'rule',params:{userid:userMsg.id}}"><i></i><span>战斗力: <em>{{mineData.ml_num_zdl}}</em><a>？</a></span></li>
+          <li><i></i><span>国内排行: <em>{{mineData.ml_num_ph}}</em></span></li>
+          <li><i></i><span>已参加比赛数: <em>{{mineData.ml_num_ss}}</em></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mine_mainlist">
+      <h3 class="mine_maintil" v-if="show"><span></span>我的比赛</h3>
+      <h3 class="mine_maintil" v-else><span></span>他的比赛</h3>
+      <ul>
+        <li v-for='m_list in m_lists'>
+          <a  v-link="{path:'/mine/mygame'}">
+            <p>
+              <span class="mine_name">{{m_list.typetil}}-{{m_list.name}}</span>
+              <span class="mine_time"><span class="mt_1">{{m_list.mt_1}}</span>-<span class="mt_2">{{m_list.mt_2}}</span></span>
+              <i class="on" v-if="ok">比赛中</i>
+              <i v-else>已结束</i>
+            </p>
+            <p v-if="ok">{{m_list.powertil}}<em class="mine_num1">+{{m_list.mine_num1}}</em></p>
+            <p v-else></p>
+            <p>{{m_list.rank}}<em class="mine_num2">{{m_list.mine_num2}}</em></p>
+            <p></p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
@@ -339,15 +343,14 @@ var mine = Vue.extend({
 			m_lists: {},
       mineData:{},
       ok: true,
-      show:true,
-      mine_maintil:'我的比赛'
+      show:true
 		};
 	},
 	store: store,
 	vuex: {
 		getters: {
-			userInf: function() {
-				return store.state.userInf;
+			userMsg: function() {
+				return store.state.userMsg;
 			}
 		},
 		actions: actions
@@ -371,14 +374,14 @@ var mine = Vue.extend({
   },
 	ready: function() {
 		let a = this.$route.query.id;
-    let b = this.userInf.id;
+    let b = this.userMsg.id;
     if (a == b) {
       this.show = true;
     } else {
       this.show = false;
     }
     console.log(this.$route.query.id)
-    console.log(this.userInf.id)
+    console.log(this.userMsg.id)
 
 	},
     methods: {

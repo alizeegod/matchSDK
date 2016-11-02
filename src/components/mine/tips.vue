@@ -1,19 +1,3 @@
-<template>
-    <div class="tips">
-      <h3 class="tips_til"><span></span>{{tips_til}}</h3>
-      <div class="tips_main">
-        <ul>
-          <li v-for='tiplist in tipslists'>
-            <a v-link="{path:'/mine/tips'}">
-              <p><span class="tips_reply">{{tiplist.name}}</span>回复：</p>
-              <p class="tips_replytxt"><span>{{tiplist.reply}}</span><i v-show="tips_show"></i></p>
-              <p>我:<span class="tips_question">{{tiplist.question}}？</span></p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-</template>
 <style soped>
 .tips{
   width: 100%;
@@ -70,6 +54,23 @@
   top: 7px;
 }
 </style>
+<template>
+    <div class="tips">
+      <h3 class="tips_til"><span></span>{{tips_til}}</h3>
+      <div class="tips_main">
+        <ul>
+          <li v-for='tiplist in tipslists'>
+            <a v-link="{path:'/mine/tips'}">
+              <p><span class="tips_reply">{{tiplist.name}}</span>回复：</p>
+              <p class="tips_replytxt"><span>{{tiplist.reply}}</span><i v-show="tiplist.boolean"></i></p>
+              <p>我:<span class="tips_question">{{tiplist.question}}？</span></p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
@@ -83,7 +84,8 @@ Mock.mock('http://tips.cn',{
   "array|1-10":[{
       'name': '@name',
       'reply':'@title',
-      'question':'@title'
+      'question':'@title',
+      'boolean|1-2': true
   }]
 });
 var tips = Vue.extend({
@@ -91,8 +93,7 @@ var tips = Vue.extend({
     data: function() {
         return {
           tips_til:'消息提醒',
-          tipslists:{},
-          tips_show:true
+          tipslists:{}
         };
     },
     store: store,

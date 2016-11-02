@@ -1,3 +1,19 @@
+<style soped>
+.prank-item.trank-item p.p3 img{
+  width: 36px;
+  height: 36px;
+  margin: 7px 0;
+  display: block;
+  float: left;
+}
+.prank-item.trank-item p.p3 span{
+  display: block;
+  float: left;
+}
+.prank-item.trank-item:nth-of-type(2n-1){
+  background: #111A2B;
+}
+</style>
 <template>
   	<div class="prank trank">
   		<div class="prank-title">
@@ -6,7 +22,7 @@
   			<p class="p3">战队</p>
   			<p class="p4"></p>
   			<p class="p5">
-  				<span>战斗力<i>？</i></span>
+  				<span v-link="{name:'rule',params:{userid:userMsg.id}}">战斗力<i>?</i></span>
   			</p>
   			<p class="p6"></p>
   		</div>
@@ -25,23 +41,7 @@
   		</div>
   	</div>
 </template>
-<style soped>
-.prank-item.trank-item p.p3 img{
-	width: 36px;
-	height: 36px;
-	margin: 7px 0;
-	display: block;
-	float: left;
-}
-.prank-item.trank-item p.p3 span{
-	display: block;
-	float: left;
-}
-.prank-item.trank-item:nth-of-type(2n-1){
-	background: #111A2B;
-}
 
-</style>
 <script>
 var Vue = require('Vue');
 

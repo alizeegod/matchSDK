@@ -13,7 +13,7 @@ window.$ = $;
 
 
 var App = Vue.extend({});
-
+ 
 var Index = require('./components/index.vue');
 
 var MatchContainer = require('./components/match/container.vue');
@@ -25,7 +25,7 @@ var Rules = require('./components/match/rules.vue');
 var Team = require('./components/match/team.vue');
 
  
-
+ 
 var MineContainer = require('./components/mine/container.vue');
 var Mine = require('./components/mine/main.vue');
 var Bind = require('./components/mine/bind.vue');

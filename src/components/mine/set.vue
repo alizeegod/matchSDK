@@ -1,25 +1,3 @@
-<template>
-    <div class="set">
-        <h3 class="set_til"><span></span>{{set_til}}</h3>
-        <div class="set_main">
-            <p>
-              <a v-link="{path:'/mine/name'}">
-                <i class="set_ico"></i><span>{{setdata.setName}}</span><em><i></i></em>
-              </a>
-            </p>
-            <p>
-              <a v-link="{path:'/mine/bind'}">
-                <i class="set_ico"></i><span>{{setdata.setTel}}{{setdata.setTelnum}}</span><em>更换<i></i></em>
-              </a>
-            </p>
-            <p>
-              <a v-link="{path:'/mine/tips'}">
-                <i class="set_ico"></i><span>{{setdata.settip}}</span><em><i></i></em>
-              </a>
-            </p>
-        </div>
-    </div>
-</template>
 <style soped>
 .set{
   width: 100%; 
@@ -100,51 +78,57 @@
     top: 6px;
 }
 </style>
+<template>
+    <div class="set">
+        <h3 class="set_til"><span></span>设置</h3>
+        <div class="set_main">
+            <p>
+              <a v-link="{path:'/mine/name'}">
+                <i class="set_ico"></i><span>称号管理</span><em><i></i></em>
+              </a>
+            </p>
+            <p>
+              <a v-link="{path:'/mine/bind'}">
+                <i class="set_ico"></i><span>绑定手机号{{userMsg.iphone}}</span><em>更换<i></i></em>
+              </a>
+            </p>
+            <p>
+              <a v-link="{path:'/mine/opinion'}">
+                <i class="set_ico"></i><span>意见反馈</span><em><i></i></em>
+              </a>
+            </p>
+        </div>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
-var Mock = require('mockjs');
 
-Mock.mock('http://set.cn',{
-    "array":{
-        'setName':'称号管理',
-        'setTel':'绑定手机号',
-        'settip':'意见反馈',
-        'setTelnum':'150****2689'
-    }
-});
 var setcof = Vue.extend({
     name: 'setcof',
     data: function() {
         return {
-            set_til:'设置',
             setdata:{}
         };
     },
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions
     },
     created: function() {
       var _this = this;
-      $.ajax({
-          url: 'http://set.cn',
-          dataType: 'json',
-          success: function(data) {
-             _this.setdata = data.array; 
-          }
-      })
     },
     ready: function() {
-        // this.msg = this.alertConfig.msg;
+        
 
     },
     methods: {

@@ -1,57 +1,3 @@
-<template>
-    <div class="gamedetail">
-      <h3 class="grank_til">{{gamedetailtil}}</h3>
-      <div class="gamedl_main">
-        <div class="gamedl_top">
-          <div class="gdetail_img">
-              <img :src="gdetailtopdata.src" />
-              <p><span>{{gdetailtopdata.gdetailtitle}}</span></p>
-          </div>
-          <ul>
-            <li><span>{{gdetailtopdata.gdgame_type}}</span><span>{{gdetailtopdata.gdgame_typeval}}</span></li>
-            <li><span>{{gdetailtopdata.gdbs_type}}</span><span>{{gdetailtopdata.gdbs_typeval}}</span></li>
-            <li><span>{{gdetailtopdata.gd_time}}</span><span>{{gdetailtopdata.gd_timeval}}</span></li>
-          </ul>
-        </div>
-        <div class="gdetail_result">
-          <p class="gd_rtil gd_lmj_til">{{gdetailtopdata.succeed}}</p>
-          <ul class="gd_res_title">
-            <li>{{gdetailtopdata.gd_lmj_name}}</li>
-            <li>{{gdetailtopdata.gd_lmj_junx}}</li>
-            <li>{{gdetailtopdata.gd_lmj_duanw}}</li>
-            <li>{{gdetailtopdata.gd_lmj_shot}}</li>
-          </ul>
-          <ul class="gdetail_succeed">
-            <li v-for='gdetail_succeedlist in gdetail_suclists'>
-              <a v-link="{path:'/mine/gamedetail'}">
-                <span><i class="gdetail_pic"><img :src="gdetail_succeedlist.src" /></i>{{gdetail_succeedlist.name}}</span>
-                <span>{{gdetail_succeedlist.gd_jx}}</span>
-                <span>{{gdetail_succeedlist.gd_dw}}</span>
-                <span>{{gdetail_succeedlist.gd_num1}}-{{gdetail_succeedlist.gd_num2}}</span>
-              </a>
-            </li>
-          </ul>
-          <p class="gd_rtil gd_fpj_til">{{gdetailtopdata.fail}}</p>
-          <ul class="gd_res_title">
-            <li>{{gdetailtopdata.gd_fpj_name}}</li>
-            <li>{{gdetailtopdata.gd_fpj_junx}}</li>
-            <li>{{gdetailtopdata.gd_fpj_duanw}}</li>
-            <li>{{gdetailtopdata.gd_fpj_shot}}</li>
-          </ul>
-          <ul class="gdetail_succeed">
-            <li v-for='gdetai_faillist in gdetai_faillists'>
-              <a v-link="{path:'/mine/gamedetail'}">
-                <span><i class="gdetail_pic"><img :src="gdetai_faillist.src" /></i>{{gdetai_faillist.name}}</span>
-                <span>{{gdetai_faillist.gd_jx}}</span>
-                <span>{{gdetai_faillist.gd_dw}}</span>
-                <span>{{gdetai_faillist.gd_num1}}-{{gdetai_faillist.gd_num2}}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-</template>
 <style soped>
 .gamedetail{
   width: 100%;
@@ -217,13 +163,68 @@
 .gdetail_succeed li a span:first-child{
   color: #6192e9;
 }
-.gdetail_succeed li:hover{
+.gdetail_succeed li.active{
   background: #293b5d;
 }
-.gdetail_succeed li:hover a span:first-child{
+.gdetail_succeed li.active a span:first-child{
   color: #e9be4a;
 }
 </style>
+<template>
+    <div class="gamedetail">
+      <h3 class="grank_til">{{gamedetailtil}}</h3>
+      <div class="gamedl_main">
+        <div class="gamedl_top">
+          <div class="gdetail_img">
+              <img :src="gdetailtopdata.src" />
+              <p><span>{{gdetailtopdata.gdetailtitle}}</span></p>
+          </div>
+          <ul>
+            <li><span>{{gdetailtopdata.gdgame_type}}</span><span>{{gdetailtopdata.gdgame_typeval}}</span></li>
+            <li><span>{{gdetailtopdata.gdbs_type}}</span><span>{{gdetailtopdata.gdbs_typeval}}</span></li>
+            <li><span>{{gdetailtopdata.gd_time}}</span><span>{{gdetailtopdata.gd_timeval}}</span></li>
+          </ul>
+        </div>
+        <div class="gdetail_result">
+          <p class="gd_rtil gd_lmj_til">{{gdetailtopdata.succeed}}</p>
+          <ul class="gd_res_title">
+            <li>{{gdetailtopdata.gd_lmj_name}}</li>
+            <li>{{gdetailtopdata.gd_lmj_junx}}</li>
+            <li>{{gdetailtopdata.gd_lmj_duanw}}</li>
+            <li>{{gdetailtopdata.gd_lmj_shot}}</li>
+          </ul>
+          <ul class="gdetail_succeed">
+            <li v-for='gdetail_succeedlist in gdetail_suclists' :class="gdetail_succeedlist.id == userMsg.id ? 'active' : ''">
+              <a v-link="{path:'/mine/gamedetail'}">
+                <span><i class="gdetail_pic"><img :src="gdetail_succeedlist.src" /></i>{{gdetail_succeedlist.name}}</span>
+                <span>{{gdetail_succeedlist.gd_jx}}</span>
+                <span>{{gdetail_succeedlist.gd_dw}}</span>
+                <span>{{gdetail_succeedlist.gd_num1}}-{{gdetail_succeedlist.gd_num2}}</span>
+              </a>
+            </li>
+          </ul>
+          <p class="gd_rtil gd_fpj_til">{{gdetailtopdata.fail}}</p>
+          <ul class="gd_res_title">
+            <li>{{gdetailtopdata.gd_fpj_name}}</li>
+            <li>{{gdetailtopdata.gd_fpj_junx}}</li>
+            <li>{{gdetailtopdata.gd_fpj_duanw}}</li>
+            <li>{{gdetailtopdata.gd_fpj_shot}}</li>
+          </ul>
+          <ul class="gdetail_succeed">
+            <li v-for='gdetai_faillist in gdetai_faillists' :class="gdetai_faillist.id == userMsg.id ? 'active' : ''">
+              <a v-link="{path:'/mine/gamedetail'}">
+                <span><i class="gdetail_pic"><img :src="gdetai_faillist.src" /></i>{{gdetai_faillist.name}}</span>
+                <span>{{gdetai_faillist.gd_jx}}</span>
+                <span>{{gdetai_faillist.gd_dw}}</span>
+                <span>{{gdetai_faillist.gd_num1}}-{{gdetai_faillist.gd_num2}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
@@ -263,7 +264,8 @@ Mock.mock('http://gdetail_succeedlist.cn',{
         'gd_jx':'下士',
         'gd_dw':'白银Ⅳ',
         'gd_num1|1-10': 10,
-        'gd_num2|1-10': 10
+        'gd_num2|1-10': 10,
+        'id|1-10' : 2
     }]
 });
 Mock.mock('http://gdetai_faillist.cn',{
@@ -273,7 +275,8 @@ Mock.mock('http://gdetai_faillist.cn',{
         'gd_jx':'下士',
         'gd_dw':'白银Ⅳ',
         'gd_num1|1-10': 10,
-        'gd_num2|1-10': 10
+        'gd_num2|1-10': 10,
+        'id|1-10' : 1
     }]
 });
 var gamedetail = Vue.extend({
@@ -289,8 +292,8 @@ var gamedetail = Vue.extend({
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions
@@ -320,7 +323,7 @@ var gamedetail = Vue.extend({
       })
     },
     ready: function() {
-  		// this.msg = this.alertConfig.msg;
+  		  console.log(this.userMsg.id)
 
   	},
     methods: {

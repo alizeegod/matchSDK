@@ -1,18 +1,3 @@
-<template>
-    <div class="rank-wrap">
-        <section class="rank-top">
-            <h3 v-if="rankTitle">排行榜</h3>
-            <h3 v-else>战队榜单</h3>
-            <ul class="rank-nav">
-                <li v-link="{path:'/rank/perrank'}" @click="isPer"><span>个人榜</span></li>
-                <li v-link="{path:'/rank/teamrank'}" @click="isTeam"><span>职业战队榜</span></li>
-            </ul>
-        </section>
-        <div class="rank-con">
-            <router-view></router-view>
-        </div>
-    </div>
-</template>
 <style soped>
 .rank-wrap{
     width: 100%;
@@ -28,10 +13,10 @@
 }
 .rank-top h3{
     width: 100%;
-    height: 60px;
-    font-size: 30px;
+    height: 40px;
+    font-size: 24px;
     text-align: center;
-    line-height: 60px;
+    line-height: 40px;
     color: #fff;
 }
 .rank-top .rank-nav{
@@ -42,12 +27,12 @@
 }
 .rank-top .rank-nav li{
     width: 49.5%;
-    height: 48px;
-    line-height: 48px;
+    height: 36px;
+    line-height: 36px;
     display: block;
     float: left;
     text-align: center;
-    font-size: 26px;
+    font-size: 20px;
     color: #888888;
     background: #2B2F36;
     border-radius: 3px;
@@ -57,6 +42,22 @@
     background: #4566A8;
 }
 </style>
+<template>
+    <div class="rank-wrap">
+        <section class="rank-top">
+            <h3 v-if="rankTitle">排行榜</h3>
+            <h3 v-else>战队榜单</h3>
+            <ul class="rank-nav">
+                <li v-link="{path:'/rank/perrank'}" @click="isPer"><span>个人榜</span></li>
+                <li v-link="{path:'/rank/teamrank'}" @click="isTeam"><span>职业战队榜</span></li>
+            </ul>
+        </section>
+        <div class="rank-con">
+            <router-view></router-view>
+        </div>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');

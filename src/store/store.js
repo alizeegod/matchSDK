@@ -16,9 +16,13 @@ var state = {
         id: 3,
         iphone: null
     },
+    userMsg: {
+        id:1,
+        iphone: 15097553633
+    },
     msmatch: {
         msdata: null
-    }
+    } 
     // modalTableData: {
     //     show: false,
     //     title: '弹窗表格',
@@ -73,6 +77,10 @@ mutations.GET = function(state, params) {
 mutations.SETUSERCON = function(state, params) {
     state.userCon.id = params.id;
     state.userCon.iphone = params.iphone;
+}
+mutations.SET = function(state, params) {
+    state.userMsg.id = params.id;
+    state.userMsg.iphone = params.iphone;
 }
 
 // mutations.MODALTABLE = function(state, params){

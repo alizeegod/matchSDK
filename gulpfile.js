@@ -15,7 +15,7 @@ var rev = require('gulp-rev-hash');
 var path = require('path');
 
 
-var pwd = __dirname;
+var pwd = __dirname; 
 
 // gulp --env=pro 压缩代码，直接执行gulp，不压缩代码
 var argv = require('minimist')(process.argv.slice(2));

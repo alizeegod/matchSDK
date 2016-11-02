@@ -111,11 +111,21 @@ var actions = require('../../store/actions.js');
 var Mock = require('mockjs');
 
 Mock.mock('http://name.cn',{
-    "array|1-10":[{
-        'name_image': 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        'name_who':'排位赛-冷血杀神冠军',
-        'name_time':'2016.05.21获得',
-        'ischecked': true
+    "namedatas":[{
+        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "name_who":'排位赛-冷血杀神冠军',
+        "name_time":'2016.05.21获得',
+        "ischecked": true
+    },{
+        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "name_who": '排位赛-冷血杀神冠军',
+        "name_time": '2016.05.21获得',
+        "ischecked": false
+    },{
+        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "name_who": '排位赛-冷血杀神冠军',
+        "name_time": '2016.05.21获得',
+        "ischecked": true
     }]
 });
 var name = Vue.extend({
@@ -124,47 +134,56 @@ var name = Vue.extend({
         return {
           nametil:'修改称号',
           nametip:'称号最多选两个：',
-          namedatas:'',
+          namedatas: {},
           ischecked: false
         };
     },
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions
     },
     created: function(){
         var _this = this;
+
         $.ajax({
             url: 'http://name.cn',
             dataType: 'json',
             success: function(data) {
-                _this.namedatas = data.array;
+                _this.namedatas = data.namedatas;
             }
         })
+
     },
     computed: {
         
     },
     ready: function() {
-      
+        
     },
     methods: {
         change: function(ischecked,index,event){
-            console.log(event.target)
-            console.log(ischecked)
+
+            let _this = this;
+
             let actLength = $("#name-ul li").filter(".active").length;
-            console.log(actLength)
+
             if (ischecked == true) {
+
                 this.namedatas[index].ischecked = false;
+
             } else if (ischecked == false && actLength >= 2) {
+
                 alert("最多只能选择两个称号")
+
             } else if (ischecked == false && actLength < 2) {
+
                 this.namedatas[index].ischecked = true;
+
             }
         }
     }

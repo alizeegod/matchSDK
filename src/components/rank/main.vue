@@ -1,52 +1,13 @@
-<template>
-  	<div class="prank">
-  		<div class="prank-title">
-  			<p class="p1">排名</p>
-  			<p class="p2"></p>
-  			<p class="p3">玩家</p>
-  			<p class="p4"></p>
-  			<p class="p5" v-link="{name:'rule',params:{userid:userid}}">
-  				<span>战斗力<i>?</i></span>
-  			</p>
-  			<p class="p6"></p>
-  		</div>
-  		<div class="prank-mine prank-item" v-link="{path:mineRank.url}">
-  			<p class="p1"><span>{{mineRank.rank}}</span></p>
-  			<p class="p2">
-  				<image :src="mineRank.tImg"/>
-  			</p>
-  			<p class="p3"><span>{{mineRank.user}}</span></p>
-  			<p class="p4"><span>{{mineRank.area}}</span></p>
-  			<p class="p5"><span>{{mineRank.power}}</span></p>
-  			<p class="p6"><i></i></p>
-  		</div>
-  		<div class="prank-con">
-  			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.id}}"
-  				v-for="allRank in allRanks" transition="item">
-  					<p class="p1"><span>{{allRank.rank}}</span></p>
-		  			<p class="p2">
-		  				<image :src="allRank.tImg"/>
-		  			</p>
-		  			<p class="p3"><span>{{allRank.user}}</span></p>
-		  			<p class="p4"><span>{{allRank.area}}</span></p>
-		  			<p class="p5"><span>{{allRank.power}}</span></p>
-		  			<p class="p6"><i></i></p>
-  				</li>
-  			</ul>
-  		</div>
-  	</div>
-</template>
 <style soped>
 .prank{
 	width: 100%;
-	padding-top: 158px;
+	padding-top: 126px;
 }
 .prank .prank-title{
 	width: 100%;
     position: fixed;
     left: 50px;
-    top: 108px;
+    top: 76px;
     z-index: 1000;
 	background: #050D19;
 	overflow: hidden;
@@ -55,7 +16,7 @@
 	float: left;
 	height: 50px;
 	line-height: 50px;
-	font-size: 20px;
+	font-size: 18px;
 	color: #5d8ca3;
 }
 .prank .prank-title p.p1{
@@ -123,7 +84,7 @@
 	float: left;
 	height: 50px;
 	line-height: 50px;
-	font-size: 18px;
+	font-size: 16px;
 	color: #e1e1e1;
 }
 .prank-item.item:nth-of-type(1) p.p1 span{
@@ -201,10 +162,51 @@
 	background-size: 100% 100%;
 }
 </style>
+<template>
+  	<div class="prank">
+  		<div class="prank-title">
+  			<p class="p1">排名</p>
+  			<p class="p2"></p>
+  			<p class="p3">玩家</p>
+  			<p class="p4"></p>
+  			<p class="p5">
+  				<span v-link="{name:'rule',params:{userid:userMsg.id}}">战斗力<i>?</i></span>
+  			</p>
+  			<p class="p6"></p>
+  		</div>
+  		<div class="prank-mine prank-item" v-link="{name:'mine',query:{id:userMsg.id}}">
+  			<p class="p1"><span>{{mineRank.rank}}</span></p>
+  			<p class="p2">
+  				<image :src="mineRank.tImg"/>
+  			</p>
+  			<p class="p3"><span>{{mineRank.user}}</span></p>
+  			<p class="p4"><span>{{mineRank.area}}</span></p>
+  			<p class="p5"><span>{{mineRank.power}}</span></p>
+  			<p class="p6"><i></i></p>
+  		</div>
+  		<div class="prank-con">
+  			<ul>
+  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.id}}"
+  				v-for="allRank in allRanks" transition="item">
+  					<p class="p1"><span>{{allRank.rank}}</span></p>
+		  			<p class="p2">
+		  				<image :src="allRank.tImg"/>
+		  			</p>
+		  			<p class="p3"><span>{{allRank.user}}</span></p>
+		  			<p class="p4"><span>{{allRank.area}}</span></p>
+		  			<p class="p5"><span>{{allRank.power}}</span></p>
+		  			<p class="p6"><i></i></p>
+  				</li>
+  			</ul>
+  		</div>
+  	</div>
+</template>
+
 <script>
 var Vue = require('Vue');
 
-// var store = require('../store/store.js');
+var store = require('../../store/store.js');
+var actions = require('../../store/actions.js');
 
 var Mock = require('mockjs');
 
@@ -220,7 +222,7 @@ Mock.mock('http://minerank.cn',{
         'user'     		 : '@name',
         'area'     		 : '@region',
         'power|1-1000'	 : 1,
-        'url'     		 : '/mine/gamedetail'
+        'url'     		 : '/mine'
     }
 });
 Mock.mock('http://allrank.cn',{
@@ -230,8 +232,8 @@ Mock.mock('http://allrank.cn',{
         'user'     		 : '@name',
         'area'     		 : '@region',
         'power|1-1000'	 : 1,
-        'url'     		 : '/mine/gamedetail',
-        'id|1-3'         : 1
+        'url'     		 : '/mine',
+        'id|2-10'         : 1
     }]
 });
 
@@ -241,9 +243,17 @@ var rank = Vue.extend({
 	data: function() {
 		return {
 			mineRank: {},
-			allRanks: {},
-			userid: 456
+			allRanks: {}
 		};
+	},
+	store: store,
+	vuex: {
+		getters: {
+			userMsg: function() {
+				return store.state.userMsg;
+			}
+		},
+		actions: actions
 	},
 	created: function(){
 		var _this = this;
