@@ -14,7 +14,7 @@
 .rank-top h3{
     width: 100%;
     height: 40px;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     line-height: 40px;
     color: #fff;
@@ -42,6 +42,7 @@
     background: #4566A8;
 }
 </style>
+
 <template>
     <div class="rank-wrap">
         <section class="rank-top">
@@ -60,7 +61,6 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
@@ -72,17 +72,7 @@ var rankbox = Vue.extend({
 			rankTitle: true
 		};
 	},
-    store: store,
-    vuex: {
-        getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
-            }
-        },
-        actions: actions
-    },
 	ready: function() {
-        var _this = this;
         
 	},
     methods: {
@@ -91,9 +81,6 @@ var rankbox = Vue.extend({
         },
         isTeam: function(){
             this.rankTitle = false;
-        },
-        alert: function(){
-            alert(123)
         }
     }
 });

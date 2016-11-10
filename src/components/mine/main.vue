@@ -31,6 +31,7 @@
   position: relative;
 }
 .minelink .mlink_name{
+    width: 20%;
     font-size: 16px;
     padding-top: 4px;
     margin-right: 21px;
@@ -151,7 +152,7 @@
   font-size: 21px;
   height: 49px;
   line-height: 49px;
-  margin-left: 18px;
+  margin-left: 15px;
   font-size: 18px;
 }
 .mine_maintil span{
@@ -166,8 +167,8 @@
 .mine_mainlist ul li{
   background: #08111e;
   width: 100%;
-  height: 91px;
-  line-height: 91px;
+  height: 60px;
+  line-height: 60px;
   color: #e1e1e1;
   border-bottom: 1px solid #353c4a;
   font-size: 16px;
@@ -187,42 +188,51 @@
 }
 .mine_mainlist ul li p{
   position: relative;
-  margin: 0 28px;
-  display: inline-block;
-  text-align: center;
-  font-size: 18px;
+  display: block;
+  float: left;
+  height: 100%;
+  overflow: hidden;
+  font-size: 16px;
 }
 .mine_mainlist ul li p:nth-of-type(1){
-  width: 30%;
-  line-height: 24px;
+  width: 22%;
   text-align: left;
-  position: relative;
-  top: 13px;
 }
 .mine_mainlist ul li p:nth-of-type(1) span{
   display: block;
+  margin-top: 15px;
+  margin-left: 15px;
+  line-height: 15px;
+  width: 100%;
+  height: 15px;
+  overflow: hidden;
 }
 .mine_mainlist ul li p:nth-of-type(1) span.mine_time{
-  font-size: 13px;
+  font-size: 12px;
+  margin-top: 3px;
 }
 .mine_mainlist ul li p:nth-of-type(2){
-  width: 20%;
+  width: 17%;
+  text-align: center;
 }
 .mine_mainlist ul li p:nth-of-type(3){
-  width: 15%;
+  width: 28%;
 }
 .mine_mainlist ul li p:nth-of-type(4){
-  width: 15%;
+  width: 25%;
 }
-.mine_mainlist ul li p i:nth-of-type(4){
-  width: 17px;
-  height: 29px;
+.mine_mainlist ul li p:nth-of-type(5){
+  width: 8%;
+}
+.mine_mainlist ul li p:nth-of-type(5) i{
+  width: 12px;
+  height: 21px;
   background: url(../../images/prank-ico.png) no-repeat;
   background-size: 100% 100%;
-  position: relative;
-  top: 9px;
+  display: block;
+  margin-top: 20px;
 }
-.mine_mainlist ul li p i{
+.mine_mainlist ul li p:nth-of-type(2) span{
   font-style: normal;
   display: inline-block;
   height: 22px;
@@ -230,18 +240,17 @@
   text-align: center;
   padding: 0 10px;
   border-radius: 5px;
-  position: absolute;
-  top: 10px;
-  right: 0;
+  margin-top: 19px;
   background: #666;
 }
-.mine_mainlist ul li p .mine_name{
-  width: 72%;
-  height: 24px;
-  overflow: hidden;
+.mine_mainlist ul li p:nth-of-type(2) span.not{
+  background: #666;
 }
-.mine_mainlist ul li p i.on{
+.mine_mainlist ul li p:nth-of-type(2) span.active{
   background: #34a247;
+}
+.mine_mainlist ul li p:nth-of-type(2) span.over{
+  background: #666;
 }
 .mine_mainlist ul li p em{
   font-style: normal;
@@ -249,31 +258,27 @@
 .mine_mainlist ul li p .mine_num1{
   color: #fad83a;
 }
-.mine_mainlist ul li p .mine_time span{
-  display: inline-block;
-}
 </style>
 <template>
   <div class="mine_wrap">
     <div class="minelink clearfix">
       <div class="ml_top clearfix">
-        <img class="ml_mainimgsrc fl" :src="mineData.src" />
+        <img class="ml_mainimgsrc fl" :src="mine.userImg" />
         <div class="mlink_name fl">
-          <p>{{mineData.minetil}}</p>
-          <p>{{mineData.minecity}}</p>
+          <p>{{mine.username}}</p>
+          <p>{{mine.userarea}}</p>
         </div>
-        <img class="ml_mainimg fl" :src="mineData.ml_mimg1" />
-        <img class="ml_mainimg fl" :src="mineData.ml_mimg2" />
+        <img class="ml_mainimg fl" :src="title.src" v-for="title in mine.usertitle" v-show="title.ischeck" />
         <div class="ml_msg_set fr" v-if='show'>
-          <a v-link="{path:'/mine/tips'}"><span>{{mineData.ml_num}}</span></a>
+          <a v-link="{path:'/mine/tips'}"><span>{{mine.tipsnum}}</span></a>
           <a v-link="{path:'/mine/setcof'}"></a>
         </div>
       </div>
       <div class="ml_detail">
         <ul>
-          <li v-link="{name:'rule',params:{userid:userMsg.id}}"><i></i><span>战斗力: <em>{{mineData.ml_num_zdl}}</em><a>？</a></span></li>
-          <li><i></i><span>国内排行: <em>{{mineData.ml_num_ph}}</em></span></li>
-          <li><i></i><span>已参加比赛数: <em>{{mineData.ml_num_ss}}</em></span></li>
+          <li v-link="{name:'rule',query:{userid:userMsg.id}}"><i></i><span>战斗力: <em>{{mine.userpower}}</em><a>？</a></span></li>
+          <li><i></i><span>国内排行: <em>{{mine.userrank}}</em></span></li>
+          <li><i></i><span>已参加比赛数: <em>{{mine.matchnum}}</em></span></li>
         </ul>
       </div>
     </div>
@@ -281,18 +286,21 @@
       <h3 class="mine_maintil" v-if="show"><span></span>我的比赛</h3>
       <h3 class="mine_maintil" v-else><span></span>他的比赛</h3>
       <ul>
-        <li v-for='m_list in m_lists'>
-          <a  v-link="{path:'/mine/mygame'}">
+        <li v-for='list in mine.lists'>
+          <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:$route.query.id}}">
             <p>
-              <span class="mine_name">{{m_list.typetil}}-{{m_list.name}}</span>
-              <span class="mine_time"><span class="mt_1">{{m_list.mt_1}}</span>-<span class="mt_2">{{m_list.mt_2}}</span></span>
-              <i class="on" v-if="ok">比赛中</i>
-              <i v-else>已结束</i>
+              <span class="mine_name">{{list.matchname}}</span>
+              <span class="mine_time">{{list.matchtime}}</span>
             </p>
-            <p v-if="ok">{{m_list.powertil}}<em class="mine_num1">+{{m_list.mine_num1}}</em></p>
+            <p>
+                <span class="not" v-if="list.matchtype == 0">报名中</span>
+                <span class="active" v-if="list.matchtype == 1">比赛中</span>
+                <span class="over" v-if="list.matchtype == 2">已结束</span>
+            </p>
+            <p v-if="list.matchtype == 2">{{list.powertil}}<em class="mine_num1">+{{list.addpower}}</em></p>
             <p v-else></p>
-            <p>{{m_list.rank}}<em class="mine_num2">{{m_list.mine_num2}}</em></p>
-            <p></p>
+            <p>排名<em class="mine_num2">{{list.matchrank}}</em></p>
+            <p><i></i></p>
           </a>
         </li>
       </ul>
@@ -302,48 +310,47 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
+
 var Mock = require('mockjs');
 Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
-Mock.mock('http://minelist.cn',{
-  "array|1-10":[{
-      'name': '@name',
-      'mine_num1|1-10000': 10000,
-      'mine_num2|1-100': 100,
-      'mt_1': '8月5日',
-      'mt_2': '8月21日',
-      'typetil':'排位赛',
-      'powertil':'战斗力',
-      'rank':'排名：'
-  }]
-});
-Mock.mock('http://minetop.cn',{
-  "array":{
-      'src':'@image',
-      'minetil':'@name',
-      'minecity':'@region',
-      'ml_mimg1':'@image',
-      'ml_mimg2':'@image',
-      'ml_num|1-100': 100,
-      'ml_num_zdl|1-10000': 10000,
-      'ml_num_ph|1-10000': 10000,
-      'ml_num_ss|1-10000': 10000
-  }
+
+Mock.mock(ROOTPATH + 'mine',{
+    "mine":{
+        'userImg'            : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
+        'username'           : '@name',
+        'userarea'           : '@region',
+        'userrank|1-100'     : 1,
+        'userpower|1-1000'   : 1,
+        'matchnum|10-100'    : 1,
+        'usertitle'          : [{
+            'ischeck'    : true,
+            'src'        : '@image'
+        },{
+            'ischeck'    : true,
+            'src'        : '@image'
+        }],
+        'tipsnum|10-50'      : 1, 
+        "lists|1-20": [{
+            'matchid|1-50'       : 1,
+            'matchname'          : '@name',
+            'matchtime'          : '8月15日-8月15日',
+            'matchtype|0-2'      : 0,
+            'addpower|100-1000' : 0,
+            'matchrank|10-100'   : 0
+        }]
+    }
 });
 
 var mine = Vue.extend({
 	name: 'mine',
-	// store: store,
 	data: function() {
 		return {
-			m_lists: {},
-      mineData:{},
-      ok: true,
-      show:true
+            mine: {},
+            show:true
 		};
 	},
 	store: store,
@@ -358,30 +365,25 @@ var mine = Vue.extend({
   created: function() {
     var _this = this;
     $.ajax({
-        url: 'http://minelist.cn',
+        url: ROOTPATH + 'mine',
         dataType: 'json',
+        // data:{userid:_this.userMsg.id},
         success: function(data) {
-            _this.m_lists = data.array;
-        }
-    })
-    $.ajax({
-        url: 'http://minetop.cn',
-        dataType: 'json',
-        success: function(data) {
-            _this.mineData= data.array;
+            _this.mine= data.mine;
+
         }
     })
   },
 	ready: function() {
 		let a = this.$route.query.id;
-    let b = this.userMsg.id;
-    if (a == b) {
-      this.show = true;
-    } else {
-      this.show = false;
-    }
-    console.log(this.$route.query.id)
-    console.log(this.userMsg.id)
+        let b = this.userMsg.id;
+        if (a == b) {
+            this.show = true;
+        } else {
+            this.show = false;
+        }
+        console.log(this.$route.query.id)
+        console.log(this.userMsg.id)
 
 	},
     methods: {

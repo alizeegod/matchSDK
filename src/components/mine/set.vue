@@ -4,21 +4,20 @@
   position: relative;
 }
 .set_til{
-  height: 56px;
+  height: 50px;
   text-align: center;
-  line-height: 56px;
+  line-height: 50px;
   background: #1a212e;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
 }
 .set_main{
-  font-size: 21px;
+  font-size: 18px;
   width: 95%;
   margin: 0 auto;
-  padding: 21px 0;
+  padding: 10px 0;
   color: #5b6b8c;
-  font-size: 21px;
   padding-top: 7px;
 }
 .set_main p{
@@ -30,39 +29,39 @@
     display: block;
     width: 100%;
     color: #5b6b8c;
-    padding: 35px 0 14px;
+    padding: 18px 0 7px;
 }
 .set_main p a .set_ico{
     display: inline-block;
    position: relative;
-   top: 7px;
+   top: 3px;
    margin-right: 8px;
 }
 .set_main p:nth-of-type(1) .set_ico{
    background: url(../../images/setico1.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 25px;
-   height: 30px;
+   width: 15px;
+   height: 18px;
 }
 .set_main p:nth-of-type(2) .set_ico{
    background: url(../../images/setico2.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 20px;
-   height: 30px;
+   width: 12px;
+   height: 18px;
    margin-right: 12px;
 }
 .set_main p:nth-of-type(3) .set_ico{
    background: url(../../images/setico3.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 27px;
-   height: 30px;
+   width: 16px;
+   height: 18px;
 }
 .set_main p a span{
     display: inline-block;
 }
 .set_main p a em{
     position: absolute;
-    top: 35px;
+    top: 18px;
     right: 0;
     color: #678cd7;
     font-style: normal;
@@ -71,11 +70,11 @@
     display: inline-block;
     background:url(../../images/prank-ico.png) no-repeat right center;
     background-size: 100% 100%;
-    width: 17px;
-    height: 29px;
+    width: 10px;
+    height: 18px;
     margin-left: 14px;
     position: relative;
-    top: 6px;
+    top: 3px;
 }
 </style>
 <template>
@@ -103,10 +102,10 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
+
 
 var setcof = Vue.extend({
     name: 'setcof',

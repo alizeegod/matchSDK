@@ -1,7 +1,7 @@
 <style soped>
 .prank{
 	width: 100%;
-	padding-top: 126px;
+	padding-top: 116px;
 }
 .prank .prank-title{
 	width: 100%;
@@ -14,8 +14,8 @@
 }
 .prank .prank-title p{
 	float: left;
-	height: 50px;
-	line-height: 50px;
+	height: 40px;
+	line-height: 40px;
 	font-size: 18px;
 	color: #5d8ca3;
 }
@@ -34,13 +34,14 @@
 }
 .prank .prank-title p.p5{
 	width: 37%;
+	text-align: center;
 }
 .prank .prank-title p.p5 span{
 	height: 30px;
-	width: 160px;
+	width: 120px;
 	line-height: 30px;
-	margin-top: 9px;
-	display: block;
+	margin-top: 4px;
+	display: inline-block;
 	text-align: center;
 	background: #16273F;
 	color: #fff;
@@ -57,7 +58,6 @@
 	border-radius: 13px;
 	display: inline-block;
 	margin-left: 10px;
-	margin-top: -4px;
 	color: #000;
 	vertical-align: middle;
 }
@@ -167,34 +167,34 @@
   		<div class="prank-title">
   			<p class="p1">排名</p>
   			<p class="p2"></p>
-  			<p class="p3">玩家</p>
+  			<p class="p3">玩家</p> 
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',params:{userid:userMsg.id}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{userid:userMsg.id}}">战斗力<i>?</i></span>
   			</p>
   			<p class="p6"></p>
   		</div>
   		<div class="prank-mine prank-item" v-link="{name:'mine',query:{id:userMsg.id}}">
-  			<p class="p1"><span>{{mineRank.rank}}</span></p>
+  			<p class="p1"><span>{{mineRank.userrank}}</span></p>
   			<p class="p2">
-  				<image :src="mineRank.tImg"/>
+  				<image :src="mineRank.userImg"/>
   			</p>
-  			<p class="p3"><span>{{mineRank.user}}</span></p>
-  			<p class="p4"><span>{{mineRank.area}}</span></p>
-  			<p class="p5"><span>{{mineRank.power}}</span></p>
+  			<p class="p3"><span>{{mineRank.username}}</span></p>
+  			<p class="p4"><span>{{mineRank.userarea}}</span></p>
+  			<p class="p5"><span>{{mineRank.userpower}}</span></p>
   			<p class="p6"><i></i></p>
   		</div>
   		<div class="prank-con">
   			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.id}}"
+  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.userid}}"
   				v-for="allRank in allRanks" transition="item">
-  					<p class="p1"><span>{{allRank.rank}}</span></p>
+  					<p class="p1"><span>{{allRank.userrank}}</span></p>
 		  			<p class="p2">
-		  				<image :src="allRank.tImg"/>
+		  				<image :src="allRank.userImg"/>
 		  			</p>
-		  			<p class="p3"><span>{{allRank.user}}</span></p>
-		  			<p class="p4"><span>{{allRank.area}}</span></p>
-		  			<p class="p5"><span>{{allRank.power}}</span></p>
+		  			<p class="p3"><span>{{allRank.username}}</span></p>
+		  			<p class="p4"><span>{{allRank.userarea}}</span></p>
+		  			<p class="p5"><span>{{allRank.userpower}}</span></p>
 		  			<p class="p6"><i></i></p>
   				</li>
   			</ul>
@@ -208,6 +208,7 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
+
 var Mock = require('mockjs');
 
 Mock.Random.region();
@@ -215,31 +216,26 @@ Mock.Random.name();
 Mock.Random.image('30*30');
 
 
-Mock.mock('http://minerank.cn',{
-    "array":{
-        'rank|1-100'     : 1,
-        'tImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'user'     		 : '@name',
-        'area'     		 : '@region',
-        'power|1-1000'	 : 1,
-        'url'     		 : '/mine'
-    }
-});
-Mock.mock('http://allrank.cn',{
-    "array|1-20":[{
-        'rank|1-100'     : 1,
-        'tImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'user'     		 : '@name',
-        'area'     		 : '@region',
-        'power|1-1000'	 : 1,
-        'url'     		 : '/mine',
-        'id|2-10'         : 1
+Mock.mock(ROOTPATH + 'rank',{
+    "mineRank":{
+        'userrank|1-100'     : 1,
+        'userImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
+        'username'     		 : '@name',
+        'userarea'     		 : '@region',
+        'userpower|1-1000'	 : 1
+    },
+    "allRanks|1-20":[{
+        'userrank|1-100'     : 1,
+        'userImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
+        'username'     		 : '@name',
+        'userarea'     		 : '@region',
+        'userpower|1-1000'	 : 1,
+        'userid|2-10'         : 1
     }]
 });
 
 var rank = Vue.extend({
 	name: 'rank',
-	// store: store,
 	data: function() {
 		return {
 			mineRank: {},
@@ -258,26 +254,17 @@ var rank = Vue.extend({
 	created: function(){
 		var _this = this;
         $.ajax({
-            url: 'http://minerank.cn',
+            url: ROOTPATH + 'rank',
             dataType: 'json',
+            // data: {userid: _this.userMsg.id},
             success: function(data) {
-                _this.mineRank = data.array;
-                console.log(JSON.stringify(data))
+                _this.mineRank = data.mineRank;
+                _this.allRanks = data.allRanks;
             }
         })
-        $.ajax({
-            url: 'http://allrank.cn',
-            dataType: 'json',
-            success: function(data) {
-                _this.allRanks = data.array;
-                console.log(JSON.stringify(data))
-            }
-        })
-
 	},
 	ready: function() {
 		
-
         let rW = $("#app").width()-50;
         $(".rank-top").width(rW);
         $(".prank-title").width(rW);

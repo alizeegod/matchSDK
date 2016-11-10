@@ -1,9 +1,9 @@
-{	
-	"msg": 1,
-	"lists": [{
-		"summm": "20"
-	},
-	{
-		"summm": "50"
-	}]
+{
+    "error_code": 0,
+    "data": [{
+        "username": "大熊",
+        "userarea": "北京五大区",
+        "avatar": "/dist/images/prank-timg.png",
+        "iphone": "15097553633"
+    }]
 }

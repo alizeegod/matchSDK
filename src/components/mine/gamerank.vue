@@ -9,9 +9,9 @@
 }
 .grk .grk-til p{
     float: left;
-    height: 50px;
-    line-height: 50px;
-    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
     color: #5d8ca3;
 }
 .grk .grk-til p.p1{
@@ -49,7 +49,7 @@
     float: left;
     height: 50px;
     line-height: 50px;
-    font-size: 18px;
+    font-size: 14px;
     color: #e1e1e1;
 }
 .grk-item.item:nth-of-type(1) p.p1 span{
@@ -145,16 +145,16 @@
         </div>
         <div class="grk-con">
             <ul>
-                <li class="grk-item item" v-link="{name:'mine',query:{id:grkdata.id}}"
+                <li class="grk-item item" v-link="{name:'mine',query:{userid:grkdata.userid}}"
                 v-for="grkdata in grkdatas" transition="item">
-                    <p class="p1"><span>{{grkdata.rank}}</span></p>
+                    <p class="p1"><span>{{grkdata.matchrank}}</span></p>
                     <p class="p2">
-                        <image :src="grkdata.tImg"/>
+                        <image :src="grkdata.userImg"/>
                     </p>
-                    <p class="p3"><span>{{grkdata.user}}</span></p>
-                    <p class="p4"><span>{{grkdata.area}}</span></p>
-                    <p class="p5"><span>{{grkdata.power}}</span></p>
-                    <p class="p6"><img :src="grkdata.qImg"></p>
+                    <p class="p3"><span>{{grkdata.username}}</span></p>
+                    <p class="p4"><span>{{grkdata.userarea}}</span></p>
+                    <p class="p5"><span>{{grkdata.userpower}}</span></p>
+                    <p class="p6"><img :src="grkdata.prizeImg"></p>
                     <p class="p7"><i></i></p>
                 </li>
             </ul>
@@ -164,33 +164,35 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
+
+
 var Mock = require('mockjs');
 
 Mock.Random.image('30*30');
 Mock.Random.region();
 
-Mock.mock('http://grk.cn',{
-    "array|1-20":[{
-        'rank|1-100'     : 1,
-        'tImg'           : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'user'           : '@name',
-        'area'           : '@region',
-        'power|1-1000'   : 1,
-        'qImg'            : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'id|2-10'         : 1
+Mock.mock(ROOTPATH + 'gamerank',{
+    'grktil'       : '排位赛',
+    "gamerank|1-20":[{
+        'matchrank|1-100'     : 1,
+        'userImg'           : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
+        'username'           : '@name',
+        'userarea'           : '@region',
+        'userpower|1-1000'   : 1,
+        'prizeImg'            : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
+        'userid|2-10'         : 1
     }]
 });
 var gamerank = Vue.extend({
     name: 'gamerank',
     data: function() {
         return {
-            grktil: '排位赛',
             grkkey: ['排名','','玩家','','积分','',''],
-            grkdatas: {}
+            grkdatas: {},
+            grktil: {}
         };
     },
     store: store,
@@ -205,10 +207,11 @@ var gamerank = Vue.extend({
     created: function() {
       var _this = this;
       $.ajax({
-          url: 'http://grk.cn',
+          url: ROOTPATH + 'gamerank',
           dataType: 'json',
           success: function(data) {
-              _this.grkdatas = data.array;
+              _this.grkdatas = data.gamerank;
+              _this.grktil = data.grktil;
           }
       })
     },

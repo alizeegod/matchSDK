@@ -9,28 +9,28 @@
   line-height: 50px;
   background: #1A212E;
   color: #e1e1e1;
-  font-size: 24px;
+  font-size: 20px;
 }
 .bind-if p{
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 15px;
   color: #e1e1e1;
-  font-size: 20px;
-  line-height: 1.8;
+  font-size: 16px;
+  line-height: 1.5;
 }
 .bind-form{
-  margin-left: 40px;
+  margin-left: 20px;
   color: #e1e1e1;
-  font-size: 20px; 
+  font-size: 16px; 
 }
 .bind-form label{
-  width: 120px;
+  width: 100px;
   line-height: 40px;
   display: block;
   float: left;
 }
 .bind-form input{
-  width: 285px;
+  width: 235px;
   height: 40px;
   line-height: 40px;
   display: block;
@@ -46,22 +46,23 @@
   overflow: hidden;
 }
 .bind-form .bind-yzm input{
-  width: 135px;
+  width: 105px;
 }
 .bind-form .bind-yzm span{
   display: block;
-  width: 120px;
+  width: 100px;
   height: 40px;
   line-height: 40px;
   float: left;
   background: #2F9ED9;
   color: #fff;
+  font-size: 14px;
   text-align: center;
   margin-left: 30px;
   border-radius: 5px;
 }
 .bind-btn{
-  width: 420px;
+  width: 350px;
   margin-top: 15px;
   overflow: hidden;
 }
@@ -113,10 +114,10 @@
 <script>
 var Vue = require('Vue');
 
-import tool from '../../js/tool';
-
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
+
+import tool from '../../js/tool';
 
 var bind = Vue.extend({
     name: 'bind',

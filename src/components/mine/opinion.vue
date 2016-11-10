@@ -18,11 +18,11 @@
 }
 .opmain textarea{
   width: 100%;
-  height: 150px;
+  height: 100px;
   background: #161A23;
   border: 0;
   outline: none;
-  font-size: 20px;
+  font-size: 14px;
   color: #999999;
   display: block;
 }
@@ -51,16 +51,16 @@
 }
 .opmain_commit{
   background: #161A23;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 0;
   outline: none;
   color: #999999;
-  height: 60px;
-  line-height: 60px;
-  width: 180px;
+  height: 40px;
+  line-height: 40px;
+  width: 120px;
   margin-left: 2.5%;
-  margin-top: 50px;
-  font-size: 32px;
+  margin-top: 10px;
+  font-size: 24px;
 }
 .opmain_commit.active{
   background: #309ed9;
@@ -86,10 +86,10 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
+
 
 var opinion = Vue.extend({
     name: 'opinion',
@@ -103,8 +103,8 @@ var opinion = Vue.extend({
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions

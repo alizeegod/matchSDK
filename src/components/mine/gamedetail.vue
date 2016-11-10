@@ -9,13 +9,13 @@
   text-align: center;
   line-height: 56px;
   background: #1a212e;
-  color: #fff;
+  color: #fff; 
   font-size: 24px;
   font-weight: normal;
 }
 .gamedl_top{
   width: 98%;
-  height: 76px;
+  height: 66px;
   background: url(../../images/gamedl_topbg.png) no-repeat;
   background-size: 100% 100%;
   padding: 6px 0;
@@ -23,25 +23,25 @@
 }
 .gdetail_img{
   position: relative;
-  width: 142px;
-  height: 74px;
+  width: 20%;
+  height: 64px;
   border: 1px solid #91959a;
   margin:0 28px 0 6px;
   float: left;
 }
 .gdetail_img img{
-  width: 142px;
-  height: 74px;
-  display: inline-block;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .gdetail_img p{
   width: 100%;
-  height: 19px;
-  line-height: 19px;
+  height: 16px;
+  line-height: 16px;
   font-weight: bold;
   display: block;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -67,21 +67,21 @@
 }
 .gamedl_top ul li span{
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .gamedl_top ul li span:first-child{
   color: #728198;
-  font-size: 17px;
+  font-size: 14px;
 }
 .gamedl_top ul li span:last-child{
   color: #cedde1;
-  font-size: 18px;
+  font-size: 16px;
 }
 .gdetail_result{
   width: 97.7%;
   border: 1px solid #393f53;
+  border-bottom: 0;
   border-radius: 2px;
-  padding: 21px 0;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -92,15 +92,15 @@
   line-height: 27px;
   text-align: center;
   padding: 0 6px;
-  margin: 21px 0 21px 35px;
+  margin: 10px 4%;
   display: inline-block;
   border-radius: 2px;
 }
-.gd_lmj_til{
+.gd_rtil.suc{
   background: #1d9618;
   box-shadow: 5px 5px 5px #21af1b inset;
 }
-.gd_fpj_til{
+.gd_rtil.fail{
   background: #ae0c25;
   box-shadow: 0px -5px 5px #b33a21 inset;
 }
@@ -111,21 +111,27 @@
   padding-left: 4%;
 }
 .gd_res_title{
-  margin-bottom: 14px;
+  margin-bottom: 7px;
+  overflow: hidden;
 }
 .gd_res_title li,.gdetail_succeed li span{
-  display: inline-block;
+  display: block;
+  float: left;
   text-align: center;
+  overflow: hidden;
 }
 .gd_res_title li:last-child,.gdetail_succeed li span:last-child{
-  width: 29%;
+  width: 30%;
 }
 .gd_res_title li:first-child,.gdetail_succeed li span:first-child{
-  width: 25%;
+  width: 24%;
   text-align: left;
 }
 .gd_res_title li:nth-of-type(2),.gd_res_title li:nth-of-type(3),.gdetail_succeed li span:nth-of-type(2),.gdetail_succeed li span:nth-of-type(3){
-  width: 22%;
+  width: 23%;
+}
+.gdetail_succeed li span{
+  height: 64px;
 }
 .gdetail_succeed{
   border-top: 1px solid #2b303d;
@@ -172,51 +178,34 @@
 </style>
 <template>
     <div class="gamedetail">
-      <h3 class="grank_til">{{gamedetailtil}}</h3>
+      <h3 class="grank_til">{{gamedetail.title}}</h3>
       <div class="gamedl_main">
         <div class="gamedl_top">
           <div class="gdetail_img">
-              <img :src="gdetailtopdata.src" />
-              <p><span>{{gdetailtopdata.gdetailtitle}}</span></p>
+              <img :src="gamedetail.banner" />
+              <p><span>{{gamedetail.bannertil}}</span></p>
           </div>
           <ul>
-            <li><span>{{gdetailtopdata.gdgame_type}}</span><span>{{gdetailtopdata.gdgame_typeval}}</span></li>
-            <li><span>{{gdetailtopdata.gdbs_type}}</span><span>{{gdetailtopdata.gdbs_typeval}}</span></li>
-            <li><span>{{gdetailtopdata.gd_time}}</span><span>{{gdetailtopdata.gd_timeval}}</span></li>
+            <li><span>游戏模式</span><span>{{gamedetail.matchmodel}}</span></li>
+            <li><span>比赛模式</span><span>{{gamedetail.gamemodel}}</span></li>
+            <li><span>比赛时间</span><span>{{gamedetail.gametime}}</span></li>
           </ul>
         </div>
-        <div class="gdetail_result">
-          <p class="gd_rtil gd_lmj_til">{{gdetailtopdata.succeed}}</p>
+        <div class="gdetail_result" v-for="teamlist in gamedetail.teamlists">
+          <p class="gd_rtil" :class="teamlist.type == 0 ? 'fail' : 'suc'">{{teamlist.til}}</p>
           <ul class="gd_res_title">
-            <li>{{gdetailtopdata.gd_lmj_name}}</li>
-            <li>{{gdetailtopdata.gd_lmj_junx}}</li>
-            <li>{{gdetailtopdata.gd_lmj_duanw}}</li>
-            <li>{{gdetailtopdata.gd_lmj_shot}}</li>
+            <li>玩家</li>
+            <li>军衔</li>
+            <li>段位</li>
+            <li>击杀-死亡</li>
           </ul>
           <ul class="gdetail_succeed">
-            <li v-for='gdetail_succeedlist in gdetail_suclists' :class="gdetail_succeedlist.id == userMsg.id ? 'active' : ''">
-              <a v-link="{path:'/mine/gamedetail'}">
-                <span><i class="gdetail_pic"><img :src="gdetail_succeedlist.src" /></i>{{gdetail_succeedlist.name}}</span>
-                <span>{{gdetail_succeedlist.gd_jx}}</span>
-                <span>{{gdetail_succeedlist.gd_dw}}</span>
-                <span>{{gdetail_succeedlist.gd_num1}}-{{gdetail_succeedlist.gd_num2}}</span>
-              </a>
-            </li>
-          </ul>
-          <p class="gd_rtil gd_fpj_til">{{gdetailtopdata.fail}}</p>
-          <ul class="gd_res_title">
-            <li>{{gdetailtopdata.gd_fpj_name}}</li>
-            <li>{{gdetailtopdata.gd_fpj_junx}}</li>
-            <li>{{gdetailtopdata.gd_fpj_duanw}}</li>
-            <li>{{gdetailtopdata.gd_fpj_shot}}</li>
-          </ul>
-          <ul class="gdetail_succeed">
-            <li v-for='gdetai_faillist in gdetai_faillists' :class="gdetai_faillist.id == userMsg.id ? 'active' : ''">
-              <a v-link="{path:'/mine/gamedetail'}">
-                <span><i class="gdetail_pic"><img :src="gdetai_faillist.src" /></i>{{gdetai_faillist.name}}</span>
-                <span>{{gdetai_faillist.gd_jx}}</span>
-                <span>{{gdetai_faillist.gd_dw}}</span>
-                <span>{{gdetai_faillist.gd_num1}}-{{gdetai_faillist.gd_num2}}</span>
+            <li v-for='list in teamlist.lists' :class="list.userid == userMsg.id ? 'active' : ''">
+              <a v-link="{name:'mine',query:{userid:list.userid}}">
+                <span><i class="gdetail_pic"><img :src="list.userImg" /></i>{{list.username}}</span>
+                <span>{{list.userrank}}</span>
+                <span>{{list.userdan}}</span>
+                <span>{{list.kd}}</span>
               </a>
             </li>
           </ul>
@@ -227,66 +216,41 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
+
 var Mock = require('mockjs');
 
 Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
-Mock.mock('http://gdetailtop.cn',{
-    "array":{
-        'src' : '@image',
-        'gdetailtitle':'@ctitle',
-        'gdgame_type':'游戏模式',
-        'gdbs_type':'比赛模式',
-        'gd_time':'比赛时间',
-        'gdgame_typeval':'排位赛',
-        'gdbs_typeval':'团队模式',
-        'gd_timeval':'一个小时前',
-        'gd_lmj_name':'玩家',
-        'gd_lmj_junx':'军衔',
-        'gd_lmj_duanw':'段位',
-        'gd_lmj_shot':'击杀-死亡',
-        'gd_fpj_name':'玩家',
-        'gd_fpj_junx':'军衔',
-        'gd_fpj_duanw':'段位',
-        'gd_fpj_shot':'击杀-死亡',
-        'succeed':'联盟军:胜利',
-        'fail':'反叛军:失败'
+Mock.mock(ROOTPATH + 'gamedetail',{
+    "gamedetail":{
+      'title'                  : '排位赛-连胜之王',
+      'banner'                 : '@image',
+      'bannertil'              : '@name',
+      'matchmodel'             : '排位赛',
+      'gamemodel'              : '团队模式',
+      'gametime'               : '13小时前',
+      'teamlists|2'            : [{
+          'til'                     : '联盟军：胜利',
+          'type'                    : 1,
+          'lists|5'                 : [{  
+              'userid|1-10'               : 1,        
+              'userImg'                   : '@image',
+              'username'                  : '@name',
+              'kd'                        : '60-60',
+              'userrank'                  : '下士',
+              'userdan'                   : '白银'
+          }]
+      }]
     }
-});
-Mock.mock('http://gdetail_succeedlist.cn',{
-    "array|1-5":[{
-        'src' : '@image',
-        'name': '@name',
-        'gd_jx':'下士',
-        'gd_dw':'白银Ⅳ',
-        'gd_num1|1-10': 10,
-        'gd_num2|1-10': 10,
-        'id|1-10' : 2
-    }]
-});
-Mock.mock('http://gdetai_faillist.cn',{
-    "array|1-5":[{
-        'src' : '@image',
-        'name': '@name',
-        'gd_jx':'下士',
-        'gd_dw':'白银Ⅳ',
-        'gd_num1|1-10': 10,
-        'gd_num2|1-10': 10,
-        'id|1-10' : 1
-    }]
 });
 var gamedetail = Vue.extend({
     name: 'gamedetail',
     data: function() {
         return {
-            gdetailtopdata:{},
-            gdetail_suclists:{},
-            gdetai_faillists:{},
-            gamedetailtil:'排位赛-连胜之王',
+            gamedetail:{}
         };
     },
     store: store,
@@ -301,24 +265,10 @@ var gamedetail = Vue.extend({
     created: function() {
       var _this = this;
       $.ajax({
-          url: 'http://gdetailtop.cn',
+          url: ROOTPATH + 'gamedetail',
           dataType: 'json',
           success: function(data) {
-              _this.gdetailtopdata = data.array;
-          }
-      })
-      $.ajax({
-          url: 'http://gdetail_succeedlist.cn',
-          dataType: 'json',
-          success: function(data) {
-              _this.gdetail_suclists = data.array;
-          }
-      })
-      $.ajax({
-          url: 'http://gdetai_faillist.cn',
-          dataType: 'json',
-          success: function(data) {
-              _this.gdetai_faillists = data.array;
+              _this.gamedetail = data.gamedetail;
           }
       })
     },

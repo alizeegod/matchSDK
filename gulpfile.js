@@ -65,14 +65,6 @@ var webpackConfig = {
     // },
 };
 
-// 公共头部
-// var banner = ['/**',
-//     ' * <%= config.name %> - <%= config.description %>',
-//     ' * @version v<%= config.version %>',
-//     ' */',
-//     ''
-// ].join('\n');
-
 gulp.task('clean', function() {
     return gulp
         .src(['./dist/*'], { read: false })
@@ -110,30 +102,15 @@ gulp.task('img', function() {
         .pipe(gulp.dest('./dist/images/'))
 })
 
-// gulp.task('font', function() {
-//     return gulp
-//         .src('./src/fonts/*')
-//         .pipe(gulp.dest('./dist/fonts/'))
-// })
 
-// gulp.task('rev', function() {
-//     return gulp
-//         .src(['../views/include/header.html', '../views/include/footer.html'])
-//         .pipe(gulpIf(argv.env == 'pro', rev({
-//             assetsDir: path.join(pwd)
-//         })))
-//         .pipe(gulp.dest('../views/include/'));
-// })
 
 gulp.task('watch', function() {
     webpackConfig.watch = argv.env != 'pro';
-    gulp.start('js', 'css', 'img', 'font');
+    gulp.start('js', 'css', 'img' );
     gulp.watch('./src/css/*', ['css']);
     gulp.watch('./src/images/*', ['img']);
 })
 
 gulp.task('build', ['js', 'css', 'img']);
 
-gulp.task('default', ['build'], function() {
-    gulp.start('rev');
-});
+

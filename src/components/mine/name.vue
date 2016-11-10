@@ -5,18 +5,18 @@
     position: relative;
   }
   .set_til{
-    height: 56px;
+    height: 50px;
     text-align: center;
-    line-height: 56px;
+    line-height: 50px;
     background: #1a212e;
     color: #fff;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: normal;
   }
   .name_title{
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
-    line-height: 2;
+    line-height: 1.8;
     margin-left: 6.6%;
     margin-top: 20px;
   }
@@ -29,12 +29,12 @@
     box-sizing: border-box;
     width: 20%;
     float: left;
-    border: 3px solid #999999;
+    border: 2px solid #999999;
     position: relative;
     margin: 20px 6.6%;
   }
   .name_main ul li.active{
-    border: 3px solid #2F9ED9;
+    border: 2px solid #2F9ED9;
   }
   .name_main ul li .name_img_bg{
     width: 100%;
@@ -49,29 +49,30 @@
     margin-left: -45%;
   }
  .name_main ul li p{
-  font-size: 16px;
-  height: 48px;
-  line-height: 48px;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
   color: #999;
   width: 92%;
   position: absolute;
   left: 50%;
   margin-left: -46%;
+  overflow: hidden;
  }
  .name_main ul li p:nth-of-type(2){
     bottom: 0;
  }
  .name_main ul li p:nth-of-type(1){
-    bottom: 48px;
-    height: auto;
-    line-height: 1;
+    bottom: 24px;
+    height: 16px;
+    line-height: 16px;
  }
  .name_main ul li i{
   display: block;
   background: url(../../images/name_ico.png) no-repeat;
   background-size: 100% 100%;
-  width: 71px;
-  height: 48px;
+  width: 35px;
+  height: 24px;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -89,11 +90,11 @@
             <ul id="name-ul">
               <li v-for="(index,namedata) in namedatas" :class="namedata.ischecked ? 'active' : ''" @click="change(namedata.ischecked,index,$event)">
                 <a>
-                    <img :src="namedata.name_image"  class="name_img" />
+                    <img :src="namedata.nameimage"  class="name_img" />
                     <img src="../../images/name_img_bg.png" class="name_img_bg" />
                     <span class="name_ico"></span>
-                    <p>{{namedata.name_who}}</p>
-                    <p>{{namedata.name_time}}</p>
+                    <p>{{namedata.namewho}}</p>
+                    <p>{{namedata.nametime}}</p>
                     <i></i>
                 </a>
               </li>
@@ -104,27 +105,27 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
+
 var Mock = require('mockjs');
 
-Mock.mock('http://name.cn',{
+Mock.mock(ROOTPATH + 'name',{
     "namedatas":[{
-        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "name_who":'排位赛-冷血杀神冠军',
-        "name_time":'2016.05.21获得',
+        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "namewho":'排位赛-冷血杀神冠军',
+        "nametime":'2016.05.21获得',
         "ischecked": true
     },{
-        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "name_who": '排位赛-冷血杀神冠军',
-        "name_time": '2016.05.21获得',
+        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "namewho": '排位赛-冷血杀神冠军',
+        "nametime": '2016.05.21获得',
         "ischecked": false
     },{
-        "name_image": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "name_who": '排位赛-冷血杀神冠军',
-        "name_time": '2016.05.21获得',
+        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
+        "namewho": '排位赛-冷血杀神冠军',
+        "nametime": '2016.05.21获得',
         "ischecked": true
     }]
 });
@@ -151,7 +152,7 @@ var name = Vue.extend({
         var _this = this;
 
         $.ajax({
-            url: 'http://name.cn',
+            url: ROOTPATH + 'name',
             dataType: 'json',
             success: function(data) {
                 _this.namedatas = data.namedatas;
@@ -163,6 +164,10 @@ var name = Vue.extend({
         
     },
     ready: function() {
+        
+    },
+    beforeDestroy: function(){
+        let _this = this;
         
     },
     methods: {

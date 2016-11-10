@@ -1,30 +1,3 @@
-<template>
-	<div class="main-nav">
-        <ul>
-          <li v-link="{path:'/match'}">
-            <a>
-              <i></i>
-              <span>赛事</span>
-            </a>
-          </li>
-          <li v-link="{path:'/rank'}">
-            <a>
-              <i></i>
-              <span>榜单</span>
-            </a>
-          </li>
-          <li v-link="{path:'/mine'}">
-            <a>
-              <i></i>
-              <span>我的</span>
-            </a>
-          </li>
-        </ul>
-    </div>
-    <div class="content">
-        <router-view></router-view>
-    </div>
-</template>
 <style soped>
 body,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,fieldset,legend,input,select,textarea,button,th,td,blockquote,address,pre{margin:0;padding:0;}
 h1,h2,h3,h4,h5,h6,input,textarea,select,button,label{font-size:100%;vertical-align:middle;}
@@ -49,11 +22,11 @@ textarea{word-wrap:break-word;resize:none;}
  html,body{height: 100%; } body{font-family:"微软雅黑"; height: 100%; } 
 body{background: #050D19;}
 .main-nav{
-	position: fixed;
-	width: 50px;
-	height: 100%;
-	left: 0;
-	top: 0;
+  position: fixed;
+  width: 50px;
+  height: 100%;
+  left: 0;
+  top: 0;
   z-index: 999999;
 }
 .main-nav ul{
@@ -79,6 +52,7 @@ body{background: #050D19;}
 }
 .main-nav li a{
     color: #a09b94;
+    font-size: 14px;
     width: 50px;
     height: 50px;
     display: block;
@@ -128,10 +102,42 @@ body{background: #050D19;}
   background-size: 100% 100%;
 }
 </style>
+<template>
+	<div class="main-nav">
+        <ul>
+          <li v-link="{path:'/match'}">
+            <a>
+              <i></i>
+              <span>赛事</span>
+            </a>
+          </li>
+          <li v-link="{path:'/rank'}">
+            <a>
+              <i></i>
+              <span>榜单</span> 
+            </a>
+          </li>
+          <li v-link="{path:'/mine'}">
+            <a>
+              <i></i>
+              <span>我的</span>
+            </a> 
+          </li>
+        </ul>
+    </div>
+    <div class="content">
+        <router-view></router-view>
+    </div>
+</template>
+
 <script>
 var Vue = require('Vue');
 
-// var store = require('../store/store.js');
+var store = require('../store/store.js');
+var actions = require('../store/actions.js');
+
+
+import Storage from '../js/Storage';
 
 var index = Vue.extend({
 	name: 'index',
@@ -140,8 +146,35 @@ var index = Vue.extend({
 			
 		};
 	},
+    store: store,
+    vuex: {
+        getters: {
+            userMsg: function() {
+                return store.state.userMsg;
+            }
+        },
+        actions: actions
+    },
 	ready: function() {
+        var _this = this;
+        // $.ajax({
+        //     url:'http://yxssapi.dev.yingxiong.com/user/info',
+        //     // url:'http://www.goodsinfo.cn/api/type/list',
+        //     type:'GET',
+        //     dataType:'json',
+        //     // jsonp:'callback',
+        //     // jsonpCallback:'jsonp'+new Date().getTime(),
+        //     // data:{userid: _this.userMsg.id},
+        //     success:function(data){
 
+        //         console.log(data)
+        //     }
+        // }); 
+        // console.log(JSON.stringify(_this.userMsg));
+        // // Storage.set('userMsg',JSON.stringify(_this.userMsg));
+        // console.log(Storage.get('userMsg'));
+        // console.log(window.localStorage)
+        // console.log(JSON.parse(Storage.get('userMsg')))
 	}
 });
 

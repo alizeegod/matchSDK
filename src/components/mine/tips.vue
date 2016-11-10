@@ -4,16 +4,16 @@
   position: relative;
 }
 .tips_til{
-  height: 56px;
+  height: 50px;
   text-align: center;
-  line-height: 56px;
+  line-height: 50px;
   background: #1a212e;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
 }
 .tips_main{
-  font-size: 21px;
+  font-size: 16px;
   width: 95%;
   margin: 0 auto;
   padding: 21px 0;
@@ -60,7 +60,7 @@
       <div class="tips_main">
         <ul>
           <li v-for='tiplist in tipslists'>
-            <a v-link="{path:'/mine/tips'}">
+            <a v-link="{name:'mine',query:{userid:userMsg.id}}">
               <p><span class="tips_reply">{{tiplist.name}}</span>回复：</p>
               <p class="tips_replytxt"><span>{{tiplist.reply}}</span><i v-show="tiplist.boolean"></i></p>
               <p>我:<span class="tips_question">{{tiplist.question}}？</span></p>
@@ -73,15 +73,15 @@
 
 <script>
 var Vue = require('Vue');
-var $ = require('jQuery');
 
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
+
 var Mock = require('mockjs');
 
-Mock.mock('http://tips.cn',{
-  "array|1-10":[{
+Mock.mock(ROOTPATH + 'tips',{
+  "tips|1-10":[{
       'name': '@name',
       'reply':'@title',
       'question':'@title',
@@ -99,8 +99,8 @@ var tips = Vue.extend({
     store: store,
     vuex: {
         getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions
@@ -108,10 +108,10 @@ var tips = Vue.extend({
     created: function() {
       var _this = this;
       $.ajax({
-          url: 'http://tips.cn',
+          url: ROOTPATH + 'tips',
           dataType: 'json',
           success: function(data) {
-              _this.tipslists = data.array;
+              _this.tipslists = data.tips;
           }
       })
     },

@@ -11,6 +11,8 @@ Vue.use(VueRouter);
 window.jQuery = $;
 window.$ = $;
 
+var ROOTPATH = 'http://10.0.11.19/';
+window.ROOTPATH = ROOTPATH;
 
 var App = Vue.extend({});
  
@@ -98,30 +100,39 @@ router.map({
 						component: Mine
 					},
 					'/setcof': {
+						name: 'setcof',
 						component: Setcof
 					},
 					'/bind': {
+						name: 'bind',
 						component: Bind
 					},
 					'/gamedetail': {
+						name: 'gamedetail',
 						component: Gamedetail
 					},
 					'/gamerank': {
+						name: 'gamerank',
 						component: Gamerank
 					},
 					'/mygame': {
+						name: 'mygame',
 						component: Mygame
 					},
 					'/name': {
+						name: 'name',
 						component: Name
 					},
 					'/opinion': {
+						name: 'opinion',
 						component: Opinion
 					},
 					'/rankrules': {
+						name: 'rankrules',
 						component: Rankrules
 					},
 					'/tips': {
+						name: 'tips',
 						component: Tips
 					}
 				}
@@ -134,11 +145,12 @@ router.map({
 						component: Rank
 					},
 					'/teamrank': {
+						name: 'teamrank',
 						component: Teamrank
 					}
 				}
 			},
-			'/rule/:userid': {
+			'/rule': {
 				name: 'rule',
 				component: Rule
 			}

@@ -16,7 +16,7 @@
 var Vue = require('Vue');
 var $ = require('jQuery');
 
-
+ 
 var matchIntro = require('./matchintro.vue');
 var matchPrize = require('./matchprize.vue');
 var matchTeam = require('./matchteam.vue');
@@ -28,7 +28,7 @@ var actions = require('../../store/actions.js');
 var online = Vue.extend({
     name: 'online',
     data: function() {
-        return {
+        return {   
             matchintro: {
                 ruleurl: '/rule/:userid=2',
                 micon: '肯德基桂林市地方了看过了啥地方了世界观都流口水的减肥了开始的寄过来看山东省的两个考试的',
@@ -40,7 +40,7 @@ var online = Vue.extend({
                 ranking: '冠军',
                 imgurl: 'http://10.0.11.19/svn/match/2.0/src/images/mp-img01.png',
                 prize: '1元'
-            },{
+            },{    
                 ranking: '冠军',
                 imgurl: 'http://10.0.11.19/svn/match/2.0/src/images/mp-img01.png',
                 prize: '1元'
@@ -102,7 +102,7 @@ var online = Vue.extend({
                 name: 'IG',
                 teamurl: '/match/team'
             }],
-            msdata: {
+            msdata: {    //赛程
                 msType: 2,       //'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
                 mslists: [{       //对应不同淘汰赛class不同，''代表单败淘汰赛，'loser'代表双败淘汰赛败者组，'win'代表双败淘汰赛胜者组
                     title: '胜者组第一轮',
