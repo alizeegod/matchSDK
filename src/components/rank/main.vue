@@ -170,11 +170,11 @@
   			<p class="p3">玩家</p> 
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',query:{userid:userMsg.id}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{userid:userMsg.userid}}">战斗力<i>?</i></span>
   			</p>
   			<p class="p6"></p>
   		</div>
-  		<div class="prank-mine prank-item" v-link="{name:'mine',query:{id:userMsg.id}}">
+  		<div class="prank-mine prank-item" v-link="{name:'mine',query:{userid:userMsg.userid}}">
   			<p class="p1"><span>{{mineRank.userrank}}</span></p>
   			<p class="p2">
   				<image :src="mineRank.userImg"/>
@@ -186,7 +186,7 @@
   		</div>
   		<div class="prank-con">
   			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{id:allRank.userid}}"
+  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.userid}}"
   				v-for="allRank in allRanks" transition="item">
   					<p class="p1"><span>{{allRank.userrank}}</span></p>
 		  			<p class="p2">

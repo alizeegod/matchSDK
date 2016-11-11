@@ -90,7 +90,7 @@
   <div class="bind-content">
     <h3 class="bind-title">{{bindtil}}</h3>
     <div class="bind-if">
-        <p v-if="isbing">你当前绑定的手机号:{{userCon.iphone}}</p>
+        <p v-if="isbing">你当前绑定的手机号:{{userMsg.iphone}}</p>
         <p v-else>绑定手机号</p>
     </div>
     <form action="post" class="bind-form">
@@ -133,15 +133,15 @@ var bind = Vue.extend({
     store: store,
     vuex: {
         getters: {
-            userCon: function() {
-                return store.state.userCon;
+            userMsg: function() {
+                return store.state.userMsg;
             }
         },
         actions: actions
     },
     computed: {
         isbing: function(){
-            if (this.userCon.iphone == null) {
+            if (this.userMsg.iphone == null) {
                 return false;
             } else {
                 return true;
@@ -151,7 +151,7 @@ var bind = Vue.extend({
     ready: function() {
 
         // 应用状态修改示例
-        actions.setusercon(store,{id:'4',iphone:'15097553633'})
+        actions.set(store,{id:'4',iphone:'15097553633'})
         
         new tool.verification("bind-tel-code",{
             'endTime' : '0',

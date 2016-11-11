@@ -287,7 +287,7 @@
       <h3 class="mine_maintil" v-else><span></span>他的比赛</h3>
       <ul>
         <li v-for='list in mine.lists'>
-          <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:$route.query.id}}">
+          <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:$route.query.userid}}">
             <p>
               <span class="mine_name">{{list.matchname}}</span>
               <span class="mine_time">{{list.matchtime}}</span>

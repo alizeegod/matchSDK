@@ -158,13 +158,12 @@ var index = Vue.extend({
 	ready: function() {
         var _this = this;
         // $.ajax({
-        //     url:'http://yxssapi.dev.yingxiong.com/user/info',
-        //     // url:'http://www.goodsinfo.cn/api/type/list',
-        //     type:'GET',
+        //     url:'http://yxssapi.dev.yingxiong.com/match/me.lg',
+        //     type:'POST',
         //     dataType:'json',
         //     // jsonp:'callback',
         //     // jsonpCallback:'jsonp'+new Date().getTime(),
-        //     // data:{userid: _this.userMsg.id},
+        //     data:{name: 'alizeegod'},
         //     success:function(data){
 
         //         console.log(data)

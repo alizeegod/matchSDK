@@ -17,7 +17,7 @@ var state = {
         iphone: null
     },
     userMsg: {
-        id:1,
+        userid:1,
         iphone: 15097553633
     },
     msmatch: {
@@ -79,7 +79,7 @@ mutations.SETUSERCON = function(state, params) {
     state.userCon.iphone = params.iphone;
 }
 mutations.SET = function(state, params) {
-    state.userMsg.id = params.id;
+    state.userMsg.userid = params.userid;
     state.userMsg.iphone = params.iphone;
 }
 
