@@ -31,7 +31,6 @@ var rootPath = __dirname;
 var webpackConfig = {
     entry: {
         match: './src/app.js',
-        iscroll: './src/js/iscroll-lite.js',
         // vendor: [
         //     pwd + './src/js/iscroll-lite.js',
         // ]

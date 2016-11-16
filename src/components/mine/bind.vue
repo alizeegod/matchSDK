@@ -150,6 +150,7 @@ var bind = Vue.extend({
     },
     ready: function() {
 
+        var _this = this;
         // 应用状态修改示例
         actions.set(store,{id:'4',iphone:'15097553633'})
         
@@ -162,7 +163,29 @@ var bind = Vue.extend({
             'outText' : '秒后重发',
             callBack : function(){
                 // ajax回调
-                console.log('ajax报名')
+                console.log('ajax报名');
+                $.ajax({
+                    url:'http://10.0.11.19/svn/match/2.0/src/json/a.json',
+                    type:'GET',
+                    dataType:'jsonp',
+                    jsonp:'callback',
+                    jsonpCallback:'jsonp'+new Date().getTime(),
+                    data:{useriphone: _this.from.userIphone},
+                    success:function(data){
+                        //返回0 发送成功
+                        //返回1 该号码已注册
+                        //返回2 发送失败
+                        console.log(data.msg);
+                        if(data.msg=="1"){
+                            console.log(data.lists)
+                            alert("发送成功")
+                        }else if(data.msg=="2"){
+                            alert('该号码已注册')
+                        }else if(data.msg=="3"){
+                            alert('发送失败') 
+                        }
+                    }
+                });
             }
         })
     },

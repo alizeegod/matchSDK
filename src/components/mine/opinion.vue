@@ -72,7 +72,7 @@
   <h3 class="set_til">{{opiniontil}}</h3>
   <h3 class="opinion_til">{{opiniontip}}</h3>
   <div class="opmain">
-    <textarea v-model="message" placeholder="请描述你的问题或意见" autofocus maxlength="300"></textarea>
+    <textarea v-model="message" placeholder="请描述你的问题或意见" maxlength="300"></textarea>
     <div class="opmain_bot">
         <div class="opmain_add_img">
             <i class="opmain_add_btn" @click="addImg"></i>
@@ -129,7 +129,6 @@ var opinion = Vue.extend({
 
         },
         commit: function(){
-            let msg = this.message;
             let _this = this;
             if (msg == '') {
                 alert('请描述你的问题或意见')
@@ -140,7 +139,7 @@ var opinion = Vue.extend({
                     dataType:'jsonp',
                     jsonp:'callback',
                     jsonpCallback:'jsonp'+new Date().getTime(),
-                    data:{userid: _this.userCon.id,msg:msg},
+                    data:{userid: _this.userMsg.userid,msg:_this.message},
                     success:function(data){
                         //返回0 提交成功
                         //返回1 提交失败

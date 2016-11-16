@@ -119,6 +119,30 @@ a{
 .match-list-zd .item-info  p{
     margin-bottom: 10px;
 }
+.match-list-zd .item-info a{
+    width: 65px;
+    height: 22px;
+    position: absolute;
+    right: 15px;
+    bottom: 20px;
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 22px;
+    border-radius: 2px;
+}
+.max-match-flex .item-info a{
+    width:60px;
+    height:20px;
+    float:right;
+    display:block;
+    text-align:center;
+    border-radius:2px;
+    line-height:20px;
+    font-size:12px;
+    color: #fbfbfb;
+}
 .match-list-zd .item-txt{
    letter-spacing: 1px;
    height: 17px;
@@ -183,26 +207,13 @@ a{
     height: 14px;
     line-height: 14px;
 }
-.match-match-list .match-list-zd .item-btn{
-    width: 65px;
-    height: 22px;
-    position: absolute;
-    right: 15px;
-    bottom: 20px;
-    color: #fff;
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-align: center;
-    line-height: 22px;
-    border-radius: 2px;
-}
 .match-match-list .item-zbz-btn{
     background:#db2323;
 }
 .match-match-list .item-jjks-btn{
     background:#d78933;
 }
-.match-match-list .item-yjs-btn{
+.match-match-list .item-yjs-btn,.item-wks-btn,.item-bmyjs-btn{
     background:#666;
     color: #fbfbfb;
 }
@@ -236,13 +247,12 @@ a{
     padding:15px 15px 15px 15px;
     background: #1c2236;
     margin-top: 15px;
-    
 }
 .max-match-flex li:nth-child(2n+1) {
-   border-right:#050d19 solid 1px;
+    border-right:#050d19 solid 1px;
 }
 .max-match-flex .card-item{
-background: #1c2236;
+    background: #1c2236;
 }
 .max-match-flex li > img{
     max-width: 100%;
@@ -262,12 +272,12 @@ background: #1c2236;
     background-image: url(../../images/match_sign_2_@3x.png);
     background-size: 100% 100%; 
 }
-.item-ico2{
+.item-ico0{
     background-image: url(../../images/match_sign_1_@3x.png);
     background-size: 100% 100%; 
 }
 .max-match-flex .item-pic{
-        width: 100%;
+    width: 100%;
 }
 .max-match-flex .item-info{
     display:block;
@@ -290,17 +300,7 @@ background: #1c2236;
     font-size: 12px;
     line-height: 18px;
 }
-.match-match-list .max-match-flex .item-btn{
-    width:60px;
-    height:20px;
-    float:right;
-    display:block;
-    text-align:center;
-    border-radius:2px;
-    line-height:20px;
-    font-size:12px;
-    color: #fbfbfb;
-}
+
 
 .match-match-list .match-link-more{
     display: block;
@@ -316,23 +316,23 @@ background: #1c2236;
     padding: 20px 0 30px 0;
     color: #6D7887;
     width: 100%;
+    display: none;
 }
 </style>
 <template>
 <div class="match-match-hed">
     <span v-for="item in matchTab" :class="{on:item.iscur}" @click="setCur($index)">{{item.text}}</span>
 </div>
-
 <div class="match-match-list" id="match-list-main">
-    <div class="match-list-zd" v-for="list in stickTop | filterBy '1' in 'dataTop'" id="MatchShowLi|floor1|{{list.id}}|{{list.state}}" starttime="{{list.starttime}}" endtime="{{list.endtime}}">
-        <i class="item-ico item-ico{{ list.racetype }}"></i>
+    <div class="match-list-zd MatchShow{{list.id}}" v-for="list in stickTop | filterBy '1' in 'is_top'" id="MatchShowLi|floor1|{{list.id}}|{{list.state}}|{{list.type}}|{{list.enroll}}" bmstarttime="{{list.reg_startime}}" bmendtime="{{list.reg_endtime}}" starttime="{{list.startime}}" endtime="{{list.endtime}}">
+        <i class="item-ico item-ico{{ list.type }}"></i>
         <div class="dianbo-img-wrap dianbo-img-wrap-width">
-          <a v-if="list.racetype==1" v-link="'/match/lineLive/'+list.matchid" v-on:click="HeroM({name:list.name,matchid:list.matchid,channelid:list.channelid})">
-              <img v-bind:src=list.picimg alt="{{ list.name }}" class="dianbo-img">
+          <a v-if="list.type==0" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,enroll:list.enroll})">
+              <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
               <img src="../../images/media-holder.png" class="media-holder">
           </a>
-          <a v-if="list.racetype==2" v-link="'/match/lineProc/'+list.matchid" v-on:click="HeroM({name:list.name,matchid:list.matchid,channelid:list.channelid})">
-              <img v-bind:src=list.picimg alt="{{ list.name }}" class="dianbo-img">
+          <a v-if="list.type==1" v-link="'/match/linejj/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,channelid:list.match_type,enroll:list.enroll})">
+              <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
               <img src="../../images/media-holder.png" class="media-holder">
           </a>
         </div>
@@ -340,59 +340,30 @@ background: #1c2236;
             <p class="item-txt">{{ list.name }}</p>
             <p class="item-time p-countdown"></p>
             <p class="item-a item-rmb"><i></i>奖金：{{ list.bonus }}元</p>
-
-            <a v-if="list.state == 0" href="javascript:;" class="item-btn item-jjks-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                即将开始
-            </a>
-            <a v-if="list.state == 1" href="javascript:;" class="item-btn item-zbz-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                直播中
-            </a>
-            <a v-if="list.state == 2" href="javascript:;" class="item-btn item-yjs-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                已结束
-            </a>
-            <a v-if="list.state == 3" href="javascript:;" class="item-btn item-djbm-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                点击报名
-            </a>
-            <a v-if="list.state == 4" href="javascript:;" class="item-btn item-ybm-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                已报名
-            </a>
+           <a href="javascript:;" v-on:click="modClickA(list)"></a>
         </div>  
     </div>
      <ul class="max-match-flex">
-        <li class="ceil" v-for="list in stickTop | filterBy '0' in 'dataTop'" track-by="$index" id="MatchShowLi|floor2|{{list.matchid}}|{{list.state}}" starttime="{{list.starttime}}" endtime="{{list.endtime}}">
+        <li class="ceil MatchShow{{list.id}}" v-for="list in stickTop | filterBy '0' in 'is_top'" track-by="$index" id="MatchShowLi|floor2|{{list.id}}|{{list.state}}|{{list.type}}|{{list.enroll}}" bmstarttime="{{list.reg_startime}}" bmendtime="{{list.reg_endtime}}" starttime="{{list.startime}}" endtime="{{list.endtime}}">
             <div class="card-item" > 
-               <i class="item-ico item-ico{{ list.racetype }}"></i>
+               <i class="item-ico item-ico{{ list.type }}"></i>
                <div class="dianbo-img-wrap">
-                   <a v-if="list.racetype==1" v-link="'/match/lineLive/'+list.matchid" v-on:click="HeroM({name:list.name,matchid:list.matchid,channelid:list.channelid})">
-                      <img v-bind:src=list.picimg alt="{{ list.name }}" class="dianbo-img">
+                   <a v-if="list.type==0" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,enroll:list.enroll})">
+                      <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
                       <img src="../../images/media-holder.png" class="media-holder">
                   </a>
-                  <a v-if="list.racetype==2" v-link="'/match/lineProc/'+list.matchid" v-on:click="HeroM({name:list.name,matchid:list.matchid,channelid:list.channelid})">
-                      <img v-bind:src=list.picimg alt="{{ list.name }}" class="dianbo-img">
+                  <a v-if="list.type==1" v-link="'/match/linejj/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,channelid:list.match_type,enroll:list.enroll})">
+                      <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
                       <img src="../../images/media-holder.png" class="media-holder">
                   </a>  
                </div>
                <span class="item-txt">
                    <span class="item-tit">{{ list.name }}</span>
-                   <span class="item-num">{{ list.number }}人参加</span>
+                   <span class="item-num">{{ list.member }}人参加</span>
                </span>
                <span class="item-info">
                    <span class="item-time p-countdown"></span>
-                    <a v-if="list.state == 0" href="javascript:;" class="item-btn item-jjks-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                        即将开始
-                    </a>
-                    <a v-if="list.state == 1" href="javascript:;" class="item-btn item-zbz-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                        直播中
-                    </a>
-                    <a v-if="list.state == 2" href="javascript:;" class="item-btn item-yjs-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                        已结束
-                    </a>
-                    <a v-if="list.state == 3" href="javascript:;" class="item-btn item-djbm-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                        点击报名
-                    </a>
-                    <a v-if="list.state == 4" href="javascript:;" class="item-btn item-ybm-btn" data-vurl="{{list.videoUrl}}" data-id="{{list.matchid}}" data-channel="{{list.racetype}}">
-                        已报名
-                    </a>
+                   <a href="javascript:;" v-on:click="modClickA(list)"></a>
                </span>
             </div>
         </li>
@@ -401,19 +372,19 @@ background: #1c2236;
 </div>
 <div  class="loadscroll subtitle-color" id="mover">上拉显示更多</div>
 
-<!-- <teltk v-if="isTeltk" :matchid="matchid" :matchchannl="matchchannl" :matchstate="matchstate"></teltk>
-  -->   
+<teltk v-if="isTeltk" :matchid="matchid" :matchchannl="matchchannl" :matchstate="matchstate"></teltk>
+  
 </template>
 
 <script>
 var common = require('../../js/common.js');
+var teltk = require('./teltk.vue');
 //离线缓存https://github.com/WQTeam/web-storage-cache
 
 module.exports = {
     data:function(){
         return {
             isTeltk:false,
-            aaa:"sss",
             matchTab :[
                 {text:"显示全部",iscur:true,racetype:0},
                 {text:"HPL赛事",iscur:false,racetype:1},
@@ -429,23 +400,36 @@ module.exports = {
             pagesize:12
         }
     },
+    components:{
+        'teltk' : teltk
+    },
     methods:{
         loadMore:function(curPage){
             var self = this;
+            var url = common.getBaseUrl()+'/match.lg';
+            var gPost = "POST";//"POST"
+            var data = {
+                racetype : self.racetype,
+                page : curPage,
+                pagesize : self.pageSize,
+                gameid : gload_conf.gameid
+            };
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
+                url:url,
+                type:gPost,
                 dataType:"json",
-                data:{category:"gamelist",racetype:self.racetype,page:curPage,pagesize:self.pageSize},
+                data:data,
+                beforeSend:function(){
+                    $(".loading-1").show();
+                },
                 success:function(data){
-                    if(data.status=="ERROR"){
+                    if(data.code=="0"){
                         $("#mover").text('还没有哦');
                         return ;
                     }
-                    $("#mover").text('上拉加载更多');
                     self.pageTotal = Number(data.totalpage);
-                    self.stickTop = self.stickTop.concat(data.datalist);
-                    
+                    self.stickTop = self.stickTop.concat(data.data.list);
+                    $(".loading-1").hide();
                 }
             })
         },
@@ -487,8 +471,9 @@ module.exports = {
             });
             self.stickTop=[];
             window.scrollTo(0, 0);
-            self.loadMore(1)
-            self.LoadMoreData(self.racetype,self.curPage)
+            self.loadMore(1);
+            self.LoadMoreData(self.racetype,self.curPage);
+            $("#mover").show();
         },
         HeroM:function(obj){
             var self = this;
@@ -503,7 +488,7 @@ module.exports = {
             var matchname = obj.name;
             var matchid = obj.matchid;
             var channelid = obj.channelid;
-            var userid = Miconfig.userid;
+            var userid = gload_conf.uid;
             wsData = {
                 matchname : matchname,
                 matchid : matchid,
@@ -511,7 +496,35 @@ module.exports = {
                 userid : userid
             }
             wsCache.set('HEROC',wsData);
+        },
+        modClickA:function(el){
+            var self = this;
+            if(el.type==0){
+                console.log('线上赛');
+                var stateId = $(".MatchShow"+el.id).attr("id").split("|")[3];
+                var data = {"id":el.id,"uid":gload_conf.uid};
+                if(stateId ==3){
+                    if(iphoneB == 1){
+                       // $.ajax({})
+                       var msg = 1;
+                       if(msg==1){
+                            common.tips("报名成功");
+                            // $($(".MatchShow"+el.id)).attr("id",""+$(".MatchShow"+el.id).attr("id").split("|")[0]+"|"+$(".MatchShow"+el.id).attr("id").split("|")[1]+"|"+$(".MatchShow"+el.id).attr("id").split("|")[2]+"|4|"+$(".MatchShow"+el.id).attr("id").split("|")[4]+"");
+                       }else{
+                            common.tips("报名失败");
+                       }
+                    }else{
+                        self.isTeltk = true;  
+                    }
+                    
+                }
+            }else{
+                console.log('线下赛')
+            }
         }
+    },
+    events: {
+
     },
     ready:function(){
         var self = this;
@@ -526,9 +539,34 @@ module.exports = {
                         $(".match-match-hed").css("top","0");
                     }
                 }); 
-            } 
+            };
+
         },100);
-        $(".match-match-hed").width($(window).width()-50-33)
+        $(".match-match-hed").width($(window).width()-50-33);
+        /*$("body").on("click",".item-djbm-btn",function(){
+            if(Miconfig.phone){
+                self.isTeltk = false;
+                var fl1 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[0];
+                var fl2 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[1];
+                var fl3 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[2];
+                var fl4 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[3];
+                var fl5 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[4];
+                $($(this).parents("div[id^='MatchShowLi|']")).attr("id",""+fl1+"|"+fl2+"|"+fl3+"|4|"+fl5+"");
+                $.ajax({
+                    url:common.getBaseUrl(),
+                    type:"POST",
+                    dataType:"json",
+                    data:{category:"phonebind",userid:Miconfig.userid,matchid:$(this).data("id"),gameid:Miconfig.gameid},
+                    success:function(data){
+                         common.tips("报名成功");
+                    }
+                })
+
+            }else{
+                self.isTeltk = true;
+
+            }
+        })*/
     }
 }
 </script>

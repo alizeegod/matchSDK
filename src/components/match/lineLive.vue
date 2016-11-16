@@ -300,25 +300,25 @@
 <div class="season-tab">
     <childnav></childnav>    
     <div class="season-tab-box">
-        <!--## 视频直播组件 (淘汰赛eliminate、积分赛integration) 公用 参数不一样 ##-->
-           <div class="match-live-box">
+            <div class="match-live-box">
                <div class="live-box-con">
                    <div class="item-box item-box-fl">
                       <div class="item-ceil-fl">
                            <div class="item-child-hed">
-                                <span class="item-child item-child-hed-a" id="match-offline-1" v-if="datapdstate==1">重播</span>
-                                <span class="item-child item-child-hed-a" id="match-offline-1" v-else>直播中</span>
+                                <!--<span class="item-child item-child-hed-a" id="match-offline-1" v-if="datapdstate==1">重播</span>
+                                <span class="item-child item-child-hed-a" id="match-offline-1" v-else>直播中</span>-->
                                 <span class="item-child item-child-hed-b" id="match-offline-2">{{matchname}}</span>
-<!--                                 <span class="item-child item-child-hed-c" v-on:click="take(0)" id="match-offline-3" v-if="datapdsubscribe==0">+订阅</span>
+                                <!--<span class="item-child item-child-hed-c" v-on:click="take(0)" id="match-offline-3" v-if="datapdsubscribe==0">+订阅</span>
                                 <span class="item-child item-child-hed-c" v-on:click="take(1)" id="match-offline-3" v-else>取消订阅</span> -->
                             </div>
                             <div class="item-child-box">
-                                <img src="../../images/shipin.jpg" class="dianbo-img" alt="视频图片">
-                                <div class="dianbo-play-icon"><i class="paly-icon"></i></div>
-
-
+                                <!--<img src="../../images/shipin.jpg" class="dianbo-img" alt="视频图片">
+                                <div class="dianbo-play-icon"><i class="paly-icon"></i></div> -->
                                 <img src="../../images/media-holder.png" class="media-holder">
-                                
+
+                                <iframe v-if="videoUrl"  id="js_sub_web" src="http://chushou.tv/open/yingxiong/31753.htm?source=1109" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>
+                                <iframe v-else src="" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img" id="letvideo"></iframe>
+
                             </div>
                       </div>
                    </div>
@@ -331,41 +331,37 @@
                            <span class="next"><i></i></span>
                            <div class="bd-box-list">
                                <div class="bd-list" id="match-offline-e">
-                                   <li v-for="listoff in dataOffList" data-team="{{$index+1}}" v-bind:class="[$index+1=== dataOffNow ? 'on':'']" track-by="$index"><span style="display:inline-block;height:35px;">{{listoff.round}}</span></li>
+                                   <li v-for="listoff in dataOffList" data-team="{{$index+1}}" v-bind:class="[$index+1=== 1 ? 'on':'']" track-by="$index"><span style="display:inline-block;height:35px;">{{listoff.round}}</span></li>
                                 </div>
                            </div>
                         </div>
                         <div class="bd-scroll-box">
-                            <ul v-for="listT in dataOffList" data-tbox="{{$index+1}}" v-bind:class="[$index+1=== dataOffNow ? 'on':'']"  track-by="$index">
+                            <ul v-for="listT in dataOffList" data-tbox="{{$index+1}}" v-bind:class="[$index+1=== 1 ? 'on':'']"  track-by="$index">
                                 <li v-for="listTT in listT.list" track-by="$index">
                                     <span class="item-time">
                                         <span class="item-time1">{{listTT.dataTime | timeData1}}</span>
                                         <span class="item-time2">{{listTT.dataTime | timeData2}}</span>
                                     </span>
                                     <span class="item-name1">{{listTT.leftTeam}}</span>
-
                                     <span v-if="listTT.matchSwitch==0 || listTT.matchSwitch==1" class="item-vs">vs</span>
                                     <span v-else class="item-vs">{{listTT.leftScore}}:{{listTT.rightScore}}</span>
                                     <span class="item-name2">{{listTT.rightTeam}}</span>
                                     <span class="item-zb">
                                         <a v-if="listTT.matchSwitch==0" href="javascript:;" class="item-zb0">未开始</a>
-                                        <a v-if="listTT.matchSwitch==1" href="{{listTT.matchUrl}}" class="item-zb1">直播中<i></i></a>
-                                        <a v-if="listTT.matchSwitch==2" href="{{listTT.matchUrl}}" class="item-zb2">赛事回顾<i></i></a>
-                                        <a v-if="listTT.matchSwitch==3" href="javascript:;" class="item-zb3">已结束</a>
+                                        <a v-if="listTT.matchSwitch==1" href="javascript:;" v-on:click="videoCZFn(videoUrl)" class="item-zb1">直播中<i></i></a>
+                                        <a v-if="listTT.matchSwitch==3 && listTT.matchUrl" v-on:click="videoCFn(listTT)"  href="javascript:;" class="item-zb2">赛事回顾<i></i></a>
+                                        <a v-if="listTT.matchSwitch==3 && !listTT.matchUrl" href="javascript:;" class="item-zb3">已结束</a>
                                     </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                </div>
-           </div>
+            </div>
     </div>
-    
 </div> 
-<div class="loading-1">
-   <img src="../../images/loading.png">
-</div>  
-
+ 
+<!--
 <div class="mode-match-offline-3" v-if="isTeltk">
     <div id="zzmask"></div>
     <div id="example" class="match-match-teltk">
@@ -386,6 +382,7 @@
         <a href="javascript:;" v-on:click="sureBtnTeltk" title="确定" class="sureBtn"></a>
     </div>
 </div>
+-->
 </template>
 
 <script>
@@ -396,21 +393,21 @@ var common = require('../../js/common.js');
 
 var teltk =require('./teltk');
 
-var lineLive = Vue.extend({
-    name: 'lineLive',
+module.exports = {
     data: function() {
         return {
             dataOffList:[],
             dataWeekOffList:[],
             dataOffNow:1,
             defaultIndex:0,
-            channelid:wsCache.get('HEROC').channelid,//赛事分类id
+            channelid:wsCache.get('HEROC').channelid,
             datapdstate:'',
-            datapduid:Miconfig.userid,
+            datapduid:gload_conf.uid,
             isTeltk:false,
             datapdsubscribe:'0',
-            matchname:wsCache.get('HEROC').matchname,
-            matchid:wsCache.get('HEROC').matchid
+            matchname:'',
+            matchid:wsCache.get('HEROC').matchid,
+            videoUrl:''
            
         };
     },
@@ -422,11 +419,9 @@ var lineLive = Vue.extend({
         var self = this;
         $(".match-live-box").height($(".main-nav").height()-74);
         $(".bd-scroll-box").height($(".match-live-box").height()-35);
-        this.pdMatchIdFn(self.matchid);
+       // this.pdMatchIdFn(self.matchid);
+       this.dataFn();
 
-        this.dataFn();
-       //setTimeout(function(){self.sliderFn()},20);
-        setTimeout(function(){self.sliderFn();$(".loading-1").hide()},50);
     },
     components:{
         'childnav':nav
@@ -456,24 +451,44 @@ var lineLive = Vue.extend({
                 $this.addClass("on");
                $(".bd-scroll-box").find("ul[data-tbox="+_team+"]").css("display","block").siblings().css("display","none")
             });
-
-
         },
         dataFn:function(){
             var self = this;
+            var gPost = "POST";
+            var data = {
+                match_id : self.matchid,
+                gameid : gload_conf.gameid
+            };
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
+                url:common.getBaseUrl()+'/live.lg',
+                type:gPost,
                 dataType:"json",
-                data:{category:"offline1",raceType:"knockout"},//淘汰赛 knockout  积分赛 pointrace
+                data:data,
+                beforeSend:function(){
+                    $(".loading-1").show()
+                },
                 success:function(data){
-                    self.dataOffNow = data.now;
-                    self.defaultIndex = data.defaultIndex;
-                    for (var i in data.dataList) {
-                        self.dataOffList.push(data.dataList[i])
+                    if(data.code){
+                        self.dataOffNow = data.data.now;
+                        self.matchname = data.data.match_info.name;
+                        self.defaultIndex = data.data.defaultIndex;
+                        self.videoUrl = data.data.match_info.video_url;
+                        self.dataOffList = self.dataOffList.concat(data.data.dataList);
+                        setTimeout(function(){self.sliderFn();$(".loading-1").hide()},50); 
+                    }else{
+
                     }
+                    
                 }
             })
+        },
+        videoCFn:function(el){
+            $("#letvideo").attr("src",common.getBaseUrl()+"/match/video.lg?"+el.matchUrl)
+        },
+        videoCZFn:function(el){
+            var self = this;
+            self.videoUrl = el;
+            $("#js_sub_web").attr("src",el);
         },
         take:function(objts){
             var self = this;
@@ -507,7 +522,5 @@ var lineLive = Vue.extend({
         }
 
     }
-});
-
-module.exports = lineLive;
+};
 </script>

@@ -329,9 +329,9 @@
     <childnav></childnav>
     <div class="season-tab-box">
     <div class="schedule-box">
-        <div class="ms-control clearfix" v-show="msType == 3 ? false : true">
-            <a href="javascript:" :class="{'active': msType == 2}" @click="msdataFn(2)">胜者组</a>
-            <a href="javascript:" :class="{'active': msType == 1}" @click="msdataFn(1)">败者组</a>
+        <div class="ms-control clearfix" v-show="mstype == 3 ? false : true">
+            <a href="javascript:" :class="{'active': mstype == 2}" @click="msdataFn(2)">胜者组</a>
+            <a href="javascript:" :class="{'active': mstype == 1}" @click="msdataFn(1)">败者组</a>
         </div>
         <div class="matchschedule" id="iscroll">
             <div class="ms-content" :class="msClass">
@@ -380,7 +380,7 @@ var lineSchedule = Vue.extend({
             matchname:wsCache.get('HEROC').matchname,
             matchid:wsCache.get('HEROC').matchid,
             mslists:[],
-            msType:'',
+            mstype:'',
             msClass: '',
             name:'lineSchedule'
            
@@ -395,10 +395,10 @@ var lineSchedule = Vue.extend({
             return this.mslists.length - 1;
         },
         isType: function(){    //比赛模式计算
-            if (this.msType == 1) {
+            if (this.mstype == 1) {
                 this.msClass = 'loser';
                 return this.mslists.length - 2;
-            } else if (this.msType == 2) {
+            } else if (this.mstype == 2) {
                 this.msClass = 'win';
                 return this.mslists.length - 1;
             } else {
@@ -429,7 +429,7 @@ var lineSchedule = Vue.extend({
                 data:{category:"knockoutO",matchid:id},
                 success:function(data){
                     if(data.status == "SUCCESS"){
-                        _this.msType = data.mstype;
+                        _this.mstype = data.mstype;
                         if(data.msg == 3){
                             _this.msdataFn(3)   
                         }else{
@@ -453,7 +453,7 @@ var lineSchedule = Vue.extend({
                 dataType:"json",
                 //msType://'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
                 //msid  赛事id
-                data:{category:"lineSchedule",matchid:_this.matchid,msType:str},
+                data:{category:"lineSchedule",matchid:_this.matchid,mstype:str},
                 success:function(data){
                     _this.mslists = _this.mslists.concat(data.mslists)
                     let msLength = _this.mslists.length;

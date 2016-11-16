@@ -39,44 +39,39 @@ var $ = require('jQuery');
 
 var common = require('../../js/common.js');
 
-var store = require('../../store/store.js');
-var actions = require('../../store/actions.js');
-
-var rules = Vue.extend({
-    name: 'rules',
+module.exports ={
     data: function() {
         return {
-            dataruesC:''
+            dataruesC:'',
+            matchid:wsCache.get('HEROC').matchid
         };
-    },
-    store: store,
-    vuex: {
-        getters: {
-            alertConfig: function() {
-                return store.state.alertConfig;
-            }
-        },
-        actions: actions
     },
     ready: function() {
         this.rulesmatchidFn();
     },
     methods: {
         rulesmatchidFn:function(){
-            var _this = this;
+            var self = this;
+            var gPost = "POST";
+            var data = {
+                match_id : self.matchid,
+                gameid : gload_conf.gameid
+            };
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
-                dataType:"html",
-                data:{category:"mrules",matchid:wsCache.get('HEROC').matchid},
+                url:common.getBaseUrl()+'/match/detail.lg',
+                type:gPost,
+                dataType:"json",
+                data:data,
+                beforeSend:function(){
+                    console.log("数据正在加载.....")
+                },
                 success:function(data){
-                    _this.dataruesC = data
+                    self.dataruesC = data.data.match.rules;
                 }
             })
         }
         
     }
-});
+}
 
-module.exports = rules;
 </script>

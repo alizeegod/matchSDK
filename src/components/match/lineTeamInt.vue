@@ -112,15 +112,15 @@
                <span v-for="team in zdjf">{{team.text}}</span> 
             </dt>
             <dd v-for="list in lineteamintList" track-by="$index">
-                <a  v-link="'/match/team/' + list.corpsid">
+                <a  v-link="'/match/team/' + list.club_id">
                      <span class="item1">
                          <span class="level">{{$index+1}}</span>
-                         <span class="icon-level icon-level{{list.corpsrank}}"></span>
-                         <span class="num-level num-level{{list.corpsrank}}">{{list.corpsgd}}</span>
+<!--                          <span class="icon-level icon-level{{list.corpsrank}}"></span>
+                         <span class="num-level num-level{{list.corpsrank}}">{{list.corpsgd}}</span> -->
                      </span>
-                     <span class="item2"><img v-bind:src=list.corpsicon>{{list.corpsname}}</span>
-                     <span>9/1</span> 
-                     <span class="item4">{{list.corpspoints}}分</span>
+                     <span class="item2"><img v-bind:src=list.logo>{{list.name}}</span>
+                     <span>{{list.win}}/{{list.lose}}</span> 
+                     <span class="item4">{{list.integrate}}分</span>
                      <span class="item5"><i></i></span> 
                 </a>
             </dd>
@@ -138,15 +138,14 @@ var $ = require('jQuery');
 var common = require('../../js/common.js');
 
 
-var lineTeamInt = Vue.extend({
-    name: 'lineTeamInt',
+module.exports = {
     data: function() {
         return {
            lineteamintList:[],
            matchid:wsCache.get('HEROC').matchid,
            channelid:wsCache.get('HEROC').channelid,
            zdjf:[{"text":"排名"},{"text":"战队"},{"text":"胜/负"},{"text":"积分"},{"text":""}],
-           matchname:wsCache.get('HEROC').matchnam
+           matchname:wsCache.get('HEROC').matchname
         }
     },
     ready: function() {
@@ -157,21 +156,21 @@ var lineTeamInt = Vue.extend({
     },
     methods: {
         lineteamint:function(){
-            var vm = this;
+            var self = this;
+            var data = {
+                match_id : self.matchid,
+                gameid : gload_conf.gameid
+            };
              $.ajax({
-                url:common.getBaseUrl(),
-                type:'GET',
+                url:common.getBaseUrl()+'/match/ranking.lg',
+                type:'POST',
                 dataType:'json',
-                data:{category:"lineteamint",matchid:vm.matchid},
+                data:data,
                 success:function(data){
-                     for (var i in data.corpsList) {
-                         vm.lineteamintList.push(data.corpsList[i])
-                     }
+                    self.lineteamintList = self.lineteamintList.concat(data.data)
                 }
              })
         }
     }
-});
-
-module.exports = lineTeamInt;
+};
 </script>

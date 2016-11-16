@@ -1,8 +1,11 @@
 <style>
-.line-event{
-    padding-top:72px;
+[v-cloak] {
+  display: none;
 }
-
+ol, ul, li {
+    list-style: none;
+    font-style: normal;
+}
 .matchintro{
     width: 98%;
     padding: 15px 0;
@@ -178,27 +181,24 @@
     font-size: 13px;
     line-height: 2;
 }
-
-
 </style>
 <template>
 <div class="season-tab">
-    <childnav></childnav>
+    <childnav></childnav> 
     <div class="season-tab-box">
-      <div class="line-event">
+        <div class="line-event">
              <div class="matchintro" v-for="list in eventprofilelist">
                 <section class="mi-title clearfix">
                     <h3>赛事简介</h3>
-                    <a v-link="{path:'/match/rules/'+matchid}"><i>!</i><span>查看规则</span></a>
+                    <a v-link="{path:'/match/rules/'+HEXOCmatchIdid}"><i>!</i><span>查看规则</span></a>
                 </section>
-                <section class="mi-con"><p>{{list.desc}}</p></section>
+                <section class="mi-con"><p>{{list.text}}</p></section>
                 <section class="mi-bot clearfix">
-                    <p><i></i><em>比赛时间：</em><span>{{list.startime | timeData3}}开始</span></p>
-                    <p v-if="channelid==13"><i></i><em>线上赛：</em><span>{{list.address}}</span></p>
-                    <p v-else><i></i><em>线下赛：</em><span>{{list.address}}</span></p>
+                    <p><i></i><em>比赛时间：</em><span>{{list.time | timeData3}}开始</span></p>
+                    <p><i></i><em>线下赛：</em><span>{{list.address}}</span></p>
                 </section>
             </div>
-            <div class="matchprize" v-if="awardlist.length>0">
+            <div v-cloak class="matchprize">
                 <section class="mp-title clearfix">
                     <h3>赛事奖励</h3>
                 </section>
@@ -208,22 +208,22 @@
                     <div class="bd" style="width:90%;margin:0 auto;overflow:hidden;">
                         <div class="bd-hd">
                             <li class="mp-item" v-for="list in awardlist">
-                                <p class="mp-ranking">{{list.name}}</p>
-                                <img :src="list.image_url">
-                                <p class="mp-prize">{{list.remark}}</p>
+                                <p class="mp-ranking">{{list.awardname}}</p>
+                                <img :src="list.awardicon">
+                                <p class="mp-prize">{{list.awardwp}}</p>
                             </li>
                         </div>    
                     </div>
                 </section>
             </div>
-            <div class="matchteam" v-if="teamlist.length>0">
+            <div class="matchteam">
                 <section class="mt-title clearfix">
                     <h3>参赛队伍</h3>
                 </section>
                 <section class="mt-con">
-                    <div class="mt-item" v-for="list in teamlist" v-link="{path:'/match/team/'+list.id}">
-                        <img :src="list.logo">
-                        <p>{{list.name}}</p>
+                    <div class="mt-item" v-for="list in teamlist" v-link="{path:'/match/team/'+list.teamid}">
+                        <img :src="list.teamicon">
+                        <p>{{list.teamname}}</p>
                     </div>
                 </section>
             </div>
@@ -231,81 +231,97 @@
         </div>
     </div>
 
+    
 </div>    
-
-
-
-
 </template>
 
 <script>
 var Vue = require('Vue');
 var nav = require('./nav.vue');
-var $ = require('jQuery');
-
 var common = require('../../js/common.js');
 
-module.exports = {
+
+var store = require('../../store/store.js');
+var actions = require('../../store/actions.js');
+
+var lineEvent = Vue.extend({
+    name: 'lineEvent',
     data: function() {
         return {
-            matchname:wsCache.get('HEROC').matchname,
-            channelid:wsCache.get('HEROC').channelid,
+            HEXOCchannelTid:'',
             eventprofilelist:[],
             awardlist:[],
             teamlist:[],
-            matchid:wsCache.get('HEROC').matchid
-        };
+            pdMatchId:'',
+            HEXOCdataname:'',
+            HEXOCmatchIdid:''
+        }
+    },
+    store: store,
+    vuex: {
+        getters: {
+            alertConfig: function() {
+                return store.state.alertConfig;
+            }
+        },
+        actions: actions
+    },
+    route:{
+        activate:function(transition){
+            var _this = this;
+            _this.pdMatchId = transition.to.params.id;
+            _this.pdMatchIdFn(_this.pdMatchId)
+             transition.next()
+        }
+    },
+    ready: function() {
+        this.lineteamint();
+        this.HEXOCdataname = wsCache.get('HEROC').matchIdname;
+        this.HEXOCmatchIdid = wsCache.get('HEROC').matchIdid;
+        this.HEXOCchannelTid = wsCache.get('HEROC').channelTid;
+        
+        
     },
     components:{
         'childnav':nav
     },
-    ready: function() {
-        this.lineteamint();
-        if($(".season-tab-box").height() > ($(window).height()-63)){
-            common.scroll(function(direction){
-                if(direction=="down"){
-                    $(".season-tab-hed1,.season-tab-hed").css("top","-62px");
-                }else{
-                    $(".season-tab-hed1,.season-tab-hed").css("top","0");
-                }
-            }); 
-        } 
-    },
     methods: {
-        lineteamint:function(){
-            var self = this;
-            var gPost = "POST";
-            var data = {
-                match_id : self.matchid,
-                gameid : gload_conf.gameid
-            };
+        pdMatchIdFn:function(str){
+            var _this = this;
             $.ajax({
-                url:common.getBaseUrl()+'/match/detail.lg',
-                type:gPost,
-                dataType:'json',
-                data:data,
-                beforeSend:function(){
-                    console.log("数据正在加载.....")
-                },
+                url:common.getBaseUrl(),
+                type:"GET",
+                dataType:"json",
+                data:{category:"boolmatchid",boolMatchId:str},
                 success:function(data){
-                    if(data.code){
-                        self.eventprofilelist = self.eventprofilelist.concat(data.data.match);
-                        self.awardlist = self.awardlist.concat(data.data.reward);
-                        self.teamlist = self.teamlist.concat(data.data.clubs);
-                        setTimeout(function(){
-                            $(".mp-con li").length<=5?$("#match-offline-d .next").css("display","none"):'';
-                            $(".mp-con li").each(function(i){$(".mp-con li").slice(i*5,i*5+5).wrapAll("<ul></ul>")});
-                            tool.default.TouchSlide({slideCell:"#match-mp-con",mainCell:".bd-hd",prevCell:".prev",nextCell:".next",pnLoop:"false"});
-                        },50);
-                    }else{
-                        common.tips(data.msg) 
-                    }
+                    _this.datapdMatchId = data.msg;
+
 
                 }
-            });
-            
+            })
+        },
+        lineteamint:function(){
+            var vm = this;
+             $.ajax({
+                url:common.getBaseUrl(),
+                type:'GET',
+                dataType:'json',
+                data:{category:"lineEvent",pdMatchId:vm.pdMatchId},
+                success:function(data){
+                                vm.eventprofilelist = vm.eventprofilelist.concat(data.eventprofile);
+                                vm.awardlist = vm.awardlist.concat(data.awardList);
+                                vm.teamlist = vm.teamlist.concat(data.teamList);
+                }
+             });
+             setTimeout(function(){
+                $(".mp-con li").length<=5?$("#match-offline-d .next").css("display","none"):'';
+                $(".mp-con li").each(function(i){$(".mp-con li").slice(i*5,i*5+5).wrapAll("<ul></ul>")});
+                tool.default.TouchSlide({slideCell:"#match-mp-con",mainCell:".bd-hd",prevCell:".prev",nextCell:".next",pnLoop:"false"});
+             },50)
         }
-    }
-}
 
+    }
+});
+
+module.exports = lineEvent;
 </script>

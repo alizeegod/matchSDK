@@ -53,7 +53,7 @@
 		position: relative;
 	}
 	.match-teltk-con input{
-		width: 95%;
+		width: 100%;
 	    background: #fff;
 	    border: none;
 	    height: 34px;
@@ -122,7 +122,7 @@
         	<input type="number" name="userCode" placeholder="请输入验证码" v-model="from.userCode">
         	</div>
         </div>
-		<a href="javascript:;" v-on:click="sureBtnTeltk" title="确定" class="sureBtn"></a>
+		<a href="javascript:;"  title="确定" class="sureBtn"></a>
 	</div>
 </template>
 
@@ -140,8 +140,8 @@ import tool from '../../js/tool'
                 	userIphone:'',
                 	userCode:'',
                 },
-                username:Miconfig.username,
-                userarea:Miconfig.userarea
+                username:"sssss",
+                userarea:"ccccc"
 			}
 		},
 		props:[
@@ -149,11 +149,6 @@ import tool from '../../js/tool'
 		    'matchid',
 		    'matchstate'
         ],
-		vuex: {
-			getters: {
-				userCon: state => state.userCon
-			}
-		},
         ready: function(){
             new tool.verification("match-teltk-code",{
 	            'endTime' : '0',
@@ -168,7 +163,13 @@ import tool from '../../js/tool'
 	            }
 	        })
         },
+        events:{
+"ab":function(){
+	alert(1)
+}
+        },
 		methods:{
+			/*
             sureBtnTeltk: function(event){
             	var _this = this;
     //         	$("a[data-id="+_this.matchid+"]").removeClass("item-djbm-btn").addClass("item-ybm-btn").html('已报名');
@@ -184,7 +185,7 @@ import tool from '../../js/tool'
             		
             	//$.ajax
             	$.ajax({
-					url:'http://192.168.0.102/vue-match1/src/json/a',
+					url:common.getBaseUrl(),
 					type:'GET',
 					dataType:'jsonp',
 					jsonp:'callback',
@@ -213,7 +214,9 @@ import tool from '../../js/tool'
 				});
             	
             },
+            */
             closeBtnTeltk: function(event){
+                this.$dispatch('child-msg', "aaa")
             	this.$parent.isTeltk = false;
             	$("body").off("touchmove",false);
             }

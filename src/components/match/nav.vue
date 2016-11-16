@@ -144,7 +144,7 @@
 </style>
 <template>
 <div class="season-tab-1">
-    <div v-if="channelid==12" class="season-tab-hed">
+    <div v-if="channelid==1" class="season-tab-hed">
         <p>{{matchname}}</p>
         <p>
             <a class="item1" v-link="{path:'/match/lineLive/'+matchid}"><em></em>视频直播<i></i></a>
@@ -152,7 +152,7 @@
             <a class="item3" v-link="{path:'/match/linejj/'+matchid}"><em></em>赛事介绍<i></i></a>  
         </p>
     </div>
-    <div v-if="channelid==13"  class="season-tab-hed1">
+    <div v-if="channelid==0"  class="season-tab-hed1">
         <p>{{matchname}}</p>
         <p>
             <a class="item5" v-link="{path:'/match/lineProc/'+matchid}"><span><em></em>比赛进度</span></a>
@@ -161,7 +161,7 @@
 
         </p>
     </div>
-    <div v-if="channelid==11" class="season-tab-hed">
+    <div v-else class="season-tab-hed">
         <p>{{matchname}}</p>
         <p>
             <a class="item1" v-link="{path:'/match/lineLive/'+matchid}"><em></em>视频直播<i></i></a>
@@ -202,7 +202,7 @@ module.exports = {
   //  props:['tonum'],
     ready:function(){
         var self = this;
-        self.commentNumFn();
+        //self.commentNumFn();
         self.totalNum = this.$parent.totalNum;
         $(".season-tab-1").width($(window).width()-50);
         setTimeout(function(){

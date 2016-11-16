@@ -1,5 +1,4 @@
-'use strict';
-import $ from 'jQuery';
+import $ from 'jQuery'
 
 window.$ = $;
 

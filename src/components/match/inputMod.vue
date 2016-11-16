@@ -113,7 +113,7 @@ module.exports = {
 				url:common.getBaseUrl(),
 		        type:"GET",
 		        dataType:"json",
-		        data:{category:"submit_reply",ctime:el.ctime,content:encodeURIComponent(content),remark:_this.replyEl.repid,matchId:wsCache.get('HEROC').matchIdid},
+		        data:{category:"submit_reply",ctime:el.ctime,content:encodeURIComponent(content),remark:_this.replyEl.repid,matchid:wsCache.get('HEROC').matchid},
 		        success:function(data){
 		            var temp = {
 		                "rtime": data.data.rtime,
@@ -153,7 +153,7 @@ module.exports = {
 			    url:common.getBaseUrl(),
 		        type:"GET",
 		        dataType:"json",
-		        data:{category:"submit_comment",username:_this.nickName,userid:_this.myId,content:encodeURIComponent(content),matchId:wsCache.get('HEROC').matchIdid},
+		        data:{category:"submit_comment",username:_this.nickName,userid:_this.myId,content:encodeURIComponent(content),matchid:wsCache.get('HEROC').matchid},
 		        success:function(data){
 		        	if(data.status == "SUCCESS"){
                         var temp = {

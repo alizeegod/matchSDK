@@ -60,10 +60,10 @@
       <div class="tips_main">
         <ul>
           <li v-for='tiplist in tipslists'>
-            <a v-link="{name:'mine',query:{userid:userMsg.id}}">
-              <p><span class="tips_reply">{{tiplist.name}}</span>回复：</p>
+            <a @click.prevent="goto(tiplist)">
+              <p><span class="tips_reply">{{tiplist.username}}</span>回复：</p>
               <p class="tips_replytxt"><span>{{tiplist.reply}}</span><i v-show="tiplist.boolean"></i></p>
-              <p>我:<span class="tips_question">{{tiplist.question}}？</span></p>
+              <p>我：<span class="tips_question">{{tiplist.question}}？</span></p>
             </a>
           </li>
         </ul>
@@ -81,11 +81,15 @@ var actions = require('../../store/actions.js');
 var Mock = require('mockjs');
 
 Mock.mock(ROOTPATH + 'tips',{
-  "tips|1-10":[{
-      'name': '@name',
+  "code"     : 0,
+  "msg"      : 0,
+  "data|1-10":[{
+      'type': 3,
+      'username': '@name',
       'reply':'@title',
       'question':'@title',
-      'boolean|1-2': true
+      'boolean|1-2': true,
+      'matchid': 1
   }]
 });
 var tips = Vue.extend({
@@ -111,7 +115,7 @@ var tips = Vue.extend({
           url: ROOTPATH + 'tips',
           dataType: 'json',
           success: function(data) {
-              _this.tipslists = data.tips;
+              _this.tipslists = data.data;
           }
       })
     },
@@ -120,7 +124,9 @@ var tips = Vue.extend({
 
   	},
     methods: {
-
+        goto:function(tipslist){
+            tipslist.type == 3 ? this.$route.router.go({name:'mine',query:{matchid:tipslist.matchid}}) : alert('...')   
+        }
     }
 });
 

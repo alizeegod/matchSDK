@@ -36,7 +36,9 @@
 .c_tran p:nth-child(1){
     color: transparent;
 }
-
+.c_608be9{
+    color: #608be9;
+}
 
 
 .lineproc-yxb{
@@ -272,7 +274,7 @@
         <childnav></childnav>
         <div class="season-tab-box">
             <div class="lineproc">
-                <div class="lineproc-yxb">
+                <div class="lineproc-yxb" v-if="status">
                     <div class="lineproc-yxb-hed">
                         <h3>奖品池</h3>
                         <a v-link="{path:'/mine/'+userid}">我的比赛详情<i></i></a>
@@ -290,41 +292,14 @@
                                 </div>
                             </div>
                             <div class="lineProc-jpc-prize">
-                                <div class="prize prize1">
-                                    <p>300分</p>
+                                <div class="prize prize{{$index+1}}" v-for="item in datajfjpFn">
+                                    <p>{{item.name}}</p>
                                     <i></i>
-                                    <p>前100名</p>
-                                    <img src="../../images/img_5_@3x.png" width="40px">
-                                    <p>幽魂碎片×3</p> 
+                                    <p>{{item.content}}</p>
+                                    <img :src=item.img width="40px">
+                                    <p>{{item.text}}}</p> 
                                 </div>
-                                <div class="prize prize2">
-                                    <p>500分</p>
-                                    <i></i>
-                                    <p>前10名</p>
-                                    <img src="../../images/img_5_@3x.png" width="40px">
-                                    <p>幽魂碎片×3</p> 
-                                </div>
-                                <div class="prize prize3">
-                                    <p>1000分</p>
-                                    <i></i>
-                                    <p>季军</p>
-                                    <img src="../../images/img_3_@3x.png" width="40px">
-                                    <p>100元</p> 
-                                </div>
-                                <div class="prize prize4">
-                                    <p>2000分</p>
-                                    <i></i>
-                                    <p>亚军</p>
-                                    <img src="../../images/img_2_@3x.png" width="40px">
-                                    <p>500元</p>
-                                </div>
-                                <div class="prize prize5">
-                                    <p>3000分</p>
-                                    <i></i>
-                                    <p>冠军</p>
-                                    <img src="../../images/img_1_@3x.png" width="40px">
-                                    <p>1000元</p>
-                                </div>
+                                
                             </div>
                         </div>
                         <p class="lineProc-match-time" v-if="state==1"><i></i>结束倒计时:{{timestate}}</p>
@@ -359,6 +334,9 @@
                         </a>
                     </div>
                 </div>
+                <div class="lineproc-yxb" v-else>
+                    <p class="tc c_608be9">你还没有报名<a href="javascript:;" class="c_608be9">点击报名</a></p>
+                </div>
             </div>
         </div>
     </div>
@@ -380,8 +358,10 @@ var lineProc = Vue.extend({
             matchid : wsCache.get('HEROC').matchid,
             userid : Miconfig.userid,
             datayxblist:[],
+            datajfjpFn:[],
             userScore : '',
             state : '',
+            status : true,
             timestate : ''
         };
     },
@@ -389,6 +369,7 @@ var lineProc = Vue.extend({
         'childnav':nav
     },
     ready: function() {
+        this.jfjpFn();
         this.yxbFn(10);
         this.jfFn();
         if($(".season-tab-box").height() > ($(window).height()-63)){
@@ -400,6 +381,7 @@ var lineProc = Vue.extend({
                 }
             }); 
         };
+        
     },
     methods: {
         yxbFn:function(pageS){
@@ -407,7 +389,7 @@ var lineProc = Vue.extend({
             $.ajax({
                 url:common.getBaseUrl(),
                 type:"GET",
-                data:{category:"lineProc",type:"1",pageproc:pageS,userid:vm.userid},
+                data:{category:"lineProc",pageproc:pageS,userid:vm.userid},
                 dataType:"json",
                 success:function(data){
                     vm.datayxblist = vm.datayxblist.concat(data.yxblist)
@@ -490,6 +472,18 @@ var lineProc = Vue.extend({
                     }
                 }
             }) 
+        },
+        jfjpFn:function(){
+            var self = this;
+            $.ajax({
+                url:common.getBaseUrl(),
+                type:"GET",
+                data:{category:"lineProcjfjp",matchid:self.matchid,userid:self.userid},
+                dataType:"json",
+                success:function(data){
+                    self.datajfjpFn = self.datajfjpFn.concat(data.data.datalist)
+                }
+            })
         }
     }
 });
