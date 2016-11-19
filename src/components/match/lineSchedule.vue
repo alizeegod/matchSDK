@@ -329,27 +329,27 @@
     <childnav></childnav>
     <div class="season-tab-box">
     <div class="schedule-box">
-        <div class="ms-control clearfix" v-show="mstype == 3 ? false : true">
-            <a href="javascript:" :class="{'active': mstype == 2}" @click="msdataFn(2)">胜者组</a>
-            <a href="javascript:" :class="{'active': mstype == 1}" @click="msdataFn(1)">败者组</a>
+        <div class="ms-control clearfix" v-show="poptypeid == 2 ? false : true">
+            <a href="javascript:" :class="{'active': popp == 2}" @click="msdataFn(2)">胜者组</a>
+            <a href="javascript:" :class="{'active': popp == 1}" @click="msdataFn(1)">败者组</a>
         </div>
         <div class="matchschedule" id="iscroll">
             <div class="ms-content" :class="msClass">
                 <div class="one-ms normal-group">
                     <div class="ms-round" v-for="(index,mslist) in mslists" :class="'ms-row-'+(index >= isType ? isType : (index + 1))">
                         <h3 class="ms-row-title">{{mslist.title}}</h3>
-                        <div class="one-match" v-for="row in mslist.row" :class="isFinal == index ? 'final' : ''">
-                            <div class="players" v-link="{path:row.linkvideo}">
-                                <a class="player" :class="row.result == 0 ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.team[0].name}}</span>
-                                    <span class="player-score">{{row.team[0].score}}</span>
+                        <div class="one-match" v-for="row in mslist" :class="isFinal == index ? 'final' : ''">
+                            <div class="players" v-link="{path:row.list.video_url}">
+                                <a class="player" :class="row.list.leftScore>row.list.rightScore ? 'player-winner' : ''">
+                                    <span class="player-name toe">{{row.list.leftTeam}}</span>
+                                    <span class="player-score">{{row.list.leftScore}}</span>
                                 </a>
-                                <div class="player-content" :class="row.result != 2 ? 'over' : ''">
-                                    <a class="match-video-link">{{row.inf | timeData3}}</a>
+                                <div class="player-content" :class="row.list.video_url ? 'over' : ''">
+                                    <a class="match-video-link">{{row.list.dataTime | timeData3}}</a>
                                 </div>
-                                <a class="player" :class="row.result == 1 ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.team[1].name}}</span>
-                                    <span class="player-score">{{row.team[1].score}}</span>
+                                <a class="player" :class="row.list.leftScore<row.list.rightScore ? 'player-winner' : ''">
+                                    <span class="player-name toe">{{row.list.rightTeam}}</span>
+                                    <span class="player-score">{{row.list.rightScore}}</span>
                                 </a>
                             </div>
                         </div>
@@ -372,17 +372,15 @@ var IScroll = require('iscroll');
 var common = require('../../js/common.js');
 
 
-var lineSchedule = Vue.extend({
-    name: 'lineSchedule',
+module.exports = {
     data: function() {
         return {
-            channelid:wsCache.get('HEROC').channelid,
-            matchname:wsCache.get('HEROC').matchname,
             matchid:wsCache.get('HEROC').matchid,
+            poptypeid:wsCache.get('HEROC').poptypeid,
             mslists:[],
             mstype:'',
             msClass: '',
-            name:'lineSchedule'
+            popp : ''
            
         };
     },
@@ -408,25 +406,25 @@ var lineSchedule = Vue.extend({
         }
     },
     ready: function() {
-        var _this = this;
-        _this.msdataFnId(_this.matchid);
-       // _this.msdataFn();//默认返回胜者组
-        
-       
-        
+        var self = this;
+       if(self.poptypeid==2){
+            self.popp=3
+       }else if(self.poptypeid==1){
+            self.popp=2
+       }
+        self.msdataFn(self.popp)
     },
     components:{
         'childnav':nav
     },
     methods: {
-        msdataFnId:function(id){
-            var _this = this;
+        msdataFnId:function(){
+            var self = this;
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
+                url:common.getBaseUrl()+'/match/matchschedule.lg',
+                type:"POST",
                 dataType:"json",
-                //msType://'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
-                data:{category:"knockoutO",matchid:id},
+                data:{match_id:self.matchid,type:self.poptypeid},
                 success:function(data){
                     if(data.status == "SUCCESS"){
                         _this.mstype = data.mstype;
@@ -446,23 +444,24 @@ var lineSchedule = Vue.extend({
 
         },
         msdataFn:function(str){
-            var _this = this;
+            var self = this;
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
+                url:common.getBaseUrl()+'/match/matchschedule.lg',
+                type:"POST",
                 dataType:"json",
                 //msType://'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
                 //msid  赛事id
-                data:{category:"lineSchedule",matchid:_this.matchid,mstype:str},
+                data:{match_id:self.matchid,type:str},
                 success:function(data){
-                    _this.mslists = _this.mslists.concat(data.mslists)
-                    let msLength = _this.mslists.length;
+                    self.mslists = self.mslists.concat(data.data);
+                    let msLength = self.mslists.length;
                     $(".ms-content").width(msLength*200);
                     $(".matchschedule").height($(window).height()-110);
                     setTimeout(function(){
                          var myScroll = new IScroll('#iscroll',{
                             scrollX: true, scrollY: true, freeScroll: true,click: true
                         });
+                         $(".loading-1").hide()
                     },50);
 
                 }
@@ -471,8 +470,6 @@ var lineSchedule = Vue.extend({
         }
 
     }
-});
-
-module.exports = lineSchedule;
+}
 
 </script>

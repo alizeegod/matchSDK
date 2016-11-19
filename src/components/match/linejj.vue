@@ -194,27 +194,28 @@
                 <section class="mi-con"><p>{{list.desc}}</p></section>
                 <section class="mi-bot clearfix">
                     <p><i></i><em>比赛时间：</em><span>{{list.startime | timeData3}}开始</span></p>
-                    <p v-if="channelid==13"><i></i><em>线上赛：</em><span>{{list.address}}</span></p>
-                    <p v-else><i></i><em>线下赛：</em><span>{{list.address}}</span></p>
+                    <p v-if="typeid==0"><i></i><em>线上赛：</em><span></span></p>
+                    <p v-if="typeid==1"><i></i><em>线下赛：</em><span>{{list.address}}</span></p>
                 </section>
+                <registration-component v-if="typeid==0"  v-bind:reg={"mx":"2","list":list,"bindphone":bindphone}></registration-component>
             </div>
             <div class="matchprize" v-if="awardlist.length>0">
                 <section class="mp-title clearfix">
                     <h3>赛事奖励</h3>
                 </section>
-                <section class="mp-con"  id="match-mp-con">
+                <div class="mp-con" id="match-offline-d">
                     <span class="prev"></span>
                     <span class="next"></span>
-                    <div class="bd" style="width:90%;margin:0 auto;overflow:hidden;">
-                        <div class="bd-hd">
+                    <div class="bd-box-list">
+                       <div class="bd-list" id="match-offline-e">
                             <li class="mp-item" v-for="list in awardlist">
                                 <p class="mp-ranking">{{list.name}}</p>
                                 <img :src="list.image_url">
                                 <p class="mp-prize">{{list.remark}}</p>
                             </li>
-                        </div>    
+                        </div>
                     </div>
-                </section>
+                </div> 
             </div>
             <div class="matchteam" v-if="teamlist.length>0">
                 <section class="mt-title clearfix">
@@ -227,13 +228,10 @@
                     </div>
                 </section>
             </div>
-
         </div>
     </div>
-
+ 
 </div>    
-
-
 
 
 </template>
@@ -242,22 +240,24 @@
 var Vue = require('Vue');
 var nav = require('./nav.vue');
 var $ = require('jQuery');
-
 var common = require('../../js/common.js');
+var registrationComponent = require('./registration.vue')
 
 module.exports = {
     data: function() {
         return {
             matchname:wsCache.get('HEROC').matchname,
-            channelid:wsCache.get('HEROC').channelid,
+            typeid:wsCache.get('HEROC').typeid,
             eventprofilelist:[],
             awardlist:[],
             teamlist:[],
-            matchid:wsCache.get('HEROC').matchid
+            matchid:wsCache.get('HEROC').matchid,
+            bindphone:gload_conf.bindphone
         };
     },
     components:{
-        'childnav':nav
+        'childnav':nav,
+        'registration-component' : registrationComponent
     },
     ready: function() {
         this.lineteamint();
@@ -284,19 +284,12 @@ module.exports = {
                 type:gPost,
                 dataType:'json',
                 data:data,
-                beforeSend:function(){
-                    console.log("数据正在加载.....")
-                },
                 success:function(data){
                     if(data.code){
                         self.eventprofilelist = self.eventprofilelist.concat(data.data.match);
                         self.awardlist = self.awardlist.concat(data.data.reward);
                         self.teamlist = self.teamlist.concat(data.data.clubs);
-                        setTimeout(function(){
-                            $(".mp-con li").length<=5?$("#match-offline-d .next").css("display","none"):'';
-                            $(".mp-con li").each(function(i){$(".mp-con li").slice(i*5,i*5+5).wrapAll("<ul></ul>")});
-                            tool.default.TouchSlide({slideCell:"#match-mp-con",mainCell:".bd-hd",prevCell:".prev",nextCell:".next",pnLoop:"false"});
-                        },50);
+                          setTimeout(function(){self.sliderFn1();$(".loading-1").hide()},50); 
                     }else{
                         common.tips(data.msg) 
                     }
@@ -304,6 +297,12 @@ module.exports = {
                 }
             });
             
+        },
+        sliderFn1:function(){
+            $("#match-offline-d li").length<=5?$("#match-offline-d .next,#match-offline-d .prev").css("display","none"):'';
+            $("#match-offline-d li").each(function(i){$("#match-offline-d li").slice(i*5,i*5+5).wrapAll("<ul></ul>")});
+            tool.default.TouchSlide({slideCell:"#match-offline-d",mainCell:".bd-list",prevCell:".prev",nextCell:".next",pnLoop:"false"});
+
         }
     }
 }

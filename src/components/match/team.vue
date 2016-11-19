@@ -113,7 +113,7 @@
     overflow: hidden;
     height: 30px;
     line-height: 16px;
-
+    text-align: center;
 }
 .team-video-list ul i{
     width: 40px;
@@ -154,12 +154,12 @@
                <p class="team-video-p">战队视频</p>
                <div class="team-video-list">
                    <ul >
-                       <li v-for="team in teamVList" track-by="$index" data-rel="{{team.videoUrl}}">
+                       <li v-for="team in teamVList" track-by="$index" data-rel="{{team.video_url}}">
                            <div>
-                               <img v-bind:src=team.videoImg alt="">
+                               <img v-bind:src=team.cover_url alt="">
                                <i></i>
                            </div>
-                           <p>{{team.videoTxt}}</p>
+                           <p>{{team.name}}</p>
                        </li>
                    </ul>
                </div>
@@ -179,10 +179,15 @@ module.exports = {
             teamshow:true,
             teamBest:[],
             teamPlayer:[],
-            teamDesc:''
+            teamVList:[],
+            teamDesc:'',
+            teamName:'',
+            teamLogo:'',
+
         };
     },
     ready: function() {
+         var self = this;
         $(".team-video-list li div").height($(".team-video-list li img").width()*178/268)
          
     },
@@ -197,6 +202,7 @@ module.exports = {
               gameid : gload_conf.gameid
           };
           self.teamFn(data,gPost);
+          self.teamvideoFn(data,gPost)
           transition.next()
         }
     },
@@ -211,19 +217,32 @@ module.exports = {
             success:function(data){
               if(data.code){
                 self.teamDesc = data.data.desc;
-                self.teamBest = self.teamBest.concat(data.data.best);
+                self.teamBest = data.data.best.split('|');
                 self.teamLogo = data.data.logo;
                 self.teamName = data.data.name;
                 self.teamPlayer = self.teamPlayer.concat(data.data.player);
                 $(".loading-1").hide();
-              }else{
-                self.teamshow = false;
               }
             }  
            }) 
-
-      }
+     },
+     teamvideoFn:function(d,g){
+        var self = this;
+          $.ajax({
+            url:common.getBaseUrl()+'/match/teamvideo.lg',
+            type:'POST',
+            dataType:'json',
+            data:d,
+            success:function(data){
+              if(data.code){
+                self.teamVList = self.teamVList.concat(data.data.list);
+                $(".loading-1").hide();
+              }
+            }  
+           })
+     }
         
     }
-};
+}
+
 </script>

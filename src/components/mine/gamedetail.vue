@@ -273,7 +273,7 @@ var gamedetail = Vue.extend({
       })
     },
     ready: function() {
-  		  console.log(this.userMsg.id)
+  		  
 
   	},
     methods: {

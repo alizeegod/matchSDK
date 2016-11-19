@@ -11,7 +11,7 @@ li,ul{list-style: none}
    position: relative;
 }
 .grank_til{ 
-  height: 50px;
+  height: 50px; 
   text-align: center;
   line-height: 50px;
   background: #1a212e;
@@ -164,6 +164,7 @@ li,ul{list-style: none}
 }
 </style>
 <template>
+ <!-- v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()" -->
   <div class="gamerank">
     <h3 class="grank_til">{{mygame.title}}</h3>
     <div class="grank_main">
@@ -192,7 +193,7 @@ li,ul{list-style: none}
         </ul>
         <ul class='gr_listcon'>
           <li v-for='list in mygame.lists'>
-            <a v-link="{name:'gamedetail',query:{gameid:list.gameid}}">
+            <a v-link="{name:'gamedetail',query:{gameid:list.game_id}}">
               <span><img :src="list.mapsrc" /></span>
               <span>{{list.mapname}}</span>
               <span>{{list.kd}}</span>
@@ -214,29 +215,6 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-
-var Mock = require('mockjs');
-
-Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
-Mock.Random.region();
-
-Mock.mock(ROOTPATH + 'mygame',{
-  "mygame":{
-      'title'                  : '@name',
-      'banner'                 : '@image',
-      'integral|100-500'       : 1,
-      'outcome'                : '5/7',
-      'matchrank|10-100'       : 12,
-      'lists|1-20'                  : [{
-          'gameid|10-20' : 1,     
-          'mapsrc'       : '@image',
-          'mapname'      : '@name',
-          'kd'           : '60-60',
-          'gametime'     : '13小时前',
-          'result|0-1'   : 0
-      }]
-    }
-});
 var mygame = Vue.extend({
     name: 'mygame',
     data: function() {
@@ -264,10 +242,22 @@ var mygame = Vue.extend({
       var _this = this;
 
       $.ajax({
-          url: ROOTPATH + 'mygame',
+          url: ROOTPATH + '/my/mymatch.lg',
           dataType: 'json',
-          success: function(data) {
-              _this.mygame = data.mygame;
+          type: 'GET',
+          // data: {matchid: _this.$route.query.matchid},
+          success: function (data) {
+              // var data = JSON.parse(data);
+              console.log(data.code)
+              if (data.code == 0) {
+                  console.log(data.data)
+                  console.log(data.code)
+                  _this.mygame = data.data;
+              } else {
+                  console.log(data.code)
+              }
+              
+
           }
       })
     },
@@ -282,9 +272,45 @@ var mygame = Vue.extend({
             this.grank_note = '他的战斗记录';
         }
 
+        // let rH = document.documentElement.clientHeight;
+        // $(".trank .prank-con").height(rH);
+
+        
+        // var me = this;
+        // me.$options.vue = me
+
+    },
+    loadListData: function (fn) {
+        var me = this.vue;
+        console.log(me.page)
+        $.ajax({
+            url: ROOTPATH + '/match/teamlist.lg',
+            dataType: 'json',
+            type: 'POST',
+            data: {type: 2,page:me.page,pagesize:12},
+            success: function(data) {
+                console.log(data)
+                // _this.teamRanks = data.data.list;
+                // console.log(_this.teamRanks)
+                fn(data)
+            }
+        })
     },
     methods: {
+      down_a: function () {
+          var me = this;
+          me.page += 1;
+          me.$options.loadListData(function (data) {
+              me.teamRanks = me.teamRanks.concat(data.data.list);
+              if (data.data.totalPage <= me.page) {
+                  me.ascroll.noData();
+              }
+              // 通过设置的key 方法下拉对象方法
+              // 如果没有更多数据。你可以 调用 me.ascroll.noData()
+              me.ascroll.resetload(true);
+          });
 
+      }
     }
 });
 

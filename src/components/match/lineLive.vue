@@ -305,20 +305,11 @@
                    <div class="item-box item-box-fl">
                       <div class="item-ceil-fl">
                            <div class="item-child-hed">
-                                <!--<span class="item-child item-child-hed-a" id="match-offline-1" v-if="datapdstate==1">重播</span>
-                                <span class="item-child item-child-hed-a" id="match-offline-1" v-else>直播中</span>-->
                                 <span class="item-child item-child-hed-b" id="match-offline-2">{{matchname}}</span>
-                                <!--<span class="item-child item-child-hed-c" v-on:click="take(0)" id="match-offline-3" v-if="datapdsubscribe==0">+订阅</span>
-                                <span class="item-child item-child-hed-c" v-on:click="take(1)" id="match-offline-3" v-else>取消订阅</span> -->
                             </div>
                             <div class="item-child-box">
-                                <!--<img src="../../images/shipin.jpg" class="dianbo-img" alt="视频图片">
-                                <div class="dianbo-play-icon"><i class="paly-icon"></i></div> -->
                                 <img src="../../images/media-holder.png" class="media-holder">
-
-                                <iframe v-if="videoUrl"  id="js_sub_web" src="http://chushou.tv/open/yingxiong/31753.htm?source=1109" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>
-                                <iframe v-else src="" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img" id="letvideo"></iframe>
-
+                                <iframe id="js_sub_web" v-bind:src="videoUrl" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>
                             </div>
                       </div>
                    </div>
@@ -348,9 +339,9 @@
                                     <span class="item-name2">{{listTT.rightTeam}}</span>
                                     <span class="item-zb">
                                         <a v-if="listTT.matchSwitch==0" href="javascript:;" class="item-zb0">未开始</a>
-                                        <a v-if="listTT.matchSwitch==1" href="javascript:;" v-on:click="videoCZFn(videoUrl)" class="item-zb1">直播中<i></i></a>
-                                        <a v-if="listTT.matchSwitch==3 && listTT.matchUrl" v-on:click="videoCFn(listTT)"  href="javascript:;" class="item-zb2">赛事回顾<i></i></a>
-                                        <a v-if="listTT.matchSwitch==3 && !listTT.matchUrl" href="javascript:;" class="item-zb3">已结束</a>
+                                        <a v-if="listTT.matchSwitch==2" href="javascript:;" v-on:click="videoCZFn(videoUrl)" class="item-zb1">直播中<i></i></a>
+                                        <a v-if="listTT.matchSwitch==1 && listTT.matchUrl" v-on:click="videoCFn(listTT)"  href="javascript:;" class="item-zb2">赛事回顾<i></i></a>
+                                        <a v-if="listTT.matchSwitch==1 && !listTT.matchUrl" href="javascript:;" class="item-zb3">已结束</a>
                                     </span>
                                 </li>
                             </ul>
@@ -442,7 +433,7 @@ module.exports = {
         },
         sliderFn:function(){
             var self = this;
-            $("#match-offline-e li").length<=3?$("#match-offline-d .next i").css("display","none"):'';
+            $("#match-offline-e li").length<=3?$("#match-offline-d .next i,#match-offline-d .prev i").css("display","none"):'';
             $("#match-offline-e li").each(function(i){$("#match-offline-e li").slice(i*3,i*3+3).wrapAll("<ul></ul>")});
             tool.default.TouchSlide({slideCell:"#match-offline-d",mainCell:".bd-list",prevCell:".prev",nextCell:".next",pnLoop:"false",defaultIndex:self.defaultIndex});
             $("#match-offline-e li").click(function(){
@@ -483,12 +474,14 @@ module.exports = {
             })
         },
         videoCFn:function(el){
-            $("#letvideo").attr("src",common.getBaseUrl()+"/match/video.lg?"+el.matchUrl)
+            console.log(el)
+            $(".item-child-box iframe").remove();
+            $(".item-child-box").append('<iframe id="js_sub_web" src="'+common.getBaseUrl()+"/match/video.lg?"+el.matchUrl+'" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>');
         },
         videoCZFn:function(el){
             var self = this;
-            self.videoUrl = el;
-            $("#js_sub_web").attr("src",el);
+            $(".item-child-box iframe").remove();
+            $(".item-child-box").append('<iframe id="js_sub_web" src="'+el+'" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>');
         },
         take:function(objts){
             var self = this;

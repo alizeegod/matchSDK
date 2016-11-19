@@ -36,7 +36,6 @@
 <script>
 var Vue = require('Vue');
 var $ = require('jQuery');
-
 var common = require('../../js/common.js');
 
 module.exports ={
@@ -63,10 +62,11 @@ module.exports ={
                 dataType:"json",
                 data:data,
                 beforeSend:function(){
-                    console.log("数据正在加载.....")
+                    $(".loading-1").show();
                 },
                 success:function(data){
                     self.dataruesC = data.data.match.rules;
+                    $(".loading-1").hide();
                 }
             })
         }

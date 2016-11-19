@@ -143,13 +143,15 @@
 }
 .prank-item p.p5{
 	width: 37%;
+	color: #34a247;
+	text-align: center;
 }
-.prank-item p.p5 span{
+/*.prank-item p.p5 span{
 	display: block;
 	width: 160px;
 	text-align: center;
 	color: #34a247;
-}
+}*/
 .prank-item p.p6{
 	width: 10%;
 }
@@ -184,17 +186,17 @@
   			<p class="p5"><span>{{mineRank.userpower}}</span></p>
   			<p class="p6"><i></i></p>
   		</div>
-  		<div class="prank-con">
+  		<div class="prank-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
   			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.userid}}"
-  				v-for="allRank in allRanks" transition="item">
-  					<p class="p1"><span>{{allRank.userrank}}</span></p>
+  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.id}}"
+  				v-for="(index,allRank) in allRanks" transition="item">
+  					<p class="p1"><span>{{index + 1}}</span></p>
 		  			<p class="p2">
-		  				<image :src="allRank.userImg"/>
+		  				<image :src="allRank.logo"/>
 		  			</p>
-		  			<p class="p3"><span>{{allRank.username}}</span></p>
-		  			<p class="p4"><span>{{allRank.userarea}}</span></p>
-		  			<p class="p5"><span>{{allRank.userpower}}</span></p>
+		  			<p class="p3"><span>{{allRank.name}}</span></p>
+		  			<p class="p4"><span>{{allRank.name}}</span></p>
+		  			<p class="p5"><span>{{allRank.power}}</span></p>
 		  			<p class="p6"><i></i></p>
   				</li>
   			</ul>
@@ -209,37 +211,13 @@ var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
 
-var Mock = require('mockjs');
-
-Mock.Random.region();
-Mock.Random.name();
-Mock.Random.image('30*30');
-
-
-Mock.mock(ROOTPATH + 'rank',{
-    "mineRank":{
-        'userrank|1-100'     : 1,
-        'userImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'username'     		 : '@name',
-        'userarea'     		 : '@region',
-        'userpower|1-1000'	 : 1
-    },
-    "allRanks|1-20":[{
-        'userrank|1-100'     : 1,
-        'userImg'     		 : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'username'     		 : '@name',
-        'userarea'     		 : '@region',
-        'userpower|1-1000'	 : 1,
-        'userid|2-10'         : 1
-    }]
-});
-
 var rank = Vue.extend({
 	name: 'rank',
 	data: function() {
 		return {
 			mineRank: {},
-			allRanks: {}
+			allRanks: [],
+			page: 0
 		};
 	},
 	store: store,
@@ -253,22 +231,61 @@ var rank = Vue.extend({
 	},
 	created: function(){
 		var _this = this;
-        $.ajax({
-            url: ROOTPATH + 'rank',
-            dataType: 'json',
-            // data: {userid: _this.userMsg.id},
-            success: function(data) {
-                _this.mineRank = data.mineRank;
-                _this.allRanks = data.allRanks;
-            }
-        })
+        // $.ajax({
+        //     url: ROOTPATH + '/match/teamlist.lg',
+        //     dataType: 'json',
+        //     data: {type: 1,pagesize:12,page:1},
+        //     success: function(data) {
+        //         _this.mineRank = data.mineRank;
+        //         _this.allRanks = data.allRanks;
+        //     }
+        // })
 	},
 	ready: function() {
 		
         let rW = $("#app").width()-50;
         $(".rank-top").width(rW);
         $(".prank-title").width(rW);
-	}
+
+        let rH = document.documentElement.clientHeight - 166;
+        $(".prank .prank-con").height(rH);
+
+        
+        var me = this;
+        me.$options.vue = me
+	},
+    loadListData: function (fn) {
+        var me = this.vue;
+        console.log(me.page)
+        $.ajax({
+            url: ROOTPATH + '/match/teamlist.lg',
+            dataType: 'json',
+            type: 'POST',
+            data: {type: 2,page:me.page,pagesize:12},
+            success: function(data) {
+                console.log(data)
+                // _this.teamRanks = data.data.list;
+                // console.log(_this.teamRanks)
+                fn(data)
+            }
+        })
+    },
+    methods: {
+        down_a: function () {
+            var me = this;
+            me.page += 1;
+            me.$options.loadListData(function (data) {
+                me.allRanks = me.allRanks.concat(data.data.list);
+                if (data.data.totalPage <= me.page) {
+                    me.ascroll.noData();
+                }
+                // 通过设置的key 方法下拉对象方法
+                // 如果没有更多数据。你可以 调用 me.ascroll.noData()
+                me.ascroll.resetload(true);
+            });
+ 
+        }
+    }
 });
 
 module.exports = rank;

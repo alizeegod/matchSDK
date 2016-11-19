@@ -327,11 +327,11 @@ a{
     <div class="match-list-zd MatchShow{{list.id}}" v-for="list in stickTop | filterBy '1' in 'is_top'" id="MatchShowLi|floor1|{{list.id}}|{{list.state}}|{{list.type}}|{{list.enroll}}" bmstarttime="{{list.reg_startime}}" bmendtime="{{list.reg_endtime}}" starttime="{{list.startime}}" endtime="{{list.endtime}}">
         <i class="item-ico item-ico{{ list.type }}"></i>
         <div class="dianbo-img-wrap dianbo-img-wrap-width">
-          <a v-if="list.type==0" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,enroll:list.enroll})">
+          <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM(list)">
               <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
               <img src="../../images/media-holder.png" class="media-holder">
           </a>
-          <a v-if="list.type==1" v-link="'/match/linejj/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,channelid:list.match_type,enroll:list.enroll})">
+          <a v-if="list.type==0" v-link="'/match/linejj/'+list.id" v-on:click="HeroM(list)">
               <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
               <img src="../../images/media-holder.png" class="media-holder">
           </a>
@@ -340,7 +340,7 @@ a{
             <p class="item-txt">{{ list.name }}</p>
             <p class="item-time p-countdown"></p>
             <p class="item-a item-rmb"><i></i>奖金：{{ list.bonus }}元</p>
-           <a href="javascript:;" v-on:click="modClickA(list)"></a>
+            <registration-component v-bind:reg={"mx":"1","list":list,"bindphone":bindphone}></registration-component>
         </div>  
     </div>
      <ul class="max-match-flex">
@@ -348,37 +348,37 @@ a{
             <div class="card-item" > 
                <i class="item-ico item-ico{{ list.type }}"></i>
                <div class="dianbo-img-wrap">
-                   <a v-if="list.type==0" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,enroll:list.enroll})">
+                   <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM(list)">
                       <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
                       <img src="../../images/media-holder.png" class="media-holder">
                   </a>
-                  <a v-if="list.type==1" v-link="'/match/linejj/'+list.id" v-on:click="HeroM({name:list.name,matchid:list.id,channelid:list.match_type,enroll:list.enroll})">
+                  <a v-if="list.type==0" v-link="'/match/linejj/'+list.id" v-on:click="HeroM(list)">
                       <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
                       <img src="../../images/media-holder.png" class="media-holder">
                   </a>  
                </div>
                <span class="item-txt">
                    <span class="item-tit">{{ list.name }}</span>
-                   <span class="item-num">{{ list.member }}人参加</span>
+                   <span class="item-num"><span>{{ list.member }}</span>人参加</span>
                </span>
                <span class="item-info">
                    <span class="item-time p-countdown"></span>
-                   <a href="javascript:;" v-on:click="modClickA(list)"></a>
+                   <registration-component v-bind:reg={"mx":"1","list":list,"bindphone":bindphone}></registration-component>
                </span>
             </div>
         </li>
     </ul>
 
 </div>
-<div  class="loadscroll subtitle-color" id="mover">上拉显示更多</div>
+<div  class="loadscroll subtitle-color" id="mover"></div>
 
-<teltk v-if="isTeltk" :matchid="matchid" :matchchannl="matchchannl" :matchstate="matchstate"></teltk>
   
 </template>
 
 <script>
 var common = require('../../js/common.js');
-var teltk = require('./teltk.vue');
+
+var registrationComponent = require('./registration.vue')
 //离线缓存https://github.com/WQTeam/web-storage-cache
 
 module.exports = {
@@ -397,11 +397,13 @@ module.exports = {
             matchchannl:'',
             matchstate:'',
             pageTotal:'',
-            pagesize:12
+            pagesize:12,
+            regtype:1,
+            bindphone:gload_conf.bindphone
         }
     },
     components:{
-        'teltk' : teltk
+        'registration-component' : registrationComponent
     },
     methods:{
         loadMore:function(curPage){
@@ -429,6 +431,9 @@ module.exports = {
                     }
                     self.pageTotal = Number(data.totalpage);
                     self.stickTop = self.stickTop.concat(data.data.list);
+                    if(self.pageTotal>12){
+                        $("#mover").html('上拉显示更多')
+                    }
                     $(".loading-1").hide();
                 }
             })
@@ -480,51 +485,29 @@ module.exports = {
             var wsData = {
                 matchname : '',//赛事名称
                 matchid : '',//赛事id
-                channelid:'',//赛事分类id  11 淘汰赛 12 积分赛 13 线上赛  （大分类 racetype  1 hpl赛事  2 线上赛）
+                typeid : '',//赛事种类 0,线上赛，1线下赛
+                channelid:'',//赛事分类id （1线下赛） 0淘汰赛1积分赛
                 userid : '',//用户id
                 starttime : '',//开始时间
-                endtime:''//结束时间
+                endtime:'',//结束时间
+                poptypeid:''//1双败2代表单败
             }
             var matchname = obj.name;
-            var matchid = obj.matchid;
-            var channelid = obj.channelid;
+            var matchid = obj.id;
+            var channelid = obj.match_type;
             var userid = gload_conf.uid;
+            var typeid = obj.type;
+            var poptypeid = obj.pop_type;
             wsData = {
                 matchname : matchname,
                 matchid : matchid,
                 channelid : channelid,
-                userid : userid
+                userid : userid,
+                typeid : typeid,
+                poptypeid : poptypeid
             }
             wsCache.set('HEROC',wsData);
-        },
-        modClickA:function(el){
-            var self = this;
-            if(el.type==0){
-                console.log('线上赛');
-                var stateId = $(".MatchShow"+el.id).attr("id").split("|")[3];
-                var data = {"id":el.id,"uid":gload_conf.uid};
-                if(stateId ==3){
-                    if(iphoneB == 1){
-                       // $.ajax({})
-                       var msg = 1;
-                       if(msg==1){
-                            common.tips("报名成功");
-                            // $($(".MatchShow"+el.id)).attr("id",""+$(".MatchShow"+el.id).attr("id").split("|")[0]+"|"+$(".MatchShow"+el.id).attr("id").split("|")[1]+"|"+$(".MatchShow"+el.id).attr("id").split("|")[2]+"|4|"+$(".MatchShow"+el.id).attr("id").split("|")[4]+"");
-                       }else{
-                            common.tips("报名失败");
-                       }
-                    }else{
-                        self.isTeltk = true;  
-                    }
-                    
-                }
-            }else{
-                console.log('线下赛')
-            }
         }
-    },
-    events: {
-
     },
     ready:function(){
         var self = this;
@@ -543,30 +526,6 @@ module.exports = {
 
         },100);
         $(".match-match-hed").width($(window).width()-50-33);
-        /*$("body").on("click",".item-djbm-btn",function(){
-            if(Miconfig.phone){
-                self.isTeltk = false;
-                var fl1 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[0];
-                var fl2 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[1];
-                var fl3 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[2];
-                var fl4 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[3];
-                var fl5 = $($(this).parents("div[id^='MatchShowLi|']")).attr("id").split("|")[4];
-                $($(this).parents("div[id^='MatchShowLi|']")).attr("id",""+fl1+"|"+fl2+"|"+fl3+"|4|"+fl5+"");
-                $.ajax({
-                    url:common.getBaseUrl(),
-                    type:"POST",
-                    dataType:"json",
-                    data:{category:"phonebind",userid:Miconfig.userid,matchid:$(this).data("id"),gameid:Miconfig.gameid},
-                    success:function(data){
-                         common.tips("报名成功");
-                    }
-                })
-
-            }else{
-                self.isTeltk = true;
-
-            }
-        })*/
     }
 }
 </script>

@@ -122,26 +122,23 @@
         	<input type="number" name="userCode" placeholder="请输入验证码" v-model="from.userCode">
         	</div>
         </div>
-		<a href="javascript:;"  title="确定" class="sureBtn"></a>
+		<a href="javascript:;"  title="确定" class="sureBtn" v-on:click.stop="sureBtnTeltk"></a>
 	</div>
 </template>
 
 <script>
 
 
-import tool from '../../js/tool'
-
-
-
-	export default({
+    import tool from '../../js/tool';
+    module.exports = {
 		data(){
 			return {
                 from :{
                 	userIphone:'',
                 	userCode:'',
                 },
-                username:"sssss",
-                userarea:"ccccc"
+                username:gload_conf.rolename,
+                userarea:gload_conf.servername
 			}
 		},
 		props:[
@@ -163,12 +160,13 @@ import tool from '../../js/tool'
 	            }
 	        })
         },
-        events:{
-"ab":function(){
-	alert(1)
-}
-        },
 		methods:{
+			sureBtnTeltk:function(){
+				var self = this;
+				if(!tool.tel($("input[name=userIphone]"))){return}
+            	if(!tool.yzm($("input[name=userCode]"))){return}
+
+			},
 			/*
             sureBtnTeltk: function(event){
             	var _this = this;
@@ -221,5 +219,5 @@ import tool from '../../js/tool'
             	$("body").off("touchmove",false);
             }
 		}
-	})
+	};
 </script>

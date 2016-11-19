@@ -141,9 +141,9 @@ var opinion = Vue.extend({
                     jsonpCallback:'jsonp'+new Date().getTime(),
                     data:{userid: _this.userMsg.userid,msg:_this.message},
                     success:function(data){
-                        //返回0 提交成功
-                        //返回1 提交失败
-                        //返回2 
+                        //返回1 提交成功
+                        //返回2 提交失败
+                        //返回3 
                         console.log(data.msg);
                         if(data.msg=="1"){
                             console.log(data.lists)

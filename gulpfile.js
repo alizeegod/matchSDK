@@ -12,7 +12,9 @@ var rename = require('gulp-rename');
 var minimist = require('minimist');
 var gutil = require("gulp-util");
 var rev = require('gulp-rev-hash');
+// var revhash = require('gulp-asset-rev-hash');
 var path = require('path');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 
 var pwd = __dirname; 
@@ -20,23 +22,20 @@ var pwd = __dirname;
 // gulp --env=pro 压缩代码，直接执行gulp，不压缩代码
 var argv = require('minimist')(process.argv.slice(2));
 // var config = require('./config.json');
-
+console.log(argv)
 var rootPath = __dirname; 
 
-// var vendorPlugin = new webpack.optimize.CommonsChunkPlugin({
-//     name: 'vendor', 
-//     filename: 'vendor.min.js',
-//     minChunks: Infinity,
-// });
+var vendorPlugin = new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor', 
+    filename: 'vendor.min.js', 
+    minChunks: Infinity,
+});
 var webpackConfig = {
     entry: {
         match: './src/app.js',
-        // vendor: [
-        //     pwd + './src/js/iscroll-lite.js',
-        // ]
+        vendor: ['Vue','jQuery']
     },
     output: {
-        // path: path.join(__dirname, '/dist'),
         filename: '[name].min.js'
     },
     module: {
@@ -46,23 +45,53 @@ var webpackConfig = {
             include: path.join(rootPath, './src'),
             exclude: path.join(rootPath, '../node_modules/'),
             query: {presets:['es2015']} 
-        },{ 
-            test: /\.css$/, loader: "style-loader!css-loader" 
-        },{
+        },
+        {
             test: /.vue$/,
             loader: 'vue'
         },{
-            test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192&name=dist/images/[name].[ext]'
+            test: /\.(png|jpg)$/, loader: 'url-loader'
         }]
     },
-    // plugins: [vendorPlugin],
+    vue: {
+        loaders: {
+            css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader')
+        }
+    },
+    plugins: [
+    	vendorPlugin, 
+    	new ExtractTextPlugin("../css/match.min.css", {
+	        allChunks: true,
+	    })
+    ],
     // resolve: {
-    //     extensions: ['', '.js', '.json', '.scss'],
+    //     extensions: ['', '.js', '.json'],
     //     alias: {
-    //         'iscroll': pwd + '/src/js/iscroll-lite.js'
+    //         'Vue': pwd + '/src/js/lib/vue.min.js',
+    //         'jQuery': pwd + '/src/js/lib/jquery.min.js',
     //     }
     // },
 };
+
+gulp.task('rev', function () {
+    gulp.src('./index.html')
+        .pipe(rev())
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('revhash', function () {
+  gulp.src('./index.html')
+    .pipe(rev({
+      assetsGetter: function (filePath) {
+        return filePath.replace('/dist/css', 'src/css')
+      },
+      hashLength: 16,
+      hashArgName: 'h',
+      removeTags: 0,
+      usePale: true
+    }))
+    .pipe(gulp.dest('./dist/'));
+});
 
 gulp.task('clean', function() {
     return gulp
@@ -74,7 +103,7 @@ gulp.task('js', function() {
     if (argv.env === 'pro') {
         webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: false
+                warnings: true
             }
         }));
     }
@@ -82,6 +111,7 @@ gulp.task('js', function() {
         .src('./src/app.js')
         .pipe(gulpWebpack(webpackConfig))
         // .pipe(gulpIf(argv.env == 'pro', header(banner, { config: config })))
+        // .pipe(uglify())
         .pipe(gulp.dest('./dist/js/'))
 })
 
@@ -112,4 +142,4 @@ gulp.task('watch', function() {
 
 gulp.task('build', ['js', 'css', 'img']);
 
-
+// gulp.task('default', ['build']);

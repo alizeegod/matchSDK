@@ -2,6 +2,8 @@
 var Vue = require('Vue');
 var $ = require('jQuery');
 var VueRouter = require('vue-router');
+var vueDrapload =  require('vue-drapload');
+Vue.use(vueDrapload)
 
 
 // use
@@ -11,8 +13,10 @@ Vue.use(VueRouter);
 window.jQuery = $;
 window.$ = $;
 
-var ROOTPATH = 'http://10.0.11.19/';
+var ROOTPATH = 'http://match.hsdk.dev.yingxiong.com';
 window.ROOTPATH = ROOTPATH;
+
+
 
 var App = Vue.extend({});
  
@@ -20,11 +24,11 @@ var Index = require('./components/index.vue');
 
 var MatchContainer = require('./components/match/container.vue');
 // var Match = require('./components/match/main.vue');
-var Offline1 = require('./components/match/offline1.vue');
-var Offline2 = require('./components/match/offline2.vue');
-var Online = require('./components/match/online.vue');
-var Rules = require('./components/match/rules.vue');
-var Team = require('./components/match/team.vue');
+// var Offline1 = require('./components/match/offline1.vue');
+// var Offline2 = require('./components/match/offline2.vue');
+// var Online = require('./components/match/online.vue');
+// var Rules = require('./components/match/rules.vue');
+// var Team = require('./components/match/team.vue');
 
  
  
@@ -71,26 +75,26 @@ router.map({
 		subRoutes: {
 			'/match': {
 				component: MatchContainer,
-				subRoutes: {
-					// '/': {
-					// 	component: Match
-					// },
-					'/offline1': {
-						component: Offline1
-					},
-					'/offline2': {
-						component: Offline2
-					},
-					'/online': {
-						component: Online
-					},
-					'/rules': {
-						component: Rules
-					},
-					'/team': {
-						component: Team
-					}
-				}
+				// subRoutes: {
+				// 	'/': {
+				// 		component: Match
+				// 	},
+				// 	// '/offline1': {
+				// 	// 	component: Offline1
+				// 	// },
+				// 	// '/offline2': {
+				// 	// 	component: Offline2
+				// 	// },
+				// 	// '/online': {
+				// 	// 	component: Online
+				// 	// },
+				// 	// '/rules': {
+				// 	// 	component: Rules
+				// 	// },
+				// 	// '/team': {
+				// 	// 	component: Team
+				// 	// }
+				// }
 			},
 			'/mine': {
 				component: MineContainer,

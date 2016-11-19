@@ -39,6 +39,7 @@ $(function(){
             var  startH= rightZeroStr(new Date(startTime).getHours());//开始时间时
             var  startM= rightZeroStr(new Date(startTime).getMinutes());//开始时间分
             var textstart = "<b>"+startMo+"</b>月<b>"+startD+"</b>日<b>"+startH+"</b>:<b>"+startM+"</b>";
+            console.log('111')
 
             if(startTime>now){//开始时间大于现在时间
                 //等待比赛开始
