@@ -12,6 +12,7 @@ var rename = require('gulp-rename');
 var minimist = require('minimist');
 var gutil = require("gulp-util");
 var rev = require('gulp-rev-hash');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 // var revhash = require('gulp-asset-rev-hash');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -62,7 +63,12 @@ var webpackConfig = {
     	vendorPlugin, 
     	new ExtractTextPlugin("../css/match.min.css", {
 	        allChunks: true,
-	    })
+	    }),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',// 生成html存放路径，相对path
+            template: './src/index.html',//html模版路径
+            hash: true //生成版本
+        })
     ],
     // resolve: {
     //     extensions: ['', '.js', '.json'],
@@ -73,25 +79,25 @@ var webpackConfig = {
     // },
 };
 
-gulp.task('rev', function () {
-    gulp.src('./index.html')
-        .pipe(rev())
-        .pipe(gulp.dest('./dist/'));
-});
+// gulp.task('rev', function () {
+//     gulp.src('./index.html')
+//         .pipe(rev())
+//         .pipe(gulp.dest('./dist/'));
+// });
 
-gulp.task('revhash', function () {
-  gulp.src('./index.html')
-    .pipe(rev({
-      assetsGetter: function (filePath) {
-        return filePath.replace('/dist/css', 'src/css')
-      },
-      hashLength: 16,
-      hashArgName: 'h',
-      removeTags: 0,
-      usePale: true
-    }))
-    .pipe(gulp.dest('./dist/'));
-});
+// gulp.task('revhash', function () {
+//   gulp.src('./index.html')
+//     .pipe(rev({
+//       assetsGetter: function (filePath) {
+//         return filePath.replace('/dist/css', 'src/css')
+//       },
+//       hashLength: 16,
+//       hashArgName: 'h',
+//       removeTags: 0,
+//       usePale: true
+//     }))
+//     .pipe(gulp.dest('./dist/'));
+// });
 
 gulp.task('clean', function() {
     return gulp
