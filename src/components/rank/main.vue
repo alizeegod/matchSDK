@@ -172,30 +172,30 @@
   			<p class="p3">玩家</p> 
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',query:{userid:userMsg.userid}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{type:0}}">战斗力<i>?</i></span>
   			</p>
   			<p class="p6"></p>
   		</div>
   		<div class="prank-mine prank-item" v-link="{name:'mine',query:{userid:userMsg.userid}}">
-  			<p class="p1"><span>{{mineRank.userrank}}</span></p>
+  			<p class="p1"><span>{{mineRank.rank}}</span></p>
   			<p class="p2">
-  				<image :src="mineRank.userImg"/>
+  				<image :src="mineRank.logo"/>
   			</p>
-  			<p class="p3"><span>{{mineRank.username}}</span></p>
-  			<p class="p4"><span>{{mineRank.userarea}}</span></p>
-  			<p class="p5"><span>{{mineRank.userpower}}</span></p>
+  			<p class="p3"><span>{{mineRank.rolename}}</span></p>
+  			<p class="p4"><span>{{mineRank.servicename}}</span></p>
+  			<p class="p5"><span>{{mineRank.power}}</span></p>
   			<p class="p6"><i></i></p>
   		</div>
   		<div class="prank-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
   			<ul>
   				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.id}}"
   				v-for="(index,allRank) in allRanks" transition="item">
-  					<p class="p1"><span>{{index + 1}}</span></p>
+  					<p class="p1"><span>{{allRank.rank}}</span></p>
 		  			<p class="p2">
 		  				<image :src="allRank.logo"/>
 		  			</p>
-		  			<p class="p3"><span>{{allRank.name}}</span></p>
-		  			<p class="p4"><span>{{allRank.name}}</span></p>
+		  			<p class="p3"><span>{{allRank.rolename}}</span></p>
+		  			<p class="p4"><span>{{allRank.servicename}}</span></p>
 		  			<p class="p5"><span>{{allRank.power}}</span></p>
 		  			<p class="p6"><i></i></p>
   				</li>
@@ -225,21 +225,15 @@ var rank = Vue.extend({
 		getters: {
 			userMsg: function() {
 				return store.state.userMsg;
-			}
+			},
+      alertConfig: function() {
+          return store.state.alertConfig;
+      }
 		},
 		actions: actions
 	},
 	created: function(){
 		var _this = this;
-        // $.ajax({
-        //     url: ROOTPATH + '/match/teamlist.lg',
-        //     dataType: 'json',
-        //     data: {type: 1,pagesize:12,page:1},
-        //     success: function(data) {
-        //         _this.mineRank = data.mineRank;
-        //         _this.allRanks = data.allRanks;
-        //     }
-        // })
 	},
 	ready: function() {
 		
@@ -256,17 +250,18 @@ var rank = Vue.extend({
 	},
     loadListData: function (fn) {
         var me = this.vue;
-        console.log(me.page)
         $.ajax({
-            url: ROOTPATH + '/match/teamlist.lg',
+            url: ROOTPATH + '/match/teamlist.lg' + QUERY,
             dataType: 'json',
             type: 'POST',
-            data: {type: 2,page:me.page,pagesize:12},
+            data: {type: 1,page:me.page,pagesize:100},
             success: function(data) {
-                console.log(data)
-                // _this.teamRanks = data.data.list;
-                // console.log(_this.teamRanks)
+              if (data.code == 0) {
                 fn(data)
+                $(".loading-1").hide();
+              } else if (data.code < 0) {
+                actions.alert(store,{show:true,msg:data.msg})
+              }
             }
         })
     },
@@ -276,6 +271,7 @@ var rank = Vue.extend({
             me.page += 1;
             me.$options.loadListData(function (data) {
                 me.allRanks = me.allRanks.concat(data.data.list);
+                me.mineRank = data.data.user;
                 if (data.data.totalPage <= me.page) {
                     me.ascroll.noData();
                 }

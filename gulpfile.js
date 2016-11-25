@@ -12,8 +12,6 @@ var rename = require('gulp-rename');
 var minimist = require('minimist');
 var gutil = require("gulp-util");
 var rev = require('gulp-rev-hash');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-// var revhash = require('gulp-asset-rev-hash');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -64,11 +62,11 @@ var webpackConfig = {
     	new ExtractTextPlugin("../css/match.min.css", {
 	        allChunks: true,
 	    }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',// 生成html存放路径，相对path
-            template: './src/index.html',//html模版路径
-            hash: true //生成版本
-        })
+        // new HtmlWebpackPlugin({
+        //     filename: 'index.html',// 生成html存放路径，相对path
+        //     template: './src/index.html',//html模版路径
+        //     hash: true //生成版本
+        // })
     ],
     // resolve: {
     //     extensions: ['', '.js', '.json'],
@@ -79,25 +77,13 @@ var webpackConfig = {
     // },
 };
 
-// gulp.task('rev', function () {
-//     gulp.src('./index.html')
-//         .pipe(rev())
-//         .pipe(gulp.dest('./dist/'));
-// });
+gulp.task('rev', function () {
+    return gulp
+        .src('index.html')
+        .pipe(rev())
+        .pipe(gulp.dest('./'));
+});
 
-// gulp.task('revhash', function () {
-//   gulp.src('./index.html')
-//     .pipe(rev({
-//       assetsGetter: function (filePath) {
-//         return filePath.replace('/dist/css', 'src/css')
-//       },
-//       hashLength: 16,
-//       hashArgName: 'h',
-//       removeTags: 0,
-//       usePale: true
-//     }))
-//     .pipe(gulp.dest('./dist/'));
-// });
 
 gulp.task('clean', function() {
     return gulp
@@ -109,7 +95,7 @@ gulp.task('js', function() {
     if (argv.env === 'pro') {
         webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: true
+                warnings: false
             }
         }));
     }
@@ -124,7 +110,6 @@ gulp.task('js', function() {
 gulp.task('css', function() {
     return gulp
         .src('./src/css/*.css')
-        .pipe(concat('all.js'))
         .pipe(gulpIf(argv.env == 'pro', minifyCss()))
         // .pipe(gulpIf(argv.env == 'pro', header(banner, { config: config })))
         .pipe(rename('match.min.css'))
@@ -146,6 +131,6 @@ gulp.task('watch', function() {
     gulp.watch('./src/images/*', ['img']);
 })
 
-gulp.task('build', ['js', 'css', 'img']);
+gulp.task('build', ['js', 'css', 'img', 'rev']);
 
 // gulp.task('default', ['build']);

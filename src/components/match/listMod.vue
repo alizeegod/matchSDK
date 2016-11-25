@@ -15,7 +15,7 @@
     top: 10px;
     left: 0;
     width: 36px;
-    height: 36x;   
+    height: 36px;   
 }
 .match-comment-box .mh-post-1 > .mh-post-body{
 
@@ -47,6 +47,9 @@
     line-height: 20px;
     margin-bottom: 8px;
     font-weight:bold;
+}
+.match-comment-box ul.children{
+  position: relative;
 }
 .match-comment-box  .mh-post-body{
    margin:0 0 10px;
@@ -115,19 +118,19 @@
 </style>
 <template>
 
-  <ul class="mh-father-comment">
+  <ul class="mh-father-comment" v-if="comments.length>0">
   	<li v-for="el in comments" class="mh-post-1">
-  	  <img class="mh-user-avatar" v-bind:src="getAvatar(el.imgurl)" alt="头像">
+  	  <img class="mh-user-avatar" v-bind:src="getAvatar(el.logo)" alt="头像">
   	  <div class="mh-post-body">
   	  	<div class="mh-post-header">
-  	  	  <p class="mh-user">{{el.name}}</p>
-  	  	  <span class="mh-post-footer-area">{{el.area}}</span>
+  	  	  <p class="mh-user">{{el.rolename}}</p>
+  	  	  <span class="mh-post-footer-area">{{el.servicename}}</span>
   	  	</div>
   	  	<div class="mh-post-content" v-on:tap.stop="reply(el)">
-  	  	  <p>{{{el.content}}}</p>
+  	  	  <p>{{{el.content | bbbb}}}</p>
   	  	</div>
   	  	<div class="mh-post-footer-btn">
-  	  	  <span class="mh-post-footer-time">{{el.ctime | magicTime}}</span>
+  	  	  <span class="mh-post-footer-time">{{el.create_time}}</span>
   	  	  <span class="mh-post-footer-replay" v-on:tap.stop="reply(el)"></span>
   	  	</div>
   	  </div>
@@ -135,20 +138,20 @@
   	  	<li class="mh-post1" v-for="item in el.replys">
   	  	  <div class="mah-post-body">
   	  	  	<div class="mh-post-header">
-  	  	      <p class="mh-user">{{item.repname}}</p>
+  	  	      <p class="mh-user">{{item.rolename}}</p>
   	  	  	</div>
   	  	  	<div class="mh-post-content">
   	  	  	  <div v-on:tap.stop="reply(el,item,$event)">
-  	  	  	  	<p v-if="!item.passrepname">{{item.content}}<span class="mh-post-footer-time">{{item.rtime | magicTime}}</span></p>
+  	  	  	  	<p v-if="!item.passrepname">{{item.content | bbbb}}<span class="mh-post-footer-time">{{item.create_time}}</span></p>
                 <p v-else class="top_color_3" style="font-size:12px;">
-                回复<span class="mh-user">{{item.passrepname}}</span>&nbsp;&nbsp;{{{item.content}}}<span class="mh-post-footer-time">{{item.rtime | magicTime}}
+                回复<span class="mh-user">{{item.passrepname}}</span>&nbsp;&nbsp;{{{item.content | bbbb}}}<span class="mh-post-footer-time">{{item.create_time}}
                  </p>
   	  	  	  </div>
   	  	  	</div>
   	  	  </div>
   	  	</li>
   	  </ul>
-  	  <span v-if="el.rnum>3" v-on:tap.stop="moreReply(el)" class="cheak_more top_color_2">查看更多回复</span>
+  	  <!-- <span v-if="el.rnum>3" v-on:tap.stop="moreReply(el)" class="cheak_more top_color_2">查看更多回复</span> -->
   	</li>
   </ul>
   <p v-if="comments.length==0" class="none_tips">还没有人评论，还不快抢沙发！~</p>
@@ -159,7 +162,6 @@ module.exports ={
   data:function(){
     return {
       page:1
-
     }
   },
   props:{
@@ -208,8 +210,8 @@ module.exports ={
 
   	},
   	reply:function(el,item,e){//回复评论
-        var _this = this;
-        _this.$dispatch('openReply',el,item);//派发事件，事件沿着父级链冒泡 el 父  item  儿子
+        var self = this;
+        self.$dispatch('openReply',el,item);//派发事件，事件沿着父级链冒泡 el 父  item  儿子
         if(e){
             e.stopImmediatePropagation();
             e.stopPropagation();

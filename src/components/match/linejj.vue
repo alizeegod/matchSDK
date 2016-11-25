@@ -1,6 +1,7 @@
 <style>
 .line-event{
     padding-top:72px;
+    overflow:hidden
 }
 
 .matchintro{
@@ -137,6 +138,7 @@
     background: url(../../images/ico_jt_@3x_2.png) no-repeat;
     background-size: 100% 100%;
     z-index:2;
+    display: none;
 }
 .mp-con .next{
     position: absolute;
@@ -147,6 +149,7 @@
     background: url(../../images/ico_jt_@3x_1.png) no-repeat;
     background-size: 100% 100%;
     z-index:2;
+    display: none;
 }
 
 
@@ -194,10 +197,10 @@
                 <section class="mi-con"><p>{{list.desc}}</p></section>
                 <section class="mi-bot clearfix">
                     <p><i></i><em>比赛时间：</em><span>{{list.startime | timeData3}}开始</span></p>
-                    <p v-if="typeid==0"><i></i><em>线上赛：</em><span></span></p>
+                    <p v-if="typeid==0"><i></i><em>线上赛</em><span></span></p>
                     <p v-if="typeid==1"><i></i><em>线下赛：</em><span>{{list.address}}</span></p>
                 </section>
-                <registration-component v-if="typeid==0"  v-bind:reg={"mx":"2","list":list,"bindphone":bindphone}></registration-component>
+                <registration-component v-if="typeid==0"  :list="list" :mx="2" :bindphone="bindphone"></registration-component>
             </div>
             <div class="matchprize" v-if="awardlist.length>0">
                 <section class="mp-title clearfix">
@@ -241,12 +244,11 @@ var Vue = require('Vue');
 var nav = require('./nav.vue');
 var $ = require('jQuery');
 var common = require('../../js/common.js');
-var registrationComponent = require('./registration.vue')
+var registrationComponent = require('./registration.vue');
 
 module.exports = {
     data: function() {
         return {
-            matchname:wsCache.get('HEROC').matchname,
             typeid:wsCache.get('HEROC').typeid,
             eventprofilelist:[],
             awardlist:[],
@@ -260,6 +262,7 @@ module.exports = {
         'registration-component' : registrationComponent
     },
     ready: function() {
+        
         this.lineteamint();
         if($(".season-tab-box").height() > ($(window).height()-63)){
             common.scroll(function(direction){
@@ -280,16 +283,20 @@ module.exports = {
                 gameid : gload_conf.gameid
             };
             $.ajax({
-                url:common.getBaseUrl()+'/match/detail.lg',
+                url:common.getBaseUrl()+'/match/detail.lg'+QUERY,
                 type:gPost,
                 dataType:'json',
                 data:data,
+                beforeSend:function(){
+                    $(".loading-1").show();
+                },
                 success:function(data){
-                    if(data.code){
+                    if(data.code==0){
                         self.eventprofilelist = self.eventprofilelist.concat(data.data.match);
                         self.awardlist = self.awardlist.concat(data.data.reward);
                         self.teamlist = self.teamlist.concat(data.data.clubs);
-                          setTimeout(function(){self.sliderFn1();$(".loading-1").hide()},50); 
+                          setTimeout(function(){self.sliderFn1()},50); 
+                          $(".loading-1").hide()
                     }else{
                         common.tips(data.msg) 
                     }
@@ -299,7 +306,7 @@ module.exports = {
             
         },
         sliderFn1:function(){
-            $("#match-offline-d li").length<=5?$("#match-offline-d .next,#match-offline-d .prev").css("display","none"):'';
+            $("#match-offline-d li").length>5?$("#match-offline-d .next,#match-offline-d .prev").css("display","block"):'';
             $("#match-offline-d li").each(function(i){$("#match-offline-d li").slice(i*5,i*5+5).wrapAll("<ul></ul>")});
             tool.default.TouchSlide({slideCell:"#match-offline-d",mainCell:".bd-list",prevCell:".prev",nextCell:".next",pnLoop:"false"});
 

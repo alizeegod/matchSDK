@@ -193,3 +193,18 @@ export const  dateFormat=(time)=>{
 	return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+(min>9?min:("0"+min));
 }
 
+export const aaa=(a,b)=>{
+    for(var i in a){
+        if(i==b-1){
+            return a[i].image_url
+    	}
+    }
+}
+export const bbbb=(a)=>{
+	var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+    return a.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+}
+
+export const timedjs=(o)=>{
+    
+}

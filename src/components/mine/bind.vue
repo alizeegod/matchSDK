@@ -90,17 +90,17 @@
   <div class="bind-content">
     <h3 class="bind-title">{{bindtil}}</h3>
     <div class="bind-if">
-        <p v-if="isbing">你当前绑定的手机号:{{userMsg.iphone}}</p>
+        <p v-if="isbing">你当前绑定的手机号:{{phone}}</p>
         <p v-else>绑定手机号</p>
     </div>
     <form action="post" class="bind-form">
         <div class="bind-iphone">
             <label>新的手机号：</label>
-            <input number name="userIphone" v-model="from.userIphone">
+            <input number name="userIphone" v-model="userIphone">
         </div>
         <div class="bind-yzm">
             <label>短信验证码：</label>
-            <input number name="userCode" v-model="from.userCode">
+            <input number name="userCode" v-model="userCode">
             <span id="bind-tel-code">获取验证码</span>
         </div>
         <div class="bind-btn">
@@ -113,21 +113,18 @@
 
 <script>
 var Vue = require('Vue');
-
+import tool from '../../js/Tool.js';
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-import tool from '../../js/tool';
 
 var bind = Vue.extend({
     name: 'bind',
     data: function() {
         return {
             bindtil:'修改绑定手机号',
-            from :{
-                userIphone:'',
-                userCode:'',
-            }
+            userIphone:'',
+            userCode:''
         };
     },
     store: store,
@@ -135,6 +132,9 @@ var bind = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
@@ -146,48 +146,68 @@ var bind = Vue.extend({
             } else {
                 return true;
             }
+        },
+        phone: function() {
+          var phone = this.userMsg.iphone;
+          if (typeof phone == 'number') {
+              phone = phone.toString();
+          }
+          return phone.substr(0, 3) + '****' + phone.substr(7, 11);
         }
     },
     ready: function() {
 
         var _this = this;
         // 应用状态修改示例
-        actions.set(store,{id:'4',iphone:'15097553633'})
         
-        new tool.verification("bind-tel-code",{
-            'endTime' : '0',
-            'startTime': '60',
-            'outColor' : '#fff',
-            'outFontSize' : '16px',
-            'outBackground' : '#7F7F7F',
-            'outText' : '秒后重发',
-            callBack : function(){
-                // ajax回调
-                console.log('ajax报名');
-                $.ajax({
-                    url:'http://10.0.11.19/svn/match/2.0/src/json/a.json',
-                    type:'GET',
-                    dataType:'jsonp',
-                    jsonp:'callback',
-                    jsonpCallback:'jsonp'+new Date().getTime(),
-                    data:{useriphone: _this.from.userIphone},
-                    success:function(data){
-                        //返回0 发送成功
-                        //返回1 该号码已注册
-                        //返回2 发送失败
-                        console.log(data.msg);
-                        if(data.msg=="1"){
-                            console.log(data.lists)
-                            alert("发送成功")
-                        }else if(data.msg=="2"){
-                            alert('该号码已注册')
-                        }else if(data.msg=="3"){
-                            alert('发送失败') 
-                        }
-                    }
-                });
-            }
-        })
+        var oBtn = document.getElementById('bind-tel-code');
+          var timer = null;
+          var flag = 0;
+          var t =60;
+          oBtn.onclick = function(){
+              if(flag == 0){
+                  if(!tool.tel($("input[name=userIphone]"))){return}
+                  flag = 1;
+                  clearInterval(timer);
+                  $.ajax({
+                      url: ROOTPATH + '/ajaxsdk/sms/send.lg' + QUERY,
+                      type:'POST',
+                      dataType:'json',
+                      data:{phone: _this.userIphone},
+                      success:function(data){
+                          //返回0 发送成功
+                          //返回1 该号码已注册
+                          //返回2 发送失败
+                          console.log(data.code);
+                          console.log(data.msg)
+                          if(data.code==0){
+                              timer = setInterval(tick,1000);
+                              tick();
+                          }else if(data.code<0){
+                              actions.alert(store,{show:true,msg:data.msg})
+                          }
+                      }
+                  });
+                  
+              }
+          };
+          function tick(){
+              t--;
+              oBtn.style.background = "gray";
+              oBtn.style.fontSize = "14px";
+              oBtn.textContent =t+ '秒后重发';
+              oBtn.style.cursor = "default";
+              if(t<=0){
+                  oBtn.textContent ='获取验证码';
+                  oBtn.style.fontSize = "14px";
+                  oBtn.style.background = "#2F9ED9";
+                  oBtn.style.cursor = "pointer";
+                  clearInterval(timer);
+                  flag = 0;
+                  t = 60;
+              }
+          };
+        
     },
     methods: {
         sureBtnTel: function(event){
@@ -198,30 +218,32 @@ var bind = Vue.extend({
                 
             //$.ajax
             $.ajax({
-                url:'http://10.0.11.19/svn/match/2.0/src/json/a.json',
-                type:'GET',
-                dataType:'jsonp',
-                jsonp:'callback',
-                jsonpCallback:'jsonp'+new Date().getTime(),
-                // data:{userid: _this.userCon.id},
+                url:ROOTPATH + '/ajaxsdk/sdkuser/save.lg' + QUERY,
+                type:'POST',
+                dataType:'json',
+                data:{phone: _this.userIphone,code:_this.userCode},
                 success:function(data){
                     //返回0 注册成功
                     //返回1 该号码已注册
                     //返回2 验证码不对
-                    console.log(data.msg);
-                    if(data.msg=="1"){
-                        console.log(data.lists)
-                        alert("注册成功")
-                    }else if(data.msg=="2"){
-                        alert('该号码已注册')
-                    }else if(data.msg=="3"){
-                        alert('验证码不对') 
+                    
+                    if(data.code==0){
+                        actions.set(store,{iphone:_this.userIphone})
+                        setTimeout(function(){
+                          _this.$route.router.go({path:'/mine/setcof/'})
+                        },1000)
+                    }else if(data.code<0){
+                        actions.alert(store,{show:true,msg:data.msg})
                     }
                 }
             });  
         },
         closeBtnTel: function(event){
-          
+          this.$route.router.go({path:'/mine/setcof/'})
+        },
+        arr: function(phone) {
+          var self = this;
+          self.userIphone = phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
         }
     }
 });

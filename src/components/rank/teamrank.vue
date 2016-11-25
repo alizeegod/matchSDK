@@ -16,7 +16,7 @@
 .dropload-up {
   position: relative;
   height: 0;
-  overflow: hidden;
+  overflow: hidden; 
   font-size: 12px;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -55,15 +55,15 @@
   			<p class="p3">战队</p>
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',query:{userid:userMsg.id}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{type:1}}">战斗力<i>?</i></span>
   			</p>
   			<p class="p6"></p>
-  		</div>
+  		</div> 
   		<div class="prank-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
   			<ul>
-  				<li class="prank-item trank-item" v-link="{name:'rule',query:{teamid:teamRank.id}}"
+  				<li class="prank-item trank-item" v-link="{path:'/match/team/'+teamRank.id}"
   				v-for="(index,teamRank) in teamRanks">
-  					<p class="p1"><span>{{index+1}}</span></p>
+  					<p class="p1"><span>{{teamRank.rank}}</span></p>
 		  			<p class="p2"></p>
 		  			<p class="p3"><image :src="teamRank.logo"/><span>{{teamRank.name}}</span></p>
 		  			<p class="p4"></p>
@@ -94,25 +94,13 @@ var teamrank = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
     },
-	created: function(){
-		var _this = this;
-		// $.ajax({
-  //       url: ROOTPATH + '/match/teamlist.lg',
-  //       dataType: 'json',
-  //       type: 'POST',
-  //       data: {type: 2,page:1,pagesize:12},
-  //       success: function(data) {
-  //           console.log(data)
-  //           _this.teamRanks = data.data.list;
-  //           console.log(_this.teamRanks)
-  //       }
-    // })
-
-	},
 	ready: function() {
         let rW = $("#app").width()-50;
         $(".rank-top").width(rW);
@@ -121,7 +109,6 @@ var teamrank = Vue.extend({
         let rH = document.documentElement.clientHeight - 116;
         $(".trank .prank-con").height(rH);
 
-        
         var me = this;
         me.$options.vue = me
 	},
@@ -129,15 +116,16 @@ var teamrank = Vue.extend({
         var me = this.vue;
         console.log(me.page)
         $.ajax({
-            url: ROOTPATH + '/match/teamlist.lg',
+            url: ROOTPATH + '/match/teamlist.lg' + QUERY,
             dataType: 'json',
             type: 'POST',
-            data: {type: 2,page:me.page,pagesize:12},
+            data: {type: 2,page:me.page,pagesize:100},
             success: function(data) {
-                console.log(data)
-                // _this.teamRanks = data.data.list;
-                // console.log(_this.teamRanks)
-                fn(data)
+                if (data.code == 0) {
+                  fn(data)
+                } else if (data.code < 0) {
+                  actions.alert(store,{show:true,msg:data.msg})
+                }
             }
         })
     },

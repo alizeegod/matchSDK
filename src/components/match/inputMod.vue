@@ -34,9 +34,12 @@
     background: #b1b1b1;
     float: left;
     padding-top: 5px;
+    user-select:text;
+    -webkit-user-select:text;
 }
 .match_reply .textarea::placeholder{
     color: #555;
+    padding-left:10px;
 }
 .match_top_btns .np-btn-submit {
     float: right;
@@ -72,9 +75,10 @@ module.exports = {
             "cmtLimitLength":300,
             "curEl":{},
             "replyEl":{},
-            "myId":Miconfig.userId,
-            "nickName":Miconfig.username,
-            "avatar":Miconfig.avatar
+            "myId":gload_conf.uid,
+            "nickName":gload_conf.rolename,
+            "avatar":gload_conf.avatar,
+            "userarea":gload_conf.servername
 		}
 	},
 	ready:function(){
@@ -84,10 +88,10 @@ module.exports = {
 	methods:{
 		openPannel:function(){
 			this.pannel = true;
-			if(this.replyEl.repname){
-				this.content = "回复 "+this.replyEl.repname+"：";
-			}else if(this.curEl.name){
-				this.content = "回复 "+this.curEl.name+"：";
+			if(this.replyEl.rolename){
+				this.content = "回复 "+this.replyEl.rolename+"：";
+			}else if(this.curEl.rolename){
+				this.content = "回复 "+this.curEl.rolename+"：";
 			}else{
 				this.content = "";
 			}
@@ -110,31 +114,32 @@ module.exports = {
 				return ;
 			}
 			$.ajax({
-				url:common.getBaseUrl(),
-		        type:"GET",
+				url:common.getBaseUrl()+'/match/reply.lg'+QUERY,
+		        type:"POST",
 		        dataType:"json",
-		        data:{category:"submit_reply",ctime:el.ctime,content:encodeURIComponent(content),remark:_this.replyEl.repid,matchid:wsCache.get('HEROC').matchid},
+		        data:{content:content,pid:_this.curEl.id,match_id:wsCache.get('HEROC').matchid},
 		        success:function(data){
-		            var temp = {
-		                "rtime": data.data.rtime,
-		                "repid": _this.myId,
-		                "repname":Miconfig.username,
-		                "status":"0",
-		                "content": content,
-		                "rnum":0,
-		                "remark":"",
-		                "passrepimgurl":"",
-		                "passrepname":_this.replyEl.repname,
-		                "cltip":""
-					};
-					el.replys.push(temp);
-		          common.tips("回复成功");
-		          _this.content = "";
-		         // $(".textarea").html('')
-				 // _this.closePannel();
-
-
-		        }
+		        	if(data.code == 0){
+                        var temp = {
+			                "rtime": data.data.rtime,
+			                "id": _this.myId,
+			                "rolename":_this.username,
+			                "status":"0",
+			                "content": content,
+			                "rnum":0,
+			                "remark":"",
+			                "passrepimgurl":"",
+			                "passrepname":_this.curEl.rolename,
+			                "cltip":""
+						};
+						el.replys.push(temp);
+			            common.tips("回复成功");
+			            _this.content = "";
+		        	}else if(data.code<0){
+                        common.tips("回复失败");
+		        	}
+		            
+                }
             });
 			
 		},
@@ -150,29 +155,30 @@ module.exports = {
 				return ;
 			}
 			$.ajax({
-			    url:common.getBaseUrl(),
-		        type:"GET",
+			    url:common.getBaseUrl()+'/match/reply.lg'+QUERY,
+		        type:"POST",
 		        dataType:"json",
-		        data:{category:"submit_comment",username:_this.nickName,userid:_this.myId,content:encodeURIComponent(content),matchid:wsCache.get('HEROC').matchid},
+		        data:{content:content,match_id:wsCache.get('HEROC').matchid,pid:0},
 		        success:function(data){
-		        	if(data.status == "SUCCESS"){
+		        	if(data.code==0){
                         var temp = {
 			                "ctime": data.data.ctime,
-	                        "commid": _this.myId,
-	                        "imgurl": _this.avatar,
-	                        "name": _this.nickName,
+	                        "id": _this.myId,
+	                        "logo": _this.avatar,
+	                        "rolename": _this.nickName,
 	                        "status":"0",
 	                        "oper_status":0,
 	                        "report_status":0,
 	                        "content": content,
 	                        "rnum":0,
-	                        "area": Miconfig.userarea,
+	                        "servicename": _this.userarea,
 	                        "replys":[]
 						};
                         common.tips("发表成功");
 				        _this.$dispatch('addTotalNum', 1);
 				        _this.$dispatch('addComents',temp);
 				        _this.content="";
+				        window.scrollTo(0, 0);
                     }else{
 		        		common.tips(data.msg);
 		        	}
@@ -201,7 +207,7 @@ module.exports = {
 			return len;
 		},
 		submit:function(e){
-			if(this.curEl.commid){
+			if(this.curEl.id){
 				this.submit_reply();
 			}else{
 				this.submit_comment();

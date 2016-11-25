@@ -5,7 +5,7 @@
 		position: fixed;
 		left:0;
 		top: 0;
-		z-index: 30;
+		z-index: 150;
 		background: rgba(0,0,0,.5);
 	}
 	.match-match-teltk{
@@ -19,7 +19,6 @@
 		background-size: 100% 100%; 
 		margin: -134px 0 0 -179px;
 		overflow: hidden;
-		z-index:40;
 	}
 	.match-teltk-hed{
 		 display: flex;
@@ -68,13 +67,15 @@
 	.match-teltk-code{
        color: #fff;
        background: #5589cf;
-       padding: 5px 10px;
-       letter-spacing: 1px;
-       position: absolute;
-       right:5px;
-       top: 5px;
-       line-height: 14px;
-       border-radius: 3px;
+       padding: 5px 0;
+	   letter-spacing: 1px;
+	   position: absolute;
+	   right: 5px;
+	   top: 5px;
+	   line-height: 14px;
+	   border-radius: 3px;
+	   width: 26%;
+	   text-align: center;
 	}
 	.match-match-teltk .close{
 		width: 16px;
@@ -127,9 +128,10 @@
 </template>
 
 <script>
-
-
-    import tool from '../../js/tool';
+    import tool from '../../js/Tool';
+    var common = require('../../js/common.js');
+    var store = require('../../store/store.js');
+    var actions = require('../../store/actions.js');
     module.exports = {
 		data(){
 			return {
@@ -146,73 +148,105 @@
 		    'matchid',
 		    'matchstate'
         ],
+		store: store,
+		vuex: {
+			getters: {
+				userMsg: function() {
+					return store.state.userMsg;
+				},
+	      alertConfig: function() {
+	          return store.state.alertConfig;
+	      }
+			},
+			actions: actions
+		},
         ready: function(){
-            new tool.verification("match-teltk-code",{
-	            'endTime' : '0',
-	            'startTime': '60',
-	            'outColor' : '#fff',
-	            'outFontSize' : '12px',
-	            'outBackground' : '#7F7F7F',
-	            'outText' : '秒后重发',
-	            callBack : function(){
-	                // ajax回调
-	                console.log('ajax报名')
-	            }
-	        })
+        	var self = this;
+        	var flag = 0;
+        	$("#match-teltk-code").click(function(){
+        		
+                if(tool.tel($("input[name=userIphone]")) && flag == 0){
+                	var oBtn = document.getElementById("match-teltk-code");
+				    var timer = null;
+				    var t =60;
+				    if(flag == 0){
+				    	flag = 1;
+			            $.ajax({
+			            	url:common.getBaseUrl()+'/ajaxsdk/sms/send.lg'+QUERY,
+			            	type:"POST",
+			            	timeout:10000,
+			            	data:{phone:self.from.userIphone},
+			            	dataType:"json",
+			            	success:function(data){
+			            		if(data.code==0){
+                                    clearInterval(timer);
+			                        timer = setInterval(tick,1000);
+			            			tick();
+			            		}
+			            	},
+			            	complete:function(XMLHttpRequest,status){
+						　　　　if(status=='timeout'){
+						            flag == 0
+						　　　　}
+						　　}
+                        })
+			        }
+				    function tick(){
+				        t--;
+				        oBtn.style.background = "gray";
+				        oBtn.style.fontSize = "12px";
+				        oBtn.textContent =t+ '秒后重发';
+				        oBtn.style.cursor = "default";
+				        if(t<=0){
+				            oBtn.textContent ='获取验证码';
+				            oBtn.style.fontSize = "12px";
+				            oBtn.style.background = "#5589cf";
+				            oBtn.style.cursor = "pointer";
+				            clearInterval(timer);
+				            flag = 0;
+				            t = 60;
+				        }
+				    };
+
+				}  
+            })
         },
 		methods:{
 			sureBtnTeltk:function(){
 				var self = this;
 				if(!tool.tel($("input[name=userIphone]"))){return}
             	if(!tool.yzm($("input[name=userCode]"))){return}
-
 			},
-			/*
-            sureBtnTeltk: function(event){
-            	var _this = this;
-    //         	$("a[data-id="+_this.matchid+"]").removeClass("item-djbm-btn").addClass("item-ybm-btn").html('已报名');
-				// if($($("a[data-id="+_this.matchid+"]").parents("div.match-list-zd")).length>0){
-				//       $($("a[data-id="+_this.matchid+"]").parents("div.match-list-zd")).attr("id","MatchShowLi|floor1|"+_this.matchid+"|"+4+"")
-				// }else if($($("a[data-id="+_this.matchid+"]").parents("li.ceil")).length>0){
-				//       $($("a[data-id="+_this.matchid+"]").parents("li.ceil")).attr("id","MatchShowLi|floor2|"+_this.matchid+"|"+4+"")                         
-				// }
-    //         	return;
+		    sureBtnTeltk: function(event){
+            	var self = this;
             	
             	if(!tool.tel($("input[name=userIphone]"))){return}
             	if(!tool.yzm($("input[name=userCode]"))){return}
-            		
-            	//$.ajax
-            	$.ajax({
-					url:common.getBaseUrl(),
-					type:'GET',
-					dataType:'jsonp',
-					jsonp:'callback',
-					jsonpCallback:'jsonp'+new Date().getTime(),
-					data:{$category:"matchTeltk",username:_this.username,userArea:_this.userarea,userIphone:this.from.userIphone,userCode:this.from.userCode,matchchannl:_this.matchchannl,matchid:_this.matchid},
+                
+                $.ajax({
+					url:common.getBaseUrl()+'/ajaxsdk/sdkuser/save.lg'+QUERY,
+					type:'POST',
+					dataType:'json',
+					data:{match_id:self.matchid,phone:self.from.userIphone,code:self.from.userCode},
 					success:function(data){
-						//返回0 成功====修改状态state
-						//返回1 已注册用户
-						//返回2 验证码不对
-						//返回4 
-						if(data.msg=="1"){
-                            _this.$parent.isTeltk = false;
-                            $("a[data-id="+_this.matchid+"]").removeClass("item-djbm-btn").addClass("item-ybm-btn").html('已报名');
-                            //报名成功以后修改state状态_this.state\data.state
-			                if($($("a[data-id="+_this.matchid+"]").parents("div.match-list-zd")).length>0){
-							      $($("a[data-id="+_this.matchid+"]").parents("div.match-list-zd")).attr("id","MatchShowLi|floor1|"+_this.matchid+"|"+4+"")
-							}else if($($("a[data-id="+_this.matchid+"]").parents("li.ceil")).length>0){
-							      $($("a[data-id="+_this.matchid+"]").parents("li.ceil")).attr("id","MatchShowLi|floor2|"+_this.matchid+"|"+4+"")                         
-							}
-                        }else if(data.msg=="2"){
-                            alert('已注册用户')
-						}else if(data.msg=="3"){
-                            alert('验证码不对') 
+						if(data.code==0){
+                            self.$parent.isTeltk = false;
+                            
+                            if($("#mabmBtn"+self.matchid).length>0){
+                            	var omatchShow = $(".MatchShow"+self.matchid);
+                                $("#mabmBtn"+self.matchid).attr("class","").addClass("item-ybm-btn").html('已报名');
+                                omatchShow.attr("id",""+omatchShow.attr("id").split("|")[0]+"|"+omatchShow.attr("id").split("|")[1]+"|"+omatchShow.attr("id").split("|")[2]+"|3|"+omatchShow.attr("id").split("|")[4]+"|1")
+                            }else{
+                            	self.$parent.show=1;
+                            }
+                            common.tips(data.msg);
+                        }else{
+                            common.tips(data.msg);
 						}
 					}
 				});
             	
             },
-            */
             closeBtnTeltk: function(event){
                 this.$dispatch('child-msg', "aaa")
             	this.$parent.isTeltk = false;

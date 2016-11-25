@@ -89,7 +89,7 @@ Tool.yzm=(obj)=>{
 //前端验证手机号
 Tool.tel=(obj)=>{
     var phone=obj.val();
-    var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
+    var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
     if(phone==''){
         alert("手机号不能为空");
         return false;
@@ -105,6 +105,35 @@ Tool.tel=(obj)=>{
     }else{
         return true;
     }
+}
+Tool.iphoneCode=(obj,flag)=>{
+	var oBtn = document.getElementById(obj);
+    var timer = null;
+    var t =60;
+    oBtn.onclick = function(){
+        if(flag == 0){
+            flag = 1;
+            clearInterval(timer);
+            timer = setInterval(tick,1000);
+            tick();
+        }
+    };
+    function tick(){
+        t--;
+        oBtn.style.background = "gray";
+        oBtn.style.fontSize = "14px";
+        oBtn.textContent =t+ '秒后重发';
+        oBtn.style.cursor = "default";
+        if(t<=0){
+            oBtn.textContent ='获取验证码';
+            oBtn.style.fontSize = "14px";
+            oBtn.style.background = "#13161C";
+            oBtn.style.cursor = "pointer";
+            clearInterval(timer);
+            flag = 0;
+            t = 60;
+        }
+    };
 }
 
 //轮播

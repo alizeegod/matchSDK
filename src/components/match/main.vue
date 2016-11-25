@@ -58,6 +58,7 @@ a{
 }
 
 .match-match-hed{
+    width:100%;
     padding: 8px 0 7px 33px; 
     background: #1a212e;
     overflow: hidden;
@@ -119,7 +120,7 @@ a{
 .match-list-zd .item-info  p{
     margin-bottom: 10px;
 }
-.match-list-zd .item-info a{
+.match-list-zd .item-info > a{
     width: 65px;
     height: 22px;
     position: absolute;
@@ -132,7 +133,7 @@ a{
     line-height: 22px;
     border-radius: 2px;
 }
-.max-match-flex .item-info a{
+.max-match-flex .item-info > a{
     width:60px;
     height:20px;
     float:right;
@@ -339,8 +340,8 @@ a{
         <div class="item-info">
             <p class="item-txt">{{ list.name }}</p>
             <p class="item-time p-countdown"></p>
-            <p class="item-a item-rmb"><i></i>奖金：{{ list.bonus }}元</p>
-            <registration-component v-bind:reg={"mx":"1","list":list,"bindphone":bindphone}></registration-component>
+            <p class="item-a item-rmb" v-if="list.type==1"><i></i>奖金：{{ list.bonus }}元</p>
+          <registration-component v-bind:list="list" v-bind:mx="1" v-bind:bindphone="bindphone"></registration-component>
         </div>  
     </div>
      <ul class="max-match-flex">
@@ -359,11 +360,13 @@ a{
                </div>
                <span class="item-txt">
                    <span class="item-tit">{{ list.name }}</span>
-                   <span class="item-num"><span>{{ list.member }}</span>人参加</span>
+                   <span class="item-num" v-if="list.type==1">{{ list.bonus }}</span>
+                   <span class="item-num" v-else><span>{{ list.member }}</span>人参加</span>
                </span>
                <span class="item-info">
                    <span class="item-time p-countdown"></span>
-                   <registration-component v-bind:reg={"mx":"1","list":list,"bindphone":bindphone}></registration-component>
+                   <!-- <registration-component :reg={"mx":"1","list":list,"bindphone":bindphone}></registration-component> -->
+                   <registration-component v-bind:list="list" v-bind:mx="1" v-bind:bindphone="bindphone"></registration-component>
                </span>
             </div>
         </li>
@@ -379,7 +382,7 @@ a{
 var common = require('../../js/common.js');
 
 var registrationComponent = require('./registration.vue')
-//离线缓存https://github.com/WQTeam/web-storage-cache
+
 
 module.exports = {
     data:function(){
@@ -399,6 +402,7 @@ module.exports = {
             pageTotal:'',
             pagesize:12,
             regtype:1,
+            comment:'',
             bindphone:gload_conf.bindphone
         }
     },
@@ -408,8 +412,8 @@ module.exports = {
     methods:{
         loadMore:function(curPage){
             var self = this;
-            var url = common.getBaseUrl()+'/match.lg';
-            var gPost = "POST";//"POST"
+            var url = common.getBaseUrl()+'/match.lg'+QUERY;
+            var gPost = "POST";
             var data = {
                 racetype : self.racetype,
                 page : curPage,
@@ -425,7 +429,7 @@ module.exports = {
                     $(".loading-1").show();
                 },
                 success:function(data){
-                    if(data.code=="0"){
+                    if(data.code<0){
                         $("#mover").text('还没有哦');
                         return ;
                     }
@@ -488,9 +492,10 @@ module.exports = {
                 typeid : '',//赛事种类 0,线上赛，1线下赛
                 channelid:'',//赛事分类id （1线下赛） 0淘汰赛1积分赛
                 userid : '',//用户id
-                starttime : '',//开始时间
+                startime : '',//开始时间
                 endtime:'',//结束时间
-                poptypeid:''//1双败2代表单败
+                poptypeid:'',//1双败2代表单败
+                enroll:''
             }
             var matchname = obj.name;
             var matchid = obj.id;
@@ -498,15 +503,23 @@ module.exports = {
             var userid = gload_conf.uid;
             var typeid = obj.type;
             var poptypeid = obj.pop_type;
+            var comment = obj.comment;
+            var endtime = obj.endtime;
+            var startime = obj.startime;
+            var enroll = obj.enroll;
             wsData = {
                 matchname : matchname,
                 matchid : matchid,
                 channelid : channelid,
                 userid : userid,
                 typeid : typeid,
-                poptypeid : poptypeid
+                poptypeid : poptypeid,
+                startime : startime,
+                endtime : endtime,
+                enroll : enroll
             }
             wsCache.set('HEROC',wsData);
+            wsCache.set('COMMENTA',{comment : comment});
         }
     },
     ready:function(){
@@ -529,4 +542,3 @@ module.exports = {
     }
 }
 </script>
-

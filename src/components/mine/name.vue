@@ -81,25 +81,33 @@
   background: url(../../images/name_ico_on.png) no-repeat;
   background-size: 100% 100%;
  }
+ .name h1{
+    width: 100%;
+    text-align: center;
+    line-height: 4;
+    font-size: 24px;
+    color: #fff;
+ }
 </style>
 <template>
     <div class="name">
         <h3 class="set_til"><span></span>{{nametil}}</h3>
         <div class="name_main">
-            <p class="name_title">{{nametip}}</p>
+            <p class="name_title" v-if="namedatas.length <= 0 ? false : true">{{nametip}}</p>
             <ul id="name-ul">
-              <li v-for="(index,namedata) in namedatas" :class="namedata.ischecked ? 'active' : ''" @click="change(namedata.ischecked,index,$event)">
+              <li v-for="(index,namedata) in namedatas" :class="namedata.status ? 'active' : ''" @click="change(namedata.status,index,namedata.tag_id,$event)">
                 <a>
-                    <img :src="namedata.nameimage"  class="name_img" />
+                    <img :src="namedata.cover"  class="name_img" />
                     <img src="../../images/name_img_bg.png" class="name_img_bg" />
                     <span class="name_ico"></span>
-                    <p>{{namedata.namewho}}</p>
-                    <p>{{namedata.nametime}}</p>
+                    <p>{{namedata.match_title}}</p>
+                    <p>{{namedata.create_time}}</p>
                     <i></i>
                 </a>
               </li>
             </ul>
         </div>
+        <h1 v-if="namedatas.length <= 0 ? true : false">你还没有称号，参与比赛赢取冠军称号</h1>
     </div>
 </template>
 
@@ -109,26 +117,6 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-var Mock = require('mockjs');
-
-Mock.mock(ROOTPATH + 'name',{
-    "namedatas":[{
-        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "namewho":'排位赛-冷血杀神冠军',
-        "nametime":'2016.05.21获得',
-        "ischecked": true
-    },{
-        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "namewho": '排位赛-冷血杀神冠军',
-        "nametime": '2016.05.21获得',
-        "ischecked": false
-    },{
-        "nameimage": 'http://10.0.11.19/svn/match/2.0/src/images/name_img.png',
-        "namewho": '排位赛-冷血杀神冠军',
-        "nametime": '2016.05.21获得',
-        "ischecked": true
-    }]
-});
 var name = Vue.extend({
     name: 'name',
     data: function() {
@@ -136,7 +124,7 @@ var name = Vue.extend({
           nametil:'修改称号',
           nametip:'称号最多选两个：',
           namedatas: {},
-          ischecked: false
+          status: 1
         };
     },
     store: store,
@@ -144,6 +132,9 @@ var name = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
@@ -152,44 +143,59 @@ var name = Vue.extend({
         var _this = this;
 
         $.ajax({
-            url: ROOTPATH + 'name',
+            url: ROOTPATH + '/match/tags.lg' + QUERY,
+            type: 'POST',
             dataType: 'json',
+            beforeSend:function(){
+                $(".loading-1").show();
+            },
             success: function(data) {
-                _this.namedatas = data.namedatas;
+              console.log(data)
+              $(".loading-1").hide();
+                _this.namedatas = data.data;
             }
         })
 
     },
-    computed: {
-        
-    },
-    ready: function() {
-        
-    },
-    beforeDestroy: function(){
-        let _this = this;
-        
-    },
     methods: {
-        change: function(ischecked,index,event){
+        change: function(status,index,tagId,event){
 
             let _this = this;
-
             let actLength = $("#name-ul li").filter(".active").length;
+            let st = _this.namedatas[index];
 
-            if (ischecked == true) {
+            if (status == 1) {
 
-                this.namedatas[index].ischecked = false;
+                st.status = 0;
 
-            } else if (ischecked == false && actLength >= 2) {
+            } else if (status == 0 && actLength >= 2) {
 
                 alert("最多只能选择两个称号")
+                return false;
 
-            } else if (ischecked == false && actLength < 2) {
+            } else if (status == 0 && actLength < 2) {
 
-                this.namedatas[index].ischecked = true;
+                st.status = 1;
 
             }
+            console.log(tagId,st.status)
+            $.ajax({
+                url: ROOTPATH + '/match/settags.lg' + QUERY,
+                type: 'POST',
+                dataType: 'json',
+                data: {tag_id: tagId,status: st.status},
+                beforeSend:function(){
+                    $(".loading-1").show();
+                },
+                success: function(data) {
+                    if (data.code == 1) {
+                        $(".loading-1").hide();
+                        actions.alert(store,{show:true,msg:data.msg})
+                    } else {
+                        actions.alert(store,{show:true,msg:data.msg})
+                    }
+                }
+            })
         }
     }
 });

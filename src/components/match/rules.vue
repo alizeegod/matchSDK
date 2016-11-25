@@ -57,7 +57,7 @@ module.exports ={
                 gameid : gload_conf.gameid
             };
             $.ajax({
-                url:common.getBaseUrl()+'/match/detail.lg',
+                url:common.getBaseUrl()+'/match/detail.lg'+QUERY,
                 type:gPost,
                 dataType:"json",
                 data:data,
@@ -65,8 +65,14 @@ module.exports ={
                     $(".loading-1").show();
                 },
                 success:function(data){
-                    self.dataruesC = data.data.match.rules;
-                    $(".loading-1").hide();
+                    if(data.code==0){
+                        self.dataruesC = data.data.match.rules;
+                        $(".loading-1").hide(); 
+                    }else if(data.code <0){
+                        common.tips(data.msg);
+                        $(".loading-1").hide(); 
+                    }
+                    
                 }
             })
         }

@@ -182,17 +182,17 @@
       <div class="gamedl_main">
         <div class="gamedl_top">
           <div class="gdetail_img">
-              <img :src="gamedetail.banner" />
-              <p><span>{{gamedetail.bannertil}}</span></p>
+              <img :src="gamedetail.map" />
+              <p><span>{{gamedetail.mapname}}</span></p>
           </div>
           <ul>
-            <li><span>游戏模式</span><span>{{gamedetail.matchmodel}}</span></li>
-            <li><span>比赛模式</span><span>{{gamedetail.gamemodel}}</span></li>
-            <li><span>比赛时间</span><span>{{gamedetail.gametime}}</span></li>
+            <li><span>游戏模式</span><span>{{gamedetail.type}}</span></li>
+            <li><span>比赛模式</span><span>{{gamedetail.mode}}</span></li>
+            <li><span>比赛时间</span><span>{{gamedetail.time}}</span></li>
           </ul>
         </div>
-        <div class="gdetail_result" v-for="teamlist in gamedetail.teamlists">
-          <p class="gd_rtil" :class="teamlist.type == 0 ? 'fail' : 'suc'">{{teamlist.til}}</p>
+        <div class="gdetail_result" v-for="(index,teamlist) in gamedetail.teamlists">
+          <p class="gd_rtil" :class="index == 0 ? 'fail' : 'suc'">{{teamlist.title}}</p>
           <ul class="gd_res_title">
             <li>玩家</li>
             <li>军衔</li>
@@ -202,10 +202,10 @@
           <ul class="gdetail_succeed">
             <li v-for='list in teamlist.lists' :class="list.userid == userMsg.id ? 'active' : ''">
               <a v-link="{name:'mine',query:{userid:list.userid}}">
-                <span><i class="gdetail_pic"><img :src="list.userImg" /></i>{{list.username}}</span>
-                <span>{{list.userrank}}</span>
-                <span>{{list.userdan}}</span>
-                <span>{{list.kd}}</span>
+                <span><i class="gdetail_pic"><img :src="list.avatar" /></i>{{list.rolename}}</span>
+                <span>{{list.rank}}</span>
+                <span>{{list.duanwei}}</span>
+                <span>{{list.kill}}/{{list.died}}</span>
               </a>
             </li>
           </ul>
@@ -220,32 +220,6 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-
-var Mock = require('mockjs');
-
-Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
-Mock.mock(ROOTPATH + 'gamedetail',{
-    "gamedetail":{
-      'title'                  : '排位赛-连胜之王',
-      'banner'                 : '@image',
-      'bannertil'              : '@name',
-      'matchmodel'             : '排位赛',
-      'gamemodel'              : '团队模式',
-      'gametime'               : '13小时前',
-      'teamlists|2'            : [{
-          'til'                     : '联盟军：胜利',
-          'type'                    : 1,
-          'lists|5'                 : [{  
-              'userid|1-10'               : 1,        
-              'userImg'                   : '@image',
-              'username'                  : '@name',
-              'kd'                        : '60-60',
-              'userrank'                  : '下士',
-              'userdan'                   : '白银'
-          }]
-      }]
-    }
-});
 var gamedetail = Vue.extend({
     name: 'gamedetail',
     data: function() {
@@ -258,6 +232,9 @@ var gamedetail = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
@@ -265,10 +242,22 @@ var gamedetail = Vue.extend({
     created: function() {
       var _this = this;
       $.ajax({
-          url: ROOTPATH + 'gamedetail',
-          dataType: 'json',
-          success: function(data) {
-              _this.gamedetail = data.gamedetail;
+            url: ROOTPATH + '/my/match-detail.lg' + QUERY,
+            type: 'POST',
+            dataType: 'json',
+            data: {fightid:_this.$route.query.fightid,matchid:_this.$route.query.matchid},
+            beforeSend:function(){
+                $(".loading-1").show();
+            },
+            success: function(data) {
+                console.log(data)
+                if (data.code == 0) {
+                    $(".loading-1").hide();
+                    _this.gamedetail = data.data;
+                } else if (data.code < 0) {
+                    actions.alert(store,{show:true,msg:data.msg})
+                }
+                
           }
       })
     },

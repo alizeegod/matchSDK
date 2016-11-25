@@ -17,6 +17,7 @@
   width: 95%;
   margin: 0 auto;
   padding: 21px 0;
+  overflow: auto;
 }
 .tips_main ul li{
   color: #557fbd;
@@ -35,7 +36,7 @@
 .tips_main ul li a .tips_reply{
   color: #e1e1e1;
 }
-.tips_main ul li a p:last-child{
+.tips_main ul li a p:nth-of-type(3){
   color: #999;
   background: #2f333d;
 }
@@ -57,13 +58,13 @@
 <template>
     <div class="tips">
       <h3 class="tips_til"><span></span>{{tips_til}}</h3>
-      <div class="tips_main">
+      <div class="tips_main" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
         <ul>
           <li v-for='tiplist in tipslists'>
             <a @click.prevent="goto(tiplist)">
-              <p><span class="tips_reply">{{tiplist.username}}</span>回复：</p>
-              <p class="tips_replytxt"><span>{{tiplist.reply}}</span><i v-show="tiplist.boolean"></i></p>
-              <p>我：<span class="tips_question">{{tiplist.question}}？</span></p>
+              <p v-if="tiplist.type == 1 ? false : true"><span class="tips_reply">{{tiplist.rolename}}</span>回复：</p>
+              <p class="tips_replytxt"><span>{{tiplist.content}}</span><i v-show="tiplist.is_read"></i></p>
+              <p v-if="tiplist.type == 1 ? false : true"><span class="tips_question">{{tiplist.main}}</span></p>
             </a>
           </li>
         </ul>
@@ -77,27 +78,13 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-
-var Mock = require('mockjs');
-
-Mock.mock(ROOTPATH + 'tips',{
-  "code"     : 0,
-  "msg"      : 0,
-  "data|1-10":[{
-      'type': 3,
-      'username': '@name',
-      'reply':'@title',
-      'question':'@title',
-      'boolean|1-2': true,
-      'matchid': 1
-  }]
-});
 var tips = Vue.extend({
     name: 'tips',
     data: function() {
         return {
           tips_til:'消息提醒',
-          tipslists:{}
+          tipslists:[],
+          page: 0
         };
     },
     store: store,
@@ -105,27 +92,61 @@ var tips = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
     },
     created: function() {
-      var _this = this;
-      $.ajax({
-          url: ROOTPATH + 'tips',
-          dataType: 'json',
-          success: function(data) {
-              _this.tipslists = data.data;
-          }
-      })
+      
     },
   	ready: function() {
-  		// this.msg = this.alertConfig.msg;
+  		let rH = document.documentElement.clientHeight - 92;
+        $(".tips_main").height(rH);
+
+        
+        var me = this;
+        me.$options.vue = me;
+        console.log(me.page)
 
   	},
+    loadListData: function (fn) {
+        var me = this.vue;
+        $.ajax({
+            url: ROOTPATH + '/match/tips.lg' + QUERY,
+            dataType: 'json',
+            type: 'POST',
+            data: {page: me.page,pageSize:30},
+            success: function(data) {
+                if (data.code == 0) {
+                  fn(data)
+                } else if (data.code < 0) {
+                  actions.alert(store,{show:true,msg:data.msg})
+                }
+            }
+        })
+    },
     methods: {
         goto:function(tipslist){
-            tipslist.type == 3 ? this.$route.router.go({name:'mine',query:{matchid:tipslist.matchid}}) : alert('...')   
+            tipslist.type == 3 ? this.$route.router.go({path:'/match/lineComment/'+tipslist.match_id}) : alert('...')   
+        },
+        down_a: function () {
+            var me = this;
+            me.page += 1;
+            me.$options.loadListData(function (data) {
+                me.tipslists = me.tipslists.concat(data.data.list);
+                console.log(data.data.totalPage)
+                console.log(data.data.page)
+                if (data.data.totalPage <= me.page) {
+                    me.ascroll.noData();
+                }
+                // 通过设置的key 方法下拉对象方法
+                // 如果没有更多数据。你可以 调用 me.ascroll.noData()
+                me.ascroll.resetload(true);
+            });
+ 
         }
     }
 });

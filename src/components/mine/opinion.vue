@@ -14,7 +14,7 @@
     margin: 0 auto;
     box-sizing: border-box;
     padding: 10px;
-    background: #161A23;
+    background: #161A23; 
 }
 .opmain textarea{
   width: 100%;
@@ -74,7 +74,7 @@
   <div class="opmain">
     <textarea v-model="message" placeholder="请描述你的问题或意见" maxlength="300"></textarea>
     <div class="opmain_bot">
-        <div class="opmain_add_img">
+        <div class="opmain_add_img" style="display:none;">
             <i class="opmain_add_btn" @click="addImg"></i>
         </div>
         <p class="opmain_len">{{msgLen}}/300</p>
@@ -97,7 +97,7 @@ var opinion = Vue.extend({
         return {
             opiniontil:'意见反馈',
             opiniontip:'问题与意见',
-            message: '的时刻供货商的角度来看分公司了'
+            message: ''
         };
     },
     store: store,
@@ -105,6 +105,9 @@ var opinion = Vue.extend({
         getters: {
             userMsg: function() {
                 return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
@@ -130,28 +133,25 @@ var opinion = Vue.extend({
         },
         commit: function(){
             let _this = this;
-            if (msg == '') {
-                alert('请描述你的问题或意见')
+            if (_this.message == '') {
+                actions.alert(store,{show:true,msg:'请描述你的问题或意见'})
             } else {
                 $.ajax({
-                    url:'http://10.0.11.19/svn/match/2.0/src/json/a.json',
+                    url: ROOTPATH + '/match/feedback.lg' + QUERY,
                     type:'POST',
-                    dataType:'jsonp',
-                    jsonp:'callback',
-                    jsonpCallback:'jsonp'+new Date().getTime(),
-                    data:{userid: _this.userMsg.userid,msg:_this.message},
+                    dataType:'json',
+                    data:{content:_this.message},
+                    beforeSend:function(){
+                        $(".loading-1").show();
+                    },
                     success:function(data){
                         //返回1 提交成功
-                        //返回2 提交失败
-                        //返回3 
-                        console.log(data.msg);
-                        if(data.msg=="1"){
-                            console.log(data.lists)
-                            alert("提交成功")
-                        }else if(data.msg=="2"){
-                            alert('提交失败')
-                        }else if(data.msg=="3"){
-                            alert('') 
+                        //返回0 提交失败
+                        if(data.code==1){
+                            $(".loading-1").hide();
+                            actions.alert(store,{show:true,msg:data.msg})
+                        }else if(data.code==0){
+                            actions.alert(store,{show:true,msg:data.msg})
                         }
                     }
                 });  

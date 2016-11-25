@@ -45,7 +45,7 @@
     display:inline-block;
     width:30px;
     height:100%;
-    text-align:right;
+    text-align:center;
 }
 .line-team-int span.icon-level{
     font-size: 0;
@@ -115,8 +115,6 @@
                 <a  v-link="'/match/team/' + list.club_id">
                      <span class="item1">
                          <span class="level">{{$index+1}}</span>
-<!--                          <span class="icon-level icon-level{{list.corpsrank}}"></span>
-                         <span class="num-level num-level{{list.corpsrank}}">{{list.corpsgd}}</span> -->
                      </span>
                      <span class="item2"><img v-bind:src=list.logo>{{list.name}}</span>
                      <span>{{list.win}}/{{list.lose}}</span> 
@@ -162,12 +160,16 @@ module.exports = {
                 gameid : gload_conf.gameid
             };
              $.ajax({
-                url:common.getBaseUrl()+'/match/ranking.lg',
+                url:common.getBaseUrl()+'/match/ranking.lg'+QUERY,
                 type:'POST',
                 dataType:'json',
                 data:data,
+                beforeSend:function(){
+                    $(".loading-1").show();
+                },
                 success:function(data){
-                    self.lineteamintList = self.lineteamintList.concat(data.data)
+                    self.lineteamintList = self.lineteamintList.concat(data.data);
+                    $(".loading-1").hide();
                 }
              })
         }

@@ -94,7 +94,7 @@
 .lineProc-match-time{
     font-size: 12px;
     line-height: 12px;
-
+    color: #848ea4;
 }
 .lineProc-match-time i{
     display: inline-block;
@@ -104,6 +104,9 @@
     background-size: 100% 100%;
     margin-right: 5px;
     vertical-align: text-top;
+}
+.lineProc-match-time span{
+    color: #fad83a
 }
 
 .lineProc-jpc-prize{
@@ -137,10 +140,11 @@
     font-size: 12px;
 }
 .lineProc-jpc-prize .prize img{
-    margin:10px 0;
+    margin:0;
 }
 .lineProc-jpc-prize .prize p:nth-child(5){
     color: #efdf4d;
+    margin-top:10px;
 }
 .lineProc-jpc-prize .prize1{
     left: 16.8%
@@ -267,6 +271,13 @@
 	background-size: 100% 100%;
 	vertical-align: middle;
 }
+.media-holder1{
+    position: relative;
+    width: 60px;
+    min-height: 30px;
+    width: 100%;
+    display: block;
+}
 </style>
 <template>
 
@@ -274,20 +285,20 @@
         <childnav></childnav>
         <div class="season-tab-box">
             <div class="lineproc">
-                <div class="lineproc-yxb" v-if="status">
+                <div class="lineproc-yxb">
                     <div class="lineproc-yxb-hed">
                         <h3>奖品池</h3>
-                        <a v-link="{path:'/mine/'+userid}">我的比赛详情<i></i></a>
+                        <a v-link="{name:'mygame',query:{matchid:matchid,userid:userid}}">我的比赛详情<i></i></a>
                     </div>
                     <div class="lineProc-jpc">
                         <div class="lineProc-jpc-box">
                             <div class="lineProc-jpc-bar">
-                                <div class="bar1">
-                                    <img src="../../images/prank-timg.png" width="30px">
+                                <div class="bar1"  v-if="datajfUsFn.length>0">
+                                    <img :src=userLogo width="30px">
                                     <p>{{userScore}}分</p>
                                 </div>
                                 <div class="bar2">
-                                    <div class="bar2-1" style="width:2%"></div>
+                                    <div class="bar2-1" style="width:1.4%"></div>
                                     <div class="bar2-2"></div>
                                 </div>
                             </div>
@@ -295,47 +306,46 @@
                                 <div class="prize prize{{$index+1}}" v-for="item in datajfjpFn">
                                     <p>{{item.name}}</p>
                                     <i></i>
-                                    <p>{{item.content}}</p>
-                                    <img :src=item.img width="40px">
-                                    <p>{{item.text}}}</p> 
+                                    <p></p>
+                                    <div style="position:relative">
+                                        <img src="../../images/media-holder.png" class="media-holder1">
+                                        <img :src=item.image_url style="position:absolute;left:0;top:0;width:100%;height:100%;">
+                                    </div>
+                                    <p>{{item.remark}}</p> 
                                 </div>
                                 
                             </div>
                         </div>
-                        <p class="lineProc-match-time" v-if="state==1"><i></i>结束倒计时:{{timestate}}</p>
-                        <p class="lineProc-match-time" v-if="state==0"><i></i>未开始</p>
-                        <p class="lineProc-match-time" v-if="state==2"><i></i>已结束</p>
+                        <p class="lineProc-match-time" data-stime="{{startime}}" data-etime="{{endtime}}"></p>
                     </div>
                     <div class="lineproc-yxb-hed">
                         <h3>英雄榜</h3>
-                        <a v-link="{path:'/mine/'}">查看更多<i></i></a>
+                        <a v-link="{name:'gamerank',query:{matchid:matchid,userid:userid}}">查看更多<i></i></a>
                     </div>
                     <div class="lineproc-yxb-list">
-                        <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{path:'/mine/'+list.userid}">
+                        <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{path:'/mine/'+list.uid}">
                             <div class="fl tc m4 lh52 c_font_1">
-                                <span class="c_ph_1" v-if="list.ranking == 1"></span>
-                                <span class="c_ph_2" v-if="list.ranking == 2"></span>
-                                <span class="c_ph_3" v-if="list.ranking == 3"></span>
-                                <span class="" v-if="list.ranking > 3">{{list.ranking}}</span>
+                                <span class="c_ph_1" v-if="list.rank == 1"></span>
+                                <span class="c_ph_2" v-if="list.rank == 2"></span>
+                                <span class="c_ph_3" v-if="list.rank == 3"></span>
+                                <span class="" v-if="list.rank > 3">{{list.rank}}</span>
                             </div>
                             <div class="fl m1 item1">
                                 <div class="fl tu_m">
-                                    <img width="32" height="32" alt="" class="img" :src=list.icon>
+                                    <img width="32" height="32" alt="" class="img" :src=list.logo>
                                 </div>
                                 <div class="user-img-text user_name fl">
-                                    <span class="fl">{{list.username}}</span>
+                                    <span class="fl">{{list.rolename}}</span>
                                 </div> 
                             </div>
-                            <div class="fl tl lh52 m2">{{list.service}}</div>
-                            <div class="fl tc lh52 m2 c_font_a">{{list.integral}}</div>
-                            <div class="fl tc lh52 m10 c_font_b"  v-if="list.ranking == 1"><img src="../../images/img_small_@3x.png" width="32px"></div>
-                            <div class="fl tc lh52 m10 c_font_b"  v-if="list.ranking == 2"><img src="../../images/img_small_@3x.png" width="32px"></div><div class="fl tc lh52 m10 c_font_b"  v-if="list.ranking == 3"><img src="../../images/img_small_@3x.png" width="32px"></div><div class="fl tc lh52 m10 c_font_b"  v-if="list.ranking > 3"></div> 
+                            <div class="fl tl lh52 m2">{{list.servicename}}</div>
+                            <div class="fl tc lh52 m2 c_font_a">{{list.score}}</div>
+                            <div class="fl tc lh52 m10 c_font_b"  v-if="list.rank <= 3">
+                                <img :src="list.price " width="32px">
+                            </div>
                             <div class="fr tc lh52 m4 c_font_b tu-link"><i></i></div> 
                         </a>
                     </div>
-                </div>
-                <div class="lineproc-yxb" v-else>
-                    <p class="tc c_608be9">你还没有报名<a href="javascript:;" class="c_608be9">点击报名</a></p>
                 </div>
             </div>
         </div>
@@ -349,29 +359,38 @@ var nav = require('./nav.vue');
 var $ = require('jQuery');
 var common = require('../../js/common.js');
 
-var lineProc = Vue.extend({
-    name : 'lineProc',
+module.exports = {
     data : function() {
         return {
-            matchname : wsCache.get('HEROC').matchname,
             channelid : wsCache.get('HEROC').channelid,
             matchid : wsCache.get('HEROC').matchid,
-            userid : Miconfig.userid,
+            userid : gload_conf.uid,
             datayxblist:[],
             datajfjpFn:[],
-            userScore : '',
+            datajfUsFn:[],
+            userScore : 0,
+            userRank : '',
             state : '',
-            status : true,
-            timestate : ''
+            status : '',
+            startime : '',
+            endtime : '',
+            userLogo : ''
         };
     },
     components:{
         'childnav':nav
     },
     ready: function() {
-        this.jfjpFn();
-        this.yxbFn(10);
-        this.jfFn();
+        this.yxbFn();
+        this.startime = wsCache.get('HEROC').startime;
+        this.endtime = wsCache.get('HEROC').endtime;
+        if(wsCache.get('HEROC').enroll==1){
+            wsCache.set('procA',{status:true});
+            this.status = wsCache.get('procA').status;
+        }else{
+            wsCache.set('procA',{status:false});
+            this.status = wsCache.get('procA').status;
+        }
         if($(".season-tab-box").height() > ($(window).height()-63)){
             common.scroll(function(direction){
                 if(direction=="down"){
@@ -381,112 +400,72 @@ var lineProc = Vue.extend({
                 }
             }); 
         };
-        
     },
     methods: {
-        yxbFn:function(pageS){
-            var vm = this;
-            $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
-                data:{category:"lineProc",pageproc:pageS,userid:vm.userid},
-                dataType:"json",
-                success:function(data){
-                    vm.datayxblist = vm.datayxblist.concat(data.yxblist)
-                }
-            })
-        },
-        jfFn:function(){
-            var vm = this;
-            console.log(vm.userid)
-            $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
-                data:{category:"lineProcjf",userid:vm.userid,matchid:vm.matchid},
-                dataType:"json",
-                success:function(data){
-                    vm.userScore = data.score;
-                    vm.state = data.state;
-                    vm.timestate = data.timestate;
-                    switch(true){
-                        case  vm.userScore==0 :
-                            $(".bar2-1").css("width","2%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","-3%");
-                        break;
-                        case  vm.userScore<50 && vm.userScore>0 :
-                            $(".bar2-1").css("width","7%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","2%");
-                        break;
-                        case  vm.userScore>50&&vm.userScore<300 :
-                            $(".bar2-1").css("width","12%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","7%");
-                        break;
-                        case  vm.userScore==300 :
-                            $(".bar2-1").css("width","22.8%");
-                            $(".lineProc-jpc-prize .prize1").addClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","17.2%");
-                        break;
-                        case  vm.userScore>300&&vm.userScore<500 :
-                            $(".bar2-1").css("width","35%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","29%");
-                        break;
-                        case  vm.userScore==500 :
-                            $(".bar2-1").css("width","47.2%");
-                            $(".lineProc-jpc-prize .prize2").addClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","40.5%");
-                        break;
-                        case  vm.userScore>500&&vm.userScore<1000 :
-                            $(".bar2-1").css("width","57%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","50.5%");
-                        break;
-                        case  vm.userScore==1000 :
-                            $(".bar2-1").css("width","69.3%");
-                            $(".lineProc-jpc-prize .prize3").addClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","62%");
-                        break;
-                        case  vm.userScore>1000&&vm.userScore<2000 :
-                            $(".bar2-1").css("width","76.3%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","69%");
-                        break;
-                        case  vm.userScore==2000 :
-                            $(".bar2-1").css("width","84.6%");
-                            $(".lineProc-jpc-prize .prize4").addClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","76.6%");
-                        break;
-                        case  vm.userScore>2000&&vm.userScore<3000 :
-                            $(".bar2-1").css("width","91.6%");
-                            $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","84%");
-                        break;
-                        case  vm.userScore>=3000 :
-                            $(".bar2-1").css("width","99.9%");
-                            $(".lineProc-jpc-prize .prize5").addClass("c_tran");
-                            $(".lineProc-jpc-bar .bar1").css("left","92%");
-                        break;
-                    }
-                }
-            }) 
-        },
-        jfjpFn:function(){
+        yxbFn:function(){
             var self = this;
             $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
-                data:{category:"lineProcjfjp",matchid:self.matchid,userid:self.userid},
+                url:common.getBaseUrl()+'/match/matchresult.lg'+QUERY,
+                type:"POST",
+                data:{match_id:self.matchid},
                 dataType:"json",
+                beforeSend:function(){
+                    $(".loading-1").show();
+                },
                 success:function(data){
-                    self.datajfjpFn = self.datajfjpFn.concat(data.data.datalist)
+                    if(data.code==0){
+                        self.datayxblist = self.datayxblist.concat(data.data.billboard);
+                        self.datajfjpFn = self.datajfjpFn.concat(data.data.price);
+                        self.datajfUsFn = self.datajfUsFn.concat(data.data.user);
+                        self.userScore = data.data.user.score ? data.data.user.score : 0;
+                        self.userRank = data.data.user.rank;
+                        self.userLogo = data.data.user.logo;
+                        switch(true){
+                            case  self.userRank==0 :
+                                $(".bar2-1").css("width","1.4%");
+                                $(".lineProc-jpc-prize .prize").removeClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","-3%");
+                            break;
+                            case  self.userRank>self.datajfjpFn[0].section :
+                                $(".bar2-1").css("width","12%");
+                                $(".lineProc-jpc-prize .prize").removeClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","7%");
+                            break;
+                            case  self.userRank>self.datajfjpFn[1].section&&self.userRank<self.datajfjpFn[0].section :
+                                $(".bar2-1").css("width","22.8%");
+                                $(".lineProc-jpc-prize .prize1").addClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","17.2%");
+                            break;
+                            case  self.userRank>3&&self.userRank<self.datajfjpFn[1].section :
+                                $(".bar2-1").css("width","47.2%");
+                                $(".lineProc-jpc-prize .prize2").addClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","40.5%");
+                            break;
+                            case  self.userRank==3 :
+                                $(".bar2-1").css("width","69.3%");
+                                $(".lineProc-jpc-prize .prize3").addClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","62%");
+                            break;
+                            case  self.userRank==2 :
+                                $(".bar2-1").css("width","84.6%");
+                                $(".lineProc-jpc-prize .prize4").addClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","76.6%");
+                            break;
+                            case  self.userRank==1 :
+                                $(".bar2-1").css("width","99.9%");
+                                $(".lineProc-jpc-prize .prize5").addClass("c_tran");
+                                $(".lineProc-jpc-bar .bar1").css("left","92%");
+                            break;
+                        }
+                        $(".loading-1").hide();
+                    }else if(data.code <0){
+                        
+                    }
+                    
                 }
             })
         }
     }
-});
+};
 
-module.exports = lineProc;
 </script>

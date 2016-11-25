@@ -15,11 +15,11 @@
 .ms-content{
     min-width: 100%;
     margin: 0 auto;
-    text-align: center;
+    padding-left:20px;
+  /*  text-align: center;*/
 }
 .ms-content .one-ms{
     padding: 10px 0;
-    padding-left: 40px;
     white-space: nowrap;
 }
 .ms-content .ms-round{
@@ -29,7 +29,7 @@
     margin: 0 -2px;
 }
 .ms-content .ms-round .ms-row-title{
-    width: 200px;
+    width: 150px;
     height: 36px;
     text-align: left;
     line-height: 36px;
@@ -38,7 +38,7 @@
 }
 .ms-content .one-match{
     position: relative;
-    width: 200px;
+    width: 150px;
 }
 .ms-content .one-match:nth-of-type(2n-1):before{
     content: ' ';
@@ -147,7 +147,7 @@
     position: absolute;
     left: 0;
     top: 50%;
-    width: 160px;
+    width: 110px;
     height: 60px;
     box-sizing: border-box;
     margin-top: -30px;
@@ -298,7 +298,7 @@
     height: 0;
 }
 .ms-control{
-    padding: 10px 40px;
+    padding: 10px 0;
 }
 .ms-control a{
     font-size: 11px;
@@ -329,27 +329,28 @@
     <childnav></childnav>
     <div class="season-tab-box">
     <div class="schedule-box">
-        <div class="ms-control clearfix" v-show="poptypeid == 2 ? false : true">
-            <a href="javascript:" :class="{'active': popp == 2}" @click="msdataFn(2)">胜者组</a>
-            <a href="javascript:" :class="{'active': popp == 1}" @click="msdataFn(1)">败者组</a>
-        </div>
         <div class="matchschedule" id="iscroll">
+
             <div class="ms-content" :class="msClass">
+                <div class="ms-control clearfix" v-show="poptypeid == 2 ? false : true">
+                    <a href="javascript:" :class="{'active': popp == 2}" @click="msdataFn(2)">胜者组</a>
+                    <a href="javascript:" :class="{'active': popp == 1}" @click="msdataFn(1)">败者组{{popp}}</a>
+                </div>
                 <div class="one-ms normal-group">
                     <div class="ms-round" v-for="(index,mslist) in mslists" :class="'ms-row-'+(index >= isType ? isType : (index + 1))">
                         <h3 class="ms-row-title">{{mslist.title}}</h3>
-                        <div class="one-match" v-for="row in mslist" :class="isFinal == index ? 'final' : ''">
-                            <div class="players" v-link="{path:row.list.video_url}">
-                                <a class="player" :class="row.list.leftScore>row.list.rightScore ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.list.leftTeam}}</span>
-                                    <span class="player-score">{{row.list.leftScore}}</span>
+                        <div class="one-match" v-for="row in mslist.list" :class="isFinal == index ? 'final' : ''">
+                            <div class="players" v-link="{path:row.video_url}">
+                                <a class="player" :class="row.leftScore > row.rightScore ? 'player-winner' : ''">
+                                    <span class="player-name toe">{{row.leftTeam}}</span>
+                                    <span class="player-score">{{row.leftScore}}</span>
                                 </a>
-                                <div class="player-content" :class="row.list.video_url ? 'over' : ''">
-                                    <a class="match-video-link">{{row.list.dataTime | timeData3}}</a>
+                                <div class="player-content" :class="row.video_url ? 'over' : ''">
+                                    <a class="match-video-link">{{row.dataTime | timeData3}}</a>
                                 </div>
-                                <a class="player" :class="row.list.leftScore<row.list.rightScore ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.list.rightTeam}}</span>
-                                    <span class="player-score">{{row.list.rightScore}}</span>
+                                <a class="player" :class="row.leftScore < row.rightScore ? 'player-winner' : ''">
+                                    <span class="player-name toe">{{row.rightTeam}}</span>
+                                    <span class="player-score">{{row.rightScore}}</span>
                                 </a>
                             </div>
                         </div>
@@ -381,7 +382,6 @@ module.exports = {
             mstype:'',
             msClass: '',
             popp : ''
-           
         };
     },
     created:function(){
@@ -393,75 +393,54 @@ module.exports = {
             return this.mslists.length - 1;
         },
         isType: function(){    //比赛模式计算
-            if (this.mstype == 1) {
-                this.msClass = 'loser';
-                return this.mslists.length - 2;
-            } else if (this.mstype == 2) {
-                this.msClass = 'win';
-                return this.mslists.length - 1;
+             var self = this;
+            if (self.popp == 1) {
+                self.msClass = 'loser';
+                return self.mslists.length - 2;
+            } else if (self.popp == 2) {
+                self.msClass = 'win';
+                return self.mslists.length - 1;
             } else {
-                this.msClass = '';
+                self.msClass = '';
                 return ;
             }
         }
     },
     ready: function() {
         var self = this;
-       if(self.poptypeid==2){
+        if(self.poptypeid==2){
             self.popp=3
-       }else if(self.poptypeid==1){
+        }else if(self.poptypeid==1){
             self.popp=2
-       }
+        }
         self.msdataFn(self.popp)
     },
     components:{
         'childnav':nav
     },
     methods: {
-        msdataFnId:function(){
-            var self = this;
-            $.ajax({
-                url:common.getBaseUrl()+'/match/matchschedule.lg',
-                type:"POST",
-                dataType:"json",
-                data:{match_id:self.matchid,type:self.poptypeid},
-                success:function(data){
-                    if(data.status == "SUCCESS"){
-                        _this.mstype = data.mstype;
-                        if(data.msg == 3){
-                            _this.msdataFn(3)   
-                        }else{
-                            _this.msdataFn(2) 
-                        }
-                        
-                    }else{
-                        
-                    }
-                   
-
-                }
-            }); 
-
-        },
         msdataFn:function(str){
             var self = this;
+           self.popp=str;
             $.ajax({
-                url:common.getBaseUrl()+'/match/matchschedule.lg',
+                url:common.getBaseUrl()+'/match/matchschedule.lg'+QUERY,
                 type:"POST",
                 dataType:"json",
-                //msType://'1'代表双败淘汰赛败者组，'2'代表双败淘汰赛胜者组，'3'代表单败淘汰赛
-                //msid  赛事id
                 data:{match_id:self.matchid,type:str},
+                beforeSend:function(){
+                    $(".loading-1").show()
+                },
                 success:function(data){
+                    self.mslists = [];
                     self.mslists = self.mslists.concat(data.data);
                     let msLength = self.mslists.length;
-                    $(".ms-content").width(msLength*200);
-                    $(".matchschedule").height($(window).height()-110);
+                    $(".ms-content").width(msLength*150);
+                    $(".matchschedule").height($(window).height()-72);
                     setTimeout(function(){
-                         var myScroll = new IScroll('#iscroll',{
+                        var myScroll = new IScroll('#iscroll',{
                             scrollX: true, scrollY: true, freeScroll: true,click: true
                         });
-                         $(".loading-1").hide()
+                        $(".loading-1").hide()
                     },50);
 
                 }

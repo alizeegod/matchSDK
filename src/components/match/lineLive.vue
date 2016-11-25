@@ -5,24 +5,6 @@
 .match-live-box,.match-live-box *,.match-live-box:after,.match-live-box:before{
     box-sizing: border-box;
 }
-.loading-1{
-    width:100%;
-    height:100%;
-    position:absolute;
-    left:0;
-    top:0;
-    z-index:3;
-    background:#050d19;
-}
-.loading-1 img{
-    width: 32px;
-    height: 32px;
-    position: absolute;
-    left:50%;
-    top:40%;
-    margin:-16px 0 0 -16px;
-    z-index: 1;
-}
 .match-live-box{
     width: 100%;
     overflow: hidden;
@@ -33,6 +15,12 @@
     display: flex;
     flex-wrap: wrap;
     height: 100%;
+}
+.dianbo-img1{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 .item-child-hed{
     width: 100%;
@@ -305,18 +293,16 @@
                    <div class="item-box item-box-fl">
                       <div class="item-ceil-fl">
                            <div class="item-child-hed">
+                                <span class="item-child item-child-hed-a" id="match-offline-1">直播中</span>
                                 <span class="item-child item-child-hed-b" id="match-offline-2">{{matchname}}</span>
                             </div>
                             <div class="item-child-box">
                                 <img src="../../images/media-holder.png" class="media-holder">
-                                <iframe id="js_sub_web" v-bind:src="videoUrl" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>
+                                <iframe id="js_sub_web" v-bind:src="videoUrl" frameBorder=0 scrolling=no width="100%" class="dianbo-img1"></iframe>
                             </div>
                       </div>
                    </div>
                    <div class="item-box item-box-fr">
-                       <div class="loading-1">
-                           <img src="../../images/loading.png">
-                       </div>
                        <div class="hd-list" id="match-offline-d">
                            <span class="prev"><i></i></span>
                            <span class="next"><i></i></span>
@@ -351,29 +337,6 @@
             </div>
     </div>
 </div> 
- 
-<!--
-<div class="mode-match-offline-3" v-if="isTeltk">
-    <div id="zzmask"></div>
-    <div id="example" class="match-match-teltk">
-        <div class="close" v-on:click="closeBtnTeltk"></div>
-        <div class="match-teltk-hed">
-           <span>昵称：{{username}}</span>
-           <span>区服：{{userarea}}</span>
-        </div>
-        <div class="match-teltk-con">
-            <div>
-            <input type="tel" name="userIphone" placeholder="请输入手机号" v-model="from.userIphone">
-            <span class="match-teltk-code"  id="match-teltk-code">获取验证码</span>
-            </div>
-            <div>
-            <input type="number" name="userCode" placeholder="请输入验证码" v-model="from.userCode">
-            </div>
-        </div>
-        <a href="javascript:;" v-on:click="sureBtnTeltk" title="确定" class="sureBtn"></a>
-    </div>
-</div>
--->
 </template>
 
 <script>
@@ -381,9 +344,9 @@ var Vue = require('Vue');
 var nav = require('./nav.vue');
 var $ = require('jQuery');
 var common = require('../../js/common.js');
-
-var teltk =require('./teltk');
-
+var iFrameResize = require('../../js/iframeResizer.min.js');
+var store = require('../../store/store.js');
+var actions = require('../../store/actions.js');
 module.exports = {
     data: function() {
         return {
@@ -402,6 +365,18 @@ module.exports = {
            
         };
     },
+    store: store,
+    vuex: {
+        getters: {
+            userMsg: function() {
+                return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
+            }
+        },
+        actions: actions
+    },
     created:function(){
         $(".loading-1").show()
  
@@ -410,27 +385,13 @@ module.exports = {
         var self = this;
         $(".match-live-box").height($(".main-nav").height()-74);
         $(".bd-scroll-box").height($(".match-live-box").height()-35);
-       // this.pdMatchIdFn(self.matchid);
        this.dataFn();
-
+       $('iframe').iFrameResize([{log: true}]);
     },
     components:{
         'childnav':nav
     },
     methods: {
-        pdMatchIdFn:function(str){
-            var self = this;
-            $.ajax({
-                url:common.getBaseUrl(),
-                type:"GET",
-                dataType:"json",
-                data:{category:"boolmatchid",matchid:str},
-                success:function(data){
-                    self.datapdsubscribe = data.subscribe;
-                    self.datapdstate = data.state;
-                }
-            })
-        },
         sliderFn:function(){
             var self = this;
             $("#match-offline-e li").length<=3?$("#match-offline-d .next i,#match-offline-d .prev i").css("display","none"):'';
@@ -451,7 +412,7 @@ module.exports = {
                 gameid : gload_conf.gameid
             };
             $.ajax({
-                url:common.getBaseUrl()+'/live.lg',
+                url:common.getBaseUrl()+'/live.lg'+QUERY,
                 type:gPost,
                 dataType:"json",
                 data:data,
@@ -459,61 +420,32 @@ module.exports = {
                     $(".loading-1").show()
                 },
                 success:function(data){
-                    if(data.code){
+                    if(data.code==0){
                         self.dataOffNow = data.data.now;
                         self.matchname = data.data.match_info.name;
                         self.defaultIndex = data.data.defaultIndex;
                         self.videoUrl = data.data.match_info.video_url;
                         self.dataOffList = self.dataOffList.concat(data.data.dataList);
                         setTimeout(function(){self.sliderFn();$(".loading-1").hide()},50); 
-                    }else{
-
+                    }else if(data.code < 0){
+                      actions.alert(store,{show:true,msg:data.msg})
                     }
                     
                 }
             })
         },
         videoCFn:function(el){
-            console.log(el)
             $(".item-child-box iframe").remove();
-            $(".item-child-box").append('<iframe id="js_sub_web" src="'+common.getBaseUrl()+"/match/video.lg?"+el.matchUrl+'" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>');
+            $(".item-child-box").append('<iframe id="js_sub_web" src="'+common.getBaseUrl()+"/match/video.lg?"+el.matchUrl+'" frameBorder=0 scrolling=no width="100%" height="100%" class="dianbo-img1"></iframe>');
+            $("#match-offline-1").html("重播");
         },
         videoCZFn:function(el){
             var self = this;
             $(".item-child-box iframe").remove();
-            $(".item-child-box").append('<iframe id="js_sub_web" src="'+el+'" frameBorder=0 scrolling=no width="100%"  height="100%" class="dianbo-img"></iframe>');
-        },
-        take:function(objts){
-            var self = this;
-            if(objts ==1 ){
-                //取消订阅
-                self.isTeltk=false;
-                $.ajax({
-                    url:common.getBaseUrl(),
-                    type:"GET",
-                    dataType:"json",
-                    data:{category:"subscribeA",uId:"1000000",matchid:self.matchid,state:0},//用户id，赛事id
-                    success:function(data){
-
-                        //取消成功，更新状态
-                        alert('取消成功');
-                        self.datapdsubscribe = 0;
-                       
-
-                    }
-
-                });
-                
-
-
-            }else if(objts == 0){
-                //订阅 
-                self.isTeltk=true;
-
-
-            }
+            $(".item-child-box").append('<iframe src="'+el+'" frameBorder=0 scrolling=no width="100%"  class="dianbo-img1"></iframe>');
+            $('#js_sub_web').iFrameResize([{log: true}]);
+            $("#match-offline-1").html("直播中");
         }
-
     }
 };
 </script>

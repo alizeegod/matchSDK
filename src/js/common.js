@@ -1,16 +1,17 @@
 
 var Hammer = require('./hammer.js');
 var obj = $("#app");
- var now = gload_conf.timestamp;
+var now = gload_conf.timestamp;
 
 var common = {
     isTipsShow :false,
     isDevelop : true,//开发或者生产环境
-    sandbox : false,//杀向模式，false关闭，true开启
+    sandbox : true,//杀向模式，false关闭，true开启
     getBaseUrl : function(){
-       // return common.isDevelop ? 'http://172.18.1.135/vue-match3/src/json/a' : '';
-	   //return common.isDevelop ? 'http://10.0.11.46/scp/match/2.0-rc/src/json/a.php' : '';
        return common.isDevelop ? gload_conf.api : '';
+    },
+    debugger : function(){
+       return common.sandbox ? '?gameid=1&token=7554a2419fd9062fd887e84428ad07af' : '';
     },
     fromData:function(){
         now = parseInt(now)*1000;
@@ -20,8 +21,29 @@ var common = {
 
         setInterval(todayAlbumTimeCountJob,1000);//置顶一秒一次倒计时
         setInterval(toAlbumTimeCountJob,1000);//不置顶一秒一次倒计时
+        setInterval(timedjsPro,1000);//置顶一秒一次倒计时
 
+        
         //10毫秒到一次
+        function timedjsPro(){
+            var opTime = $("p.lineProc-match-time");
+            var opsTimeStr = opTime.data("stime")*1000;
+            var opeTimeStr = opTime.data("etime")*1000;
+                var text24;
+                var  startMo= rightZeroStr(new Date(opsTimeStr).getMonth()+1);//开始时间月
+                var  startD= rightZeroStr(new Date(opsTimeStr).getDate());//开始时间日
+                var  startH= rightZeroStr(new Date(opsTimeStr).getHours());//开始时间时
+                var  startM= rightZeroStr(new Date(opsTimeStr).getMinutes());//开始时间分
+                var textstart = "<b>"+startMo+"</b>月<b>"+startD+"</b>日<b>"+startH+"</b>:<b>"+startM+"</b>";
+                text24 = timeBetweenText24(opsTimeStr,opeTimeStr);
+            if(now < opsTimeStr || now > opeTimeStr || text24==1){
+                opTime.html('<i></i>比赛时间：'+textstart)
+            }else if(now > opsTimeStr && now < opeTimeStr){
+                var text = timeBetweenText(now,opeTimeStr);
+                opTime.html('<i></i>结束倒计时：<span>'+text+'</span>')
+            }
+        }
+
         function todayAlbumTimeCountJob(){
             var albumIds = new Array();
             var stateIds = new Array();
@@ -63,11 +85,11 @@ var common = {
                 if(startTime>now){//开始时间大于现在时间
                     text24 = timeBetweenText24(now,startTime);
                     if(text24 == 1){
-                        $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
+                        $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
                     }else{
                         //等待比赛开始
                         text = timeBetweenText(now,startTime);
-                        $(li).find("span.p-countdown").addClass("item-djs-time").html("<i></i>开始倒计时: "+text);
+                        $(li).find("p.p-countdown").addClass("item-djs-time").html("<i></i>开始倒计时: "+text);
                     }
                     if(racetypeId == 1){
                         if(stateId==4 || stateId==3 || stateId==0){
@@ -123,11 +145,20 @@ var common = {
                     $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
                     $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
                 }else{
-                    $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"");
+                    $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
                     //正在拍卖
-                    text = timeBetweenText(now,endTime);
-                    $(li).find("p.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);
-                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                    text24 = timeBetweenText24(startTime,endTime);
+                    if(text24 == 1){
+                        $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
+                    }else{
+                        text = timeBetweenText(now,endTime);
+                        $(li).find("p.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);
+                    }
+                    if(racetypeId == 0){
+                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                    }else{
+                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                    }
                 }
             }
 
@@ -243,9 +274,19 @@ var common = {
                     //console.log($(li).attr("id").split("|")[0])
                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
                     //正在拍卖
-                    text = timeBetweenText(now,endTime);
-                    $(li).find("span.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);
-                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                    text24 = timeBetweenText24(startTime,endTime);
+                    if(text24 == 1){
+                        $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
+                    }else{
+                        text = timeBetweenText(now,endTime);
+                        $(li).find("span.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);
+                    }
+                    if(racetypeId == 0){
+                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                    }else{
+                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                    }
+                    
                 }
             }
 
@@ -306,6 +347,9 @@ var common = {
             }
         }        
     },
+    timedjs(){
+        
+    },
     scroll( fn ) {
         var beforeScrollTop = document.body.scrollTop,
             fn = fn || function() {};
@@ -339,7 +383,7 @@ var common = {
     },
     init:function(){
         common.fromData();
-
+        //common.timedjs();
     }
 
 

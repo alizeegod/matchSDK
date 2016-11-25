@@ -17,9 +17,16 @@
 .mine_wrap .minelink{
   padding: 12px 15px 5px;
 }
-.mine_wrap .mine_mainlist{
+.mine_wrap .mine_mainlist{ 
   margin-top: 10px;
   border-top: 1px solid #2d394f;
+}
+.mine_wrap .mine_mainlist h1{
+    width: 100%;
+    text-align: center;
+    line-height: 4;
+    font-size: 24px;
+    color: #fff;
 }
 .mine_wrap .minelink a{
     color: #fff;
@@ -46,8 +53,13 @@
 .minelink .ml_mainimg{
     display: block;
     width: 16%;
-    max-height: 30px;
+    height: 30px;
     margin:8px 16px 0 0;
+}
+.minelink .ml_mainimg img{
+    width: 100%;
+    max-height: 100%;
+    display: block;
 }
 .minelink .ml_msg_set a{
   display: inline-block;
@@ -210,6 +222,8 @@
 .mine_mainlist ul li p:nth-of-type(1) span.mine_time{
   font-size: 12px;
   margin-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mine_mainlist ul li p:nth-of-type(2){
   width: 17%;
@@ -263,21 +277,23 @@
   <div class="mine_wrap">
     <div class="minelink clearfix">
       <div class="ml_top clearfix">
-        <img class="ml_mainimgsrc fl" :src="mine.userImg" />
+        <img class="ml_mainimgsrc fl" :src="mine.avatar" />
         <div class="mlink_name fl">
-          <p>{{mine.username}}</p>
-          <p>{{mine.userarea}}</p>
+          <p>{{mine.rolename}}</p>
+          <p>{{mine.servername}}</p>
         </div>
-        <img class="ml_mainimg fl" :src="title.src" v-for="title in mine.usertitle" v-show="title.ischeck" />
+        <div class="ml_mainimg fl" v-for="title in usertitle">
+            <img :src="title.src" v-if="title.ischeck" />
+        </div>
         <div class="ml_msg_set fr" v-if='show'>
-          <a v-link="{path:'/mine/tips'}"><span>{{mine.tipsnum}}</span></a>
+          <a v-link="{path:'/mine/tips'}"><span>{{tipsnum}}</span></a>
           <a v-link="{path:'/mine/setcof'}"></a>
         </div>
       </div>
       <div class="ml_detail">
         <ul>
-          <li v-link="{name:'rule',query:{userid:userMsg.id}}"><i></i><span>战斗力: <em>{{mine.userpower}}</em><a>？</a></span></li>
-          <li><i></i><span>国内排行: <em>{{mine.userrank}}</em></span></li>
+          <li v-link="{name:'rule',query:{type:0}}"><i></i><span>战斗力: <em>{{mine.power}}</em><a>？</a></span></li>
+          <li v-link="{name:'perrank'}"><i></i><span>国内排行: <em>{{mine.rank}}</em></span></li>
           <li><i></i><span>已参加比赛数: <em>{{mine.matchnum}}</em></span></li>
         </ul>
       </div>
@@ -286,24 +302,25 @@
       <h3 class="mine_maintil" v-if="show"><span></span>我的比赛</h3>
       <h3 class="mine_maintil" v-else><span></span>他的比赛</h3>
       <ul>
-        <li v-for='list in mine.lists'>
-          <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:$route.query.userid}}">
+        <li v-for='list in lists'>
+          <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:uid}}">
             <p>
-              <span class="mine_name">{{list.matchname}}</span>
-              <span class="mine_time">{{list.matchtime}}</span>
+              <span class="mine_name">{{list.name}}</span>
+              <span class="mine_time">{{list.starttime}}-{{list.endtime}}</span>
             </p>
             <p>
-                <span class="not" v-if="list.matchtype == 0">报名中</span>
-                <span class="active" v-if="list.matchtype == 1">比赛中</span>
-                <span class="over" v-if="list.matchtype == 2">已结束</span>
+                <span class="not" v-if="list.type == 0">报名中</span>
+                <span class="active" v-if="list.type == 1">比赛中</span>
+                <span class="over" v-if="list.type == 2">已结束</span>
             </p>
-            <p v-if="list.matchtype == 2">{{list.powertil}}<em class="mine_num1">+{{list.addpower}}</em></p>
+            <p v-if="list.type == 2"><em class="mine_num1">+{{list.addpower}}</em></p>
             <p v-else></p>
-            <p>排名<em class="mine_num2">{{list.matchrank}}</em></p>
+            <p>排名<em class="mine_num2">{{list.rank}}</em></p>
             <p><i></i></p>
           </a>
         </li>
       </ul>
+      <h1 v-if="lists.length <= 0 ? true : false">还没有报名比赛</h1>
     </div>
   </div>
 </template>
@@ -315,42 +332,17 @@ var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
 
-var Mock = require('mockjs');
-Mock.Random.image('200x100', '#50B347', '#FFF', 'Mock.js');
-
-Mock.mock(ROOTPATH + 'mine',{
-    "mine":{
-        'userImg'            : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'username'           : '@name',
-        'userarea'           : '@region',
-        'userrank|1-100'     : 1,
-        'userpower|1-1000'   : 1,
-        'matchnum|10-100'    : 1,
-        'usertitle'          : [{
-            'ischeck'    : true,
-            'src'        : '@image'
-        },{
-            'ischeck'    : true,
-            'src'        : '@image'
-        }],
-        'tipsnum|10-50'      : 1, 
-        "lists|1-20": [{
-            'matchid|1-50'       : 1,
-            'matchname'          : '@name',
-            'matchtime'          : '8月15日-8月15日',
-            'matchtype|0-2'      : 0,
-            'addpower|100-1000' : 0,
-            'matchrank|10-100'   : 0
-        }]
-    }
-});
-
 var mine = Vue.extend({
 	name: 'mine',
 	data: function() {
 		return {
             mine: {},
-            show:true
+            lists: [],
+            usertitle: [],
+            uid: null,
+            tipsnum: 0,
+            show:true,
+            aaaa: 10
 		};
 	},
 	store: store,
@@ -358,37 +350,83 @@ var mine = Vue.extend({
 		getters: {
 			userMsg: function() {
 				return store.state.userMsg;
-			}
+			},
+      alertConfig: function() {
+          return store.state.alertConfig;
+      }
 		},
 		actions: actions
 	},
   created: function() {
-    var _this = this;
-    $.ajax({
-        url: ROOTPATH + 'mine',
-        dataType: 'json',
-        // data:{userid:_this.userMsg.id},
-        success: function(data) {
-            _this.mine= data.mine;
-
-        }
-    })
+      var _this = this;
+      _this.uid = (_this.$route.query.userid == _this.userMsg.userid) ? _this.userMsg.userid : _this.$route.query.userid;
+      $.ajax({
+          url: ROOTPATH + '/my/index.lg' + QUERY,
+          type: 'POST',
+          dataType: 'json',
+          data:{uid:_this.uid},
+          beforeSend:function(){
+              $(".loading-1").show();
+          },
+          success: function(data) {
+              if (data.code == 0) {
+                  $(".loading-1").hide();
+                  _this.mine= data.data.mine;
+                  _this.lists= data.data.lists;
+                  _this.tipsnum= data.data.tipsnum;
+                  _this.usertitle= data.data.usertitle;
+                  console.log(data)
+              } else if(data.code < 0) {
+                  actions.alert(store,{show:true,msg:data.msg})
+              }
+          }
+      })
   },
 	ready: function() {
-		let a = this.$route.query.id;
-        let b = this.userMsg.id;
-        if (a == b) {
+		let a = this.$route.query.userid;
+        let b = this.userMsg.userid;
+        console.log(a,b)
+        if (a == b || a === undefined) {
             this.show = true;
         } else {
             this.show = false;
         }
-        console.log(this.$route.query.id)
-        console.log(this.userMsg.id)
-
 	},
-    methods: {
-
+  watch: {
+    $route: function(val,oldval) {
+      console.log(val.query.userid,oldval)
+      var _this = this;
+      let a = val.query.userid;
+      let b = _this.userMsg.userid;
+      console.log(a,b)
+      if (a == b || a === undefined) {
+          _this.show = true;
+      } else {
+          _this.show = false;
+      }
+      $.ajax({
+          url: ROOTPATH + '/my/index.lg' + QUERY,
+          type: 'POST',
+          dataType: 'json',
+          data:{uid:val.query.userid},
+          beforeSend:function(){
+              $(".loading-1").show();
+          },
+          success: function(data) {
+              if (data.code == 0) {
+                  $(".loading-1").hide();
+                  _this.mine= data.data.mine;
+                  _this.lists= data.data.lists;
+                  _this.tipsnum= data.data.tipsnum;
+                  _this.usertitle= data.data.usertitle;
+                  console.log(data)
+              } else if(data.code < 0) {
+                  actions.alert(store,{show:true,msg:data.msg})
+              }
+          }
+      })
     }
+  }
 });
 
 module.exports = mine;

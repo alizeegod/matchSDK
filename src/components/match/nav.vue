@@ -148,8 +148,7 @@
         <p>{{matchname}}</p>
         <p>
             <a class="item1" v-link="{path:'/match/lineLive/'+matchid}"><em></em>视频直播<i></i></a>
-            <!-- <a class="item2" v-link="{path:'/match/lineTeamInt/'+matchid}"><em></em>战队积分<i></i></a> -->
-            <a class="item2" v-link="{path:'/match/lineSchedule/'+matchid}"><em></em>战队积分<i></i></a>
+            <a class="item2" v-link="{path:'/match/lineTeamInt/'+matchid}"><em></em>战队积分<i></i></a> 
             <a class="item3" v-link="{path:'/match/linejj/'+matchid}"><em></em>赛事介绍<i></i></a>  
         </p>
     </div>
@@ -158,8 +157,7 @@
         <p>
             <a class="item5" v-link="{path:'/match/lineProc/'+matchid}"><span><em></em>比赛进度</span></a>
             <a class="item6" v-link="{path:'/match/linejj/'+matchid}"><span><em></em>介绍</span></a>
-            <a class="item7" v-link="{path:'/match/lineComment/'+matchid}"><span><em></em>评论{{totalNum ? '('+totalNum+')' : ''}}</span></a>
-
+            <a class="item7" v-link="{path:'/match/lineComment/'+matchid}"><span><em></em>评论{{userMsg.comment ? '('+userMsg.comment+')' : ''}}</span></a>
         </p>
     </div>
     <div v-if="typeid == 1 && channelid==0" class="season-tab-hed">
@@ -174,6 +172,8 @@
 </template>
 <script>
 var common = require('../../js/common.js');
+var store = require('../../store/store.js');
+var actions = require('../../store/actions.js');
 module.exports = {
     data:function(){
         return {
@@ -181,34 +181,33 @@ module.exports = {
             channelid:wsCache.get('HEROC').channelid,
             matchid:wsCache.get('HEROC').matchid,
             typeid:wsCache.get('HEROC').typeid,
-            totalNum:''
+            totalNum:wsCache.get('COMMENTA').comment
         }
     },
     methods:{
-        commentNumFn:function(){
-            var self = this;
-            var data = {category:"commentNum",matchid:self.matchid};
-            $.ajax({
-                url : common.getBaseUrl(),
-                type : "GET",
-                dataType : "json",
-                data : data,
-                success:function(data){
-                    self.totalNum = data.num;
-                    self.totalNum >= 100 ? (self.totalNum="99+") : self.totalNum;
-                }
-            })
-        }
 
     },
-  //  props:['tonum'],
+    store: store,
+    vuex: {
+        getters: {
+            userMsg: function() {
+                return store.state.userMsg;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
+            }
+        },
+        actions: actions
+    },
     ready:function(){
         var self = this;
-        //self.commentNumFn();
-        self.totalNum = this.$parent.totalNum;
+        setTimeout(function(){actions.set(store,{comment:wsCache.get('COMMENTA').comment});},50);
+        
         $(".season-tab-1").width($(window).width()-50);
+
         setTimeout(function(){
-            if(($(".season-tab-box").height() > ($(window).height()-63)) && self.$parent.name != "lineSchedule"){
+            if(($(".season-tab-box").height() > ($(window).height()-63)) &&  self.$parent.name != "lineSchedule"){
+
                 common.scroll(function(direction){
                     if(direction=="down"){
                         $(".season-tab-1").css("top","-62px");

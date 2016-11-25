@@ -88,7 +88,7 @@
             </p>
             <p>
               <a v-link="{path:'/mine/bind'}">
-                <i class="set_ico"></i><span>绑定手机号{{userMsg.iphone}}</span><em>更换<i></i></em>
+                <i class="set_ico"></i><span>绑定手机号{{phone}}</span><em>{{userMsg.iphone == '' ? '' : "更换"}}<i></i></em>
               </a>
             </p>
             <p>
@@ -123,15 +123,21 @@ var setcof = Vue.extend({
         },
         actions: actions
     },
+    computed: {
+        phone: function() {
+          var phone = this.userMsg.iphone;
+          if (typeof phone == 'number') {
+              phone = phone.toString();
+          }
+          return phone.substr(0, 3) + '****' + phone.substr(7, 11);
+        }
+    },
     created: function() {
       var _this = this;
     },
     ready: function() {
         
 
-    },
-    methods: {
-        
     }
 });
 

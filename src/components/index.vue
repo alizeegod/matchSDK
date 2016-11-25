@@ -1,4 +1,4 @@
-<style soped>
+<style>
 body,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,fieldset,legend,input,select,textarea,button,th,td,blockquote,address,pre{margin:0;padding:0;}
 h1,h2,h3,h4,h5,h6,input,textarea,select,button,label{font-size:100%;vertical-align:middle;}
 ul,dl,ol{list-style:none;}
@@ -9,18 +9,53 @@ em,address{font-style:normal;}
 sup,sub{vertical-align:baseline;}
 table{border-collapse:collapse;border-spacing:0;}
 q:before{content:"";}
-q:after{content:"";}
+q:after{content:"";} 
 button{cursor:pointer;}
 select{-webkit-appearance: none;-moz-appearance: none;-o-appearance: none;}
 textarea{word-wrap:break-word;resize:none;}
+.clearfix{overflow:hidden;_height:1%}
 .clearfix:after { content: ".";display: block;height: 0;clear: both;visibility: hidden; } 
 .clear{clear: both;}
 .fl{float: left;}
 .fr{float: right;}
-*{margin: 0; padding: 0; -webkit-text-size-adjust: none;} ol,ul,i{list-style: none; font-style: normal;}
+*{margin: 0; padding: 0; -webkit-text-size-adjust: none;-webkit-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;} ol,ul,i{list-style: none; font-style: normal;}
  a{text-decoration: none; } a, button, input,div {-webkit-tap-highlight-color: rgba(255,0,0,0); } 
- html,body{height: 100%; } body{font-family:"微软雅黑"; height: 100%; } 
+ html,body{height: 100%; } body{font-family:Helvetica,sans-serif; height: 100%; } 
 body{background: #050D19;}
+.loading-1{
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:3;
+    background:#050d19;
+    color: #fff;
+}
+.loading-1 div{
+  width:100px;
+  height:15px;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  margin:-7px 0 0 -50px;
+}
+.loading-1 span{
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  border-radius: 100%;
+  margin: 6px;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  vertical-align: middle;
+  -webkit-animation: rotate 0.75s linear infinite;
+  animation: rotate 0.75s linear infinite;
+}
+@-webkit-keyframes rotate {
+  from {-webkit-transform:rotate(0deg);}
+  to {-webkit-transform:rotate(360deg);}
+}
 .main-nav{
   position: fixed;
   width: 50px;
@@ -101,9 +136,31 @@ body{background: #050D19;}
   background: url(../images/i-nav-ico-mine-on.png) no-repeat;
   background-size: 100% 100%;
 }
+/*TIPS*/
+.tack{
+  position: fixed;
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  font-size: 14px;
+  color: #fff;
+  z-index: 99999999;
+}
+.tack p{
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 3px;
+  background: rgba(43,47,54,.75);
+}
 </style>
 <template>
-	<div class="main-nav">
+  <div class="main-nav">
         <ul>
           <li v-link="{path:'/match'}">
             <a>
@@ -117,7 +174,7 @@ body{background: #050D19;}
               <span>榜单</span> 
             </a>
           </li>
-          <li v-link="{path:'/mine'}">
+          <li v-link="{path:'/mine',query:{userid:userMsg.userid}}">
             <a>
               <i></i>
               <span>我的</span>
@@ -127,7 +184,26 @@ body{background: #050D19;}
     </div>
     <div class="content">
         <router-view></router-view>
+        
     </div>
+    <!-- 弹窗 -->  
+  <div class="pop_guide_task" id="pop2" style="height: 414px;">
+    <div class="pop">
+      <div class="pop_body">
+        <p class="pop_p2"></p> 
+          <a href="javascript:;" class="pop_btn" style="display:none;">确定</a>
+      </div>
+    </div>
+  </div>
+  <!-- loading -->  
+  <div class="loading-1">
+    <div>
+    <span></span>加载中...
+    </div>
+  </div> 
+  <div class="tack" v-show="alertConfig.show">
+      <p>{{alertConfig.msg}}</p>
+  </div>
 </template>
 
 <script>
@@ -136,45 +212,30 @@ var Vue = require('Vue');
 var store = require('../store/store.js');
 var actions = require('../store/actions.js');
 
-
-import Storage from '../js/Storage';
-
 var index = Vue.extend({
-	name: 'index',
-	data: function() {
-		return {
-			
-		};
-	},
-    store: store,
-    vuex: {
-        getters: {
-            userMsg: function() {
-                return store.state.userMsg;
-            }
-        },
-        actions: actions
-    },
-	ready: function() {
+  name: 'index',
+  data: function() {
+    return {
+      
+    };
+  },
+  store: store,
+  vuex: {
+      getters: {
+          userMsg: function() {
+              return store.state.userMsg;
+          },
+          alertConfig: function() {
+              return store.state.alertConfig;
+          }
+      },
+      actions: actions
+  },
+	created: function() {
         var _this = this;
-        // $.ajax({
-        //     url:'http://yxssapi.dev.yingxiong.com/match/me.lg',
-        //     type:'POST',
-        //     dataType:'json',
-        //     // jsonp:'callback',
-        //     // jsonpCallback:'jsonp'+new Date().getTime(),
-        //     data:{name: 'alizeegod'},
-        //     success:function(data){
-
-        //         console.log(data)
-        //     }
-        // }); 
-        // console.log(JSON.stringify(_this.userMsg));
-        // // Storage.set('userMsg',JSON.stringify(_this.userMsg));
-        // console.log(Storage.get('userMsg'));
-        // console.log(window.localStorage)
-        // console.log(JSON.parse(Storage.get('userMsg')))
-	}
+        console.log(gload_conf)
+        actions.set(store,{userid:gload_conf.uid,iphone:gload_conf.bindphone})
+  }
 });
 
 module.exports = index;

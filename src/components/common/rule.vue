@@ -2,7 +2,7 @@
   	<div class="rule">
   		<h3 class="ruletil">{{ruleinf.title}}</h3>
   		<div class="ruleinf">
-  			{{ruleinf.msg}}
+  			{{ruleinf.content}}
   		</div>
   	</div>
 </template>
@@ -24,21 +24,13 @@
 	width: 96%;
 	margin: 0 auto;
 	overflow: hidden;
+  color: #fff;
 }
 </style>
 <script>
 var Vue = require('Vue');
-var Mock = require('mockjs');
-
-Mock.mock('http://ruleinf.cn',{
-    "array":{
-        'title'     : '@name',
-        'msg'       : '@paragraph'
-    }
-});
 var rule = Vue.extend({
 	name: 'rule',
-	// store: store,
 	data: function() {
 		return {
 			ruleinf: {}
@@ -47,17 +39,22 @@ var rule = Vue.extend({
 	created: function(){
 		var _this = this;
 		$.ajax({
-            url: 'http://ruleinf.cn',
-            dataType: 'json',
-            success: function(data) {
-                _this.ruleinf = data.array;
-                console.log(data.array)
+        url: ROOTPATH + '/match/page.lg' + QUERY,
+        type: 'POST',
+        dataType: 'json',
+        data:{type:_this.$route.query.type},
+        success: function(data) {
+            if (data.code == 0) {
+                _this.ruleinf= data.data;
+            } else if(data.code < 0) {
+
             }
-        })
+        }
+    })
 
 	},
 	ready: function() {
-		console.log(this.$route.query.userid)
+
 
 	}
 });

@@ -2,14 +2,15 @@
   "name": "vuetest",
   "version": "0.0.1",
   "description": "vuetest",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
   },
   "author": "alizeegod",
   "license": "ISC",
   "devDependencies": {
-    "babel": "^6.5.2",
+    "autoprefixer": "^6.5.3",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -19,7 +20,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
-    "gulp-asset-rev-hash": "0.0.9",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
     "gulp-header": "^1.8.8",
@@ -30,23 +31,26 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "html-loader": "^0.4.4",
+    "html-webpack-plugin": "^2.22.0",
+    "iscroll": "^5.2.0",
     "jquery": "^3.1.1",
     "minimist": "^1.2.0",
+    "mockjs": "^1.0.1-beta3",
     "path": "^0.12.7",
+    "postcss-loader": "^1.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vue": "^1.0.28",
-    "vue-awesome-swiper": "^2.2.0",
     "vue-devtools": "^2.0.4",
     "vue-drapload": "^0.1.12",
-    "vue-hot-reload-api": "^2.0.6",
+    "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.2.3",
     "vue-loader": "^8.5.4",
-    "vue-resource": "^1.0.3",
+    "vue-resource": "^0.9.3",
     "vue-router": "^0.7.13",
     "vue-style-loader": "^1.0.0",
     "vuex": "^1.0.0",
     "webpack": "^1.13.2",
-    "webpack-stream": "^3.2.0"
+    "webpack-dev-server": "^1.16.2"
   }
 }

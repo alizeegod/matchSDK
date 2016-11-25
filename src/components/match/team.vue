@@ -38,6 +38,7 @@
     color:#e1e1e1;
     font-size:13px;
     padding-bottom: 5px;
+    min-height: 50px;
 }
 .team-txt .team-txt-item3{
     color:#9db5e6;
@@ -127,30 +128,30 @@
 }
 </style>
 <template>
-    <div class="team" v-if="teamshow">
-       <div class="team-hed">
-           战队介绍
-       </div>
-       <div class="team-main">
-       <div class="team-zd-js">
-          <div class="team-name">
-               <img v-bind:src=teamLogo alt="" class="team-logo">
-               <div class="team-txt">
-                   <p class="team-txt-item1">{{teamName}}</p>
-                   <p class="team-txt-item2">{{teamDesc}}</p>
-                   <p class="team-txt-item3" v-if="teamBest">最好成绩： <span v-for="teama in teamBest">{{teama}}</span></p>
-               </div>
-          </div>
-           <div class="team-usephoto">
-               <ul>
-                   <li v-for="teamb in teamPlayer" track-by="$index">
-                       <img v-bind:src=teamb.image_url>
-                       <p>{{teamb.name}}</p>
-                   </li>
-               </ul>
+        <div class="team" v-if="teamshow">
+           <div class="team-hed">
+               战队介绍
            </div>
-        </div>
-           <div class="team-video">
+           <div class="team-main">
+           <div class="team-zd-js">
+              <div class="team-name">
+                   <img v-bind:src=teamLogo alt="" class="team-logo">
+                   <div class="team-txt">
+                       <p class="team-txt-item1">{{teamName}}</p>
+                       <p class="team-txt-item2">{{teamDesc}}</p>
+                       <p class="team-txt-item3" v-if="steamBest">最好成绩： <span v-for="teama in teamBest">{{teama}}</span></p>
+                   </div>
+              </div>
+               <div class="team-usephoto">
+                   <ul>
+                       <li v-for="teamb in teamPlayer" track-by="$index">
+                           <img v-bind:src=teamb.image_url>
+                           <p>{{teamb.name}}</p>
+                       </li>
+                   </ul>
+               </div>
+            </div>
+           <div class="team-video" v-if="steamVideo">
                <p class="team-video-p">战队视频</p>
                <div class="team-video-list">
                    <ul >
@@ -176,7 +177,9 @@ var common = require('../../js/common.js');
 module.exports = {
     data: function() {
         return {
-            teamshow:true,
+            steamVideo:false,
+            teamshow:false,
+            steamBest:false,
             teamBest:[],
             teamPlayer:[],
             teamVList:[],
@@ -210,18 +213,26 @@ module.exports = {
       teamFn:function(d,g){
          var self = this;
           $.ajax({
-            url:common.getBaseUrl()+'/match/team.lg',
+            url:common.getBaseUrl()+'/match/team.lg'+ QUERY,
             type:g,
             dataType:'json',
             data:d,
+            beforeSend:function(){
+                $(".loading-1").show()
+            },
             success:function(data){
-              if(data.code){
+              if(data.code==0){
+                self.teamshow = true;
                 self.teamDesc = data.data.desc;
+                self.steamBest = data.data.best.length > 0 ? true : false;
                 self.teamBest = data.data.best.split('|');
                 self.teamLogo = data.data.logo;
                 self.teamName = data.data.name;
                 self.teamPlayer = self.teamPlayer.concat(data.data.player);
                 $(".loading-1").hide();
+              }else{
+                self.teamshow = false;
+                common.tips("暂无战队介绍");
               }
             }  
            }) 
@@ -229,14 +240,21 @@ module.exports = {
      teamvideoFn:function(d,g){
         var self = this;
           $.ajax({
-            url:common.getBaseUrl()+'/match/teamvideo.lg',
+            url:common.getBaseUrl()+'/match/teamvideo.lg'+ QUERY,
             type:'POST',
             dataType:'json',
             data:d,
+            beforeSend:function(){
+                $(".loading-1").show()
+            },
             success:function(data){
-              if(data.code){
+              if(data.code==0){
+                self.steamVideo = true;
                 self.teamVList = self.teamVList.concat(data.data.list);
                 $(".loading-1").hide();
+              }else{
+                self.steamVideo = false;
+                common.tips("暂无战队介绍");
               }
             }  
            })

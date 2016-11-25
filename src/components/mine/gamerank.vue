@@ -130,10 +130,13 @@
     background: url(../../images/prank-ico.png) no-repeat;
     background-size: 100% 100%;
 }
+.grk .grk-con{
+    overflow: auto;
+}
 </style>
 <template>
     <div class="grk">
-        <h3 class="grank_til">{{grktil}}</h3>
+        <h3 class="grank_til">{{title}}</h3>
         <div class="grk-til">
             <p class="p1">{{grkkey[0]}}</p>
             <p class="p2">{{grkkey[1]}}</p>
@@ -143,18 +146,18 @@
             <p class="p6">{{grkkey[5]}}</p>
             <p class="p7">{{grkkey[6]}}</p>
         </div>
-        <div class="grk-con">
+        <div class="grk-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
             <ul>
                 <li class="grk-item item" v-link="{name:'mine',query:{userid:grkdata.userid}}"
                 v-for="grkdata in grkdatas" transition="item">
-                    <p class="p1"><span>{{grkdata.matchrank}}</span></p>
+                    <p class="p1"><span>{{grkdata.rank}}</span></p>
                     <p class="p2">
-                        <image :src="grkdata.userImg"/>
+                        <image :src="grkdata.avatar"/>
                     </p>
-                    <p class="p3"><span>{{grkdata.username}}</span></p>
-                    <p class="p4"><span>{{grkdata.userarea}}</span></p>
-                    <p class="p5"><span>{{grkdata.userpower}}</span></p>
-                    <p class="p6"><img :src="grkdata.prizeImg"></p>
+                    <p class="p3"><span>{{grkdata.rolename}}</span></p>
+                    <p class="p4"><span>{{grkdata.servername}}</span></p>
+                    <p class="p5"><span>{{grkdata.score}}</span></p>
+                    <p class="p6"><img :src="grkdata.prizeImg" v-if="grkdata.prizeImg == '' ? false : true"></p>
                     <p class="p7"><i></i></p>
                 </li>
             </ul>
@@ -168,31 +171,14 @@ var Vue = require('Vue');
 var store = require('../../store/store.js');
 var actions = require('../../store/actions.js');
 
-
-var Mock = require('mockjs');
-
-Mock.Random.image('30*30');
-Mock.Random.region();
-
-Mock.mock(ROOTPATH + 'gamerank',{
-    'grktil'       : '排位赛',
-    "gamerank|1-20":[{
-        'matchrank|1-100'     : 1,
-        'userImg'           : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'username'           : '@name',
-        'userarea'           : '@region',
-        'userpower|1-1000'   : 1,
-        'prizeImg'            : 'http://10.0.11.19/svn/match/2.0/dist/images/prank-timg.png',
-        'userid|2-10'         : 1
-    }]
-});
 var gamerank = Vue.extend({
     name: 'gamerank',
     data: function() {
         return {
             grkkey: ['排名','','玩家','','积分','',''],
-            grkdatas: {},
-            grktil: {}
+            grkdatas: [],
+            title: '',
+            page: 0
         };
     },
     store: store,
@@ -200,27 +186,60 @@ var gamerank = Vue.extend({
         getters: {
             alertConfig: function() {
                 return store.state.alertConfig;
+            },
+            alertConfig: function() {
+                return store.state.alertConfig;
             }
         },
         actions: actions
     },
     created: function() {
-      var _this = this;
-      $.ajax({
-          url: ROOTPATH + 'gamerank',
-          dataType: 'json',
-          success: function(data) {
-              _this.grkdatas = data.gamerank;
-              _this.grktil = data.grktil;
-          }
-      })
+        var _this = this;
+        
     },
     ready: function() {
-  		// this.msg = this.alertConfig.msg;
+  		let rH = document.documentElement.clientHeight - 90;
+        $(".grk .grk-con").height(rH);
+
+        
+        var me = this;
+        me.$options.vue = me;
+        console.log(me.page)
 
   	},
+    loadListData: function (fn) {
+        var me = this.vue;
+        $.ajax({
+            url: ROOTPATH + '/my/match-rank.lg' + QUERY,
+            dataType: 'json',
+            type: 'POST',
+            data: {matchid: me.$route.query.matchid,page: me.page,pagesize:10},
+            success: function(data) {
+                if (data.code == 0) {
+                    fn(data)
+                } else if (data.code < 0) {
+                    actions.alert(store,{show:true,msg:data.msg})
+                }
+            }
+        })
+    },
     methods: {
-
+        down_a: function () {
+            var me = this;
+            me.page += 1;
+            me.$options.loadListData(function (data) {
+                me.grkdatas = me.grkdatas.concat(data.data.lists);
+                me.title = data.data.title;
+                console.log(data.data)
+                if (data.data.totalpage <= me.page) {
+                    me.ascroll.noData();
+                }
+                // 通过设置的key 方法下拉对象方法
+                // 如果没有更多数据。你可以 调用 me.ascroll.noData()
+                me.ascroll.resetload(true);
+            });
+ 
+        }
     }
 });
 
