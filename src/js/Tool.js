@@ -80,7 +80,8 @@ Tool.yzm=(obj)=>{
     var name=obj.val();
     // var reg = /^[\u4e00-\u9fa5 ]{2,20}$/;
     if (name == '') {
-        alert("验证码不能为空");
+        // alert("验证码不能为空");
+        actions.alert(store,{show:true,msg:"验证码不能为空"})
         return false;
     }else{
         return true;
@@ -91,16 +92,20 @@ Tool.tel=(obj)=>{
     var phone=obj.val();
     var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
     if(phone==''){
-        alert("手机号不能为空");
+        // alert("手机号不能为空");
+        actions.alert(store,{show:true,msg:"手机号不能为空"})
         return false;
     }else if( !myreg.test(phone) ){
-        alert("请输入有效的手机号码");
+        // alert("请输入有效的手机号码");
+        actions.alert(store,{show:true,msg:"请输入有效的手机号码"})
         return false;
     }else if( phone.length != 11 ){
-        alert("请输入有效的手机号码");
+        // alert("请输入有效的手机号码");
+        actions.alert(store,{show:true,msg:"请输入有效的手机号码"})
         return false;
     }else if(isNaN(phone)){
-        alert("请输入正确的格式");
+        // alert("请输入正确的格式");
+        actions.alert(store,{show:true,msg:"请输入正确的格式"})
         return false;
     }else{
         return true;

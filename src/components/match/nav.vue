@@ -20,33 +20,45 @@
     line-height: 31px;
     text-align: center;
     font-size: 16px;
-
 }
 .season-tab-hed p:nth-child(2),.season-tab-hed1 p:nth-child(2){
-    background: #2f3644;
+    background: #1a212e;
     height: 33px;
-    line-height: 30px;
     text-align: center;
     font-size: 12px;
     display: flex;
     flex-wrap: wrap;
 
 }
-.season-tab-hed p:nth-child(2) a,.season-tab-hed1 p:nth-child(2) a{
+.season-tab-hed p:nth-child(2) a{
     flex: 1;
     width: 0;
     flex-basis: 0;
     max-width: 100%;
     color: #fff;
     position: relative;
+    border-right:#171b23 solid 1px;
+    height: 28px;
+    line-height: 28px;
+    background: #2f3644;
 }
-.season-tab-hed1 p:nth-child(2){
-    height: 30px;
+.season-tab-hed1 p:nth-child(2) a{
+    flex: 1;
+    width: 0;
+    flex-basis: 0;
+    max-width: 100%;
+    color: #fff;
+    position: relative;
+    height: 33px;
+    line-height: 33px;
+    background: #1a212e;    
+}
+.season-tab-hed p:nth-child(2) a:last-child{
+    border:0;
 }
 .season-tab-hed1 p:nth-child(2) a span{
     height: 28px;
     display: inline-block;
-    
     color: #aaa;
 }
 .season-tab-hed1 p:nth-child(2) a.v-link-active span{
@@ -54,23 +66,32 @@
     border-bottom: #608be9 solid 2px;
 }
 
-.season-tab-hed p:nth-child(2) a.v-link-active{
+.season-tab-hed p:nth-child(2) a.v-link-active i,.season-tab-hed p:nth-child(2) a.v-link-active{
     background: #4566a8;
 }
 .season-tab-hed p:nth-child(2) a i{
     position: absolute;
     left: 0;
-    bottom: 2px;
+    bottom: -5px;
     width: 100%;
-    height: 3px;
+    height: 2px;
     z-index: 2;
-    background: #1a212e;
+    background: transparent;
 }
 .season-tab-hed p:nth-child(2) a.item1 em{
     display: inline-block;
     width: 16px;
     height: 11px;
     background-image: url(../../images/nav_ico_1_@3x.png);
+    background-size: 100% 100%;
+    vertical-align: -1px;
+    margin-right: 5px;
+}
+.season-tab-hed p:nth-child(2) a.item1.v-link-active em{
+    display: inline-block;
+    width: 16px;
+    height: 11px;
+    background-image: url(../../images/nav_ico_pre_1_@3x.png);
     background-size: 100% 100%;
     vertical-align: -1px;
     margin-right: 5px;
@@ -84,6 +105,15 @@
     vertical-align: -1px;
     margin-right: 5px;
 }
+.season-tab-hed p:nth-child(2) a.item2.v-link-active em{
+    display: inline-block;
+    width: 12px;
+    height: 11px;
+    background-image: url(../../images/nav_ico_pre_2_@3x.png);
+    background-size: 100% 100%;
+    vertical-align: -1px;
+    margin-right: 5px;
+}
 .season-tab-hed p:nth-child(2) a.item3 em{
     display: inline-block;
     width: 12px;
@@ -93,13 +123,31 @@
     vertical-align: -1px;
     margin-right: 5px;
 }
+.season-tab-hed p:nth-child(2) a.item3.v-link-active em{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-image: url(../../images/nav_ico_pre_3_@3x.png);
+    background-size: 100% 100%;
+    vertical-align: -2px;
+    margin-right: 5px;
+}
 .season-tab-hed p:nth-child(2) a.item4 em{
     display: inline-block;
     width: 12px;
-    height: 11px;
+    height: 12px;
     background-image: url(../../images/nav_ico_nor_@3x.png);
     background-size: 100% 100%;
-    vertical-align: -1px;
+    vertical-align: -2px;
+    margin-right: 5px;
+}
+.season-tab-hed p:nth-child(2) a.item4.v-link-active em{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-image: url(../../images/nav_ico_pre_@3x.png);
+    background-size: 100% 100%;
+    vertical-align: -2px;
     margin-right: 5px;
 }
 .season-tab-hed1 p:nth-child(2) a.item5 em{
@@ -146,7 +194,7 @@
 <div class="season-tab-1">
     <div v-if="typeid == 1 && channelid==1" class="season-tab-hed">
         <p>{{matchname}}</p>
-        <p>
+        <p class="itemz">
             <a class="item1" v-link="{path:'/match/lineLive/'+matchid}"><em></em>视频直播<i></i></a>
             <a class="item2" v-link="{path:'/match/lineTeamInt/'+matchid}"><em></em>战队积分<i></i></a> 
             <a class="item3" v-link="{path:'/match/linejj/'+matchid}"><em></em>赛事介绍<i></i></a>  
@@ -162,7 +210,7 @@
     </div>
     <div v-if="typeid == 1 && channelid==0" class="season-tab-hed">
         <p>{{matchname}}</p>
-        <p>
+        <p class="itemz">
             <a class="item1" v-link="{path:'/match/lineLive/'+matchid}"><em></em>视频直播<i></i></a>
             <a class="item2 item4" v-link="{path:'/match/lineSchedule/'+matchid}"><em></em>赛程<i></i></a>
             <a class="item3" v-link="{path:'/match/linejj/'+matchid}"><em></em>赛事介绍<i></i></a>  
@@ -204,10 +252,20 @@ module.exports = {
         setTimeout(function(){actions.set(store,{comment:wsCache.get('COMMENTA').comment});},50);
         
         $(".season-tab-1").width($(window).width()-50);
-
+        $(".season-tab-hed p.itemz a").each(function(){
+            if($(this).hasClass("v-link-active")){
+                if($(this).index()==0){
+                      $(this).css("border","0")
+                }else if($(this).index()==1){
+                    $(this).parent().find("a").css("border","0")
+                }else if($(this).index()==2){
+                    $(this).parent().find("a").eq(1).css("border","0")
+                    
+                }
+            }
+        })
         setTimeout(function(){
             if(($(".season-tab-box").height() > ($(window).height()-63)) &&  self.$parent.name != "lineSchedule"){
-
                 common.scroll(function(direction){
                     if(direction=="down"){
                         $(".season-tab-1").css("top","-62px");

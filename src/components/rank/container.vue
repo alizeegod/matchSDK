@@ -13,11 +13,12 @@
 }
 .rank-top h3{
     width: 100%;
-    height: 40px;
-    font-size: 20px;
+    height: 32px;
+    font-size: 16px;
     text-align: center;
-    line-height: 40px;
+    line-height: 32px;
     color: #fff;
+    font-weight: normal;
 }
 .rank-top .rank-nav{
     width: 92%;
@@ -27,12 +28,12 @@
 }
 .rank-top .rank-nav li{
     width: 49.5%;
-    height: 36px;
-    line-height: 36px;
+    height: 30px;
+    line-height: 30px;
     display: block;
     float: left;
     text-align: center;
-    font-size: 20px;
+    font-size: 14px;
     color: #888888;
     background: #2B2F36;
     border-radius: 3px;

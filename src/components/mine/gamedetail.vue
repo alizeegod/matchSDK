@@ -10,7 +10,7 @@
   line-height: 56px;
   background: #1a212e;
   color: #fff; 
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
 }
 .gamedl_top{
@@ -200,8 +200,8 @@
             <li>击杀-死亡</li>
           </ul>
           <ul class="gdetail_succeed">
-            <li v-for='list in teamlist.lists' :class="list.userid == userMsg.id ? 'active' : ''">
-              <a v-link="{name:'mine',query:{userid:list.userid}}">
+            <li v-for='list in teamlist.lists' :class="list.userid == userMsg.userid ? 'active' : ''">
+              <a @click="goto(list)">
                 <span><i class="gdetail_pic"><img :src="list.avatar" /></i>{{list.rolename}}</span>
                 <span>{{list.rank}}</span>
                 <span>{{list.duanwei}}</span>
@@ -250,9 +250,9 @@ var gamedetail = Vue.extend({
                 $(".loading-1").show();
             },
             success: function(data) {
-                console.log(data)
+                $(".loading-1").hide();
                 if (data.code == 0) {
-                    $(".loading-1").hide();
+                    
                     _this.gamedetail = data.data;
                 } else if (data.code < 0) {
                     actions.alert(store,{show:true,msg:data.msg})
@@ -266,7 +266,9 @@ var gamedetail = Vue.extend({
 
   	},
     methods: {
-
+      goto:function(list){
+          list.userid != null ? this.$route.router.go({name:'mine',query:{userid:list.userid}}) : '' ;  
+      }
     }
 });
 

@@ -63,7 +63,7 @@
           <li v-for='tiplist in tipslists'>
             <a @click.prevent="goto(tiplist)">
               <p v-if="tiplist.type == 1 ? false : true"><span class="tips_reply">{{tiplist.rolename}}</span>回复：</p>
-              <p class="tips_replytxt"><span>{{tiplist.content}}</span><i v-show="tiplist.is_read"></i></p>
+              <p class="tips_replytxt"><span>{{tiplist.content}}</span><i v-show="tiplist.is_read == 0 ? true : false"></i></p>
               <p v-if="tiplist.type == 1 ? false : true"><span class="tips_question">{{tiplist.main}}</span></p>
             </a>
           </li>
@@ -120,6 +120,7 @@ var tips = Vue.extend({
             type: 'POST',
             data: {page: me.page,pageSize:30},
             success: function(data) {
+                $(".loading-1").hide();
                 if (data.code == 0) {
                   fn(data)
                 } else if (data.code < 0) {
@@ -137,8 +138,6 @@ var tips = Vue.extend({
             me.page += 1;
             me.$options.loadListData(function (data) {
                 me.tipslists = me.tipslists.concat(data.data.list);
-                console.log(data.data.totalPage)
-                console.log(data.data.page)
                 if (data.data.totalPage <= me.page) {
                     me.ascroll.noData();
                 }

@@ -9,6 +9,7 @@
 .prank-item.trank-item p.p3 span{
   display: block;
   float: left;
+  margin-left: 5px;
 }
 .prank-item.trank-item:nth-of-type(2n-1){
   background: #111A2B;
@@ -55,7 +56,7 @@
   			<p class="p3">战队</p>
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',query:{type:1}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{type:1}}">战斗力<i></i></span>
   			</p>
   			<p class="p6"></p>
   		</div> 
@@ -105,8 +106,9 @@ var teamrank = Vue.extend({
         let rW = $("#app").width()-50;
         $(".rank-top").width(rW);
         $(".prank .prank-title").width(rW);
+        
 
-        let rH = document.documentElement.clientHeight - 116;
+        let rH = document.documentElement.clientHeight - 112;
         $(".trank .prank-con").height(rH);
 
         var me = this;
@@ -121,6 +123,7 @@ var teamrank = Vue.extend({
             type: 'POST',
             data: {type: 2,page:me.page,pagesize:100},
             success: function(data) {
+                $(".loading-1").hide();
                 if (data.code == 0) {
                   fn(data)
                 } else if (data.code < 0) {

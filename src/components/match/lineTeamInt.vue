@@ -1,7 +1,7 @@
 <style>
 
 .line-team-int{
-    padding-top: 72px;
+    padding-top: 64px;
 
 }
 .line-team-int dl{
@@ -17,20 +17,24 @@
     line-height: 46px;
 }
 .line-team-int dt span{
-    width: 20%;
+    width: 19%;
     float: left;
     display: block;
     color: #426678;
-    font-size: 13px;
+    font-size: 14px;
 }
 .line-team-int dl dd:nth-child(2n){
     background: #111a2b;
 }
 .line-team-int dd a > span{
-    width: 20%;
+    width: 19%;
     float: left;
     height: 100%;
     font-size: 12px;
+}
+.line-team-int dd a > span.item2{
+    text-align: left;
+    padding-left: 6.5%
 }
 .line-team-int dd span.item1{
     color: #7b99ad;
@@ -92,14 +96,17 @@
 .line-team-int dd span.item4{
     color: #34a247;
 }
+.line-team-int dd span.item5{
+    text-align: right;
+    padding-right: 2%;
+}
 .line-team-int dd span.item5 i{
     display: inline-block;
-    width: 7px;
-    height: 7px;
-    border:#a4a4a4 solid 2px;
-    transform: rotate(45deg);
-    border-left: 0;
-    border-bottom: 0;
+    width: 8px;
+    height: 14px;
+    background: url(../../images/prank-ico.png) no-repeat;
+    background-size: 100% 100%; 
+    vertical-align: middle;
 }
 </style>
 <template>

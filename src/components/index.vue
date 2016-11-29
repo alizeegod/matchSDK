@@ -18,10 +18,43 @@ textarea{word-wrap:break-word;resize:none;}
 .clear{clear: both;}
 .fl{float: left;}
 .fr{float: right;}
-*{margin: 0; padding: 0; -webkit-text-size-adjust: none;-webkit-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;} ol,ul,i{list-style: none; font-style: normal;}
+*{margin: 0; padding: 0; -webkit-text-size-adjust: none;}
+*:not(input,textarea) { 
+-webkit-user-select:none;-moz-user-select:none;-o-user-select:none;user-select:none;
+} ol,ul,i{list-style: none; font-style: normal;}
  a{text-decoration: none; } a, button, input,div {-webkit-tap-highlight-color: rgba(255,0,0,0); } 
- html,body{height: 100%; } body{font-family:Helvetica,sans-serif; height: 100%; } 
-body{background: #050D19;}
+ html,body{height: 100%; } body{font-family:"HelveticaNeue-Light", "Helvetica Neue Light","Clockopia"; height: 100%; } 
+body{background: #050D19;word-wrap:break-word;word-break:break-all;}
+.shupingts{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999999999;
+    overflow: hidden;
+}
+.shupingts{display: none;}
+@media screen and (orientation:portrait) {
+    .shupingts{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        display: block;
+        z-index: 99999999999;
+        background: rgba(0,0,0,.8);
+    }
+    .shupingts p{
+        font-size: 14px;
+        color: #fff;
+        width: 100%;
+        text-align: center;
+        margin-top: 100px;
+    }
+}
 .loading-1{
     width:100%;
     height:100%;
@@ -33,12 +66,12 @@ body{background: #050D19;}
     color: #fff;
 }
 .loading-1 div{
-  width:100px;
+  width:110px;
   height:15px;
   position: absolute;
   left: 50%;
   top:50%;
-  margin:-7px 0 0 -50px;
+  margin:-7px 0 0 -55px;
 }
 .loading-1 span{
   display: inline-block;
@@ -87,7 +120,7 @@ body{background: #050D19;}
 }
 .main-nav li a{
     color: #a09b94;
-    font-size: 14px;
+    font-size: 12px;
     width: 50px;
     height: 50px;
     display: block;
@@ -107,8 +140,8 @@ body{background: #050D19;}
   display: inline-block;
 }
 .main-nav li a i{
-  width: 32.4px;
-  height: 28.8px;
+  width: 25.92px;
+  height: 23.04px;
   display: block;
   margin: 0 auto;
 }

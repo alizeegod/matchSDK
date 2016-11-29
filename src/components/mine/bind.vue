@@ -152,6 +152,9 @@ var bind = Vue.extend({
           if (typeof phone == 'number') {
               phone = phone.toString();
           }
+          if (phone == '') {
+              return phone;
+          }
           return phone.substr(0, 3) + '****' + phone.substr(7, 11);
         }
     },
@@ -178,6 +181,7 @@ var bind = Vue.extend({
                           //返回0 发送成功
                           //返回1 该号码已注册
                           //返回2 发送失败
+                          $(".loading-1").hide();
                           console.log(data.code);
                           console.log(data.msg)
                           if(data.code==0){
@@ -226,7 +230,7 @@ var bind = Vue.extend({
                     //返回0 注册成功
                     //返回1 该号码已注册
                     //返回2 验证码不对
-                    
+                    $(".loading-1").hide();
                     if(data.code==0){
                         actions.set(store,{iphone:_this.userIphone})
                         setTimeout(function(){

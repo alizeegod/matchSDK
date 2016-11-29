@@ -25,7 +25,7 @@
     width: 100%;
     text-align: center;
     line-height: 4;
-    font-size: 24px;
+    font-size: 16px;
     color: #fff;
 }
 .mine_wrap .minelink a{
@@ -39,14 +39,14 @@
 }
 .minelink .mlink_name{
     width: 20%;
-    font-size: 16px;
-    padding-top: 4px;
+    font-size: 14px;
+    padding-top: 10px;
     margin-right: 21px;
 }
 .minelink .ml_mainimgsrc{
     display: block;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border: 1px solid #000;
     margin-right: 10px;
 }
@@ -67,14 +67,14 @@
   position: relative;
 }
 .minelink .ml_msg_set a:first-child{
-  width: 25px;
-  height: 31px;
+  width: 22.5px;
+  height: 27.9px;
   background: url(../../images/mine-tip.png) no-repeat;
   background-size: 100% 100%;
 }
 .minelink .ml_msg_set a:last-child{
-  width: 31px;
-  height: 31px;
+  width: 27.9px;
+  height: 27.9px;
   background: url(../../images/mine-set.png) no-repeat;
   background-size: 100% 100%;
 }
@@ -133,14 +133,11 @@
   display: inline-block;
   width: 19px;
   height: 19px;
-  border-radius: 50%;
-  line-height: 19px;
   margin-left: 12px;
-  background: url(../../images/mymine_help.png) no-repeat;
+  vertical-align: middle;
+  margin-top: -2px;
+  background: url(../../images/ico_wh_@3x.png) no-repeat;
   background-size: 100% 100%;
-  text-indent: -9999px;
-  position: relative;
-  top: -2px;
 }
 .minelink .ml_detail ul li:nth-of-type(1) i{
   width: 16px;
@@ -161,11 +158,11 @@
   background-size: 100% 100%;
 }
 .mine_maintil{
-  font-size: 21px;
   height: 49px;
   line-height: 49px;
   margin-left: 15px;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: normal;
 }
 .mine_maintil span{
   display: inline-block;
@@ -183,7 +180,7 @@
   line-height: 60px;
   color: #e1e1e1;
   border-bottom: 1px solid #353c4a;
-  font-size: 16px;
+  font-size: 14px;
 }
 .mine_mainlist ul li.active{
   background: #2b3a58;
@@ -204,7 +201,7 @@
   float: left;
   height: 100%;
   overflow: hidden;
-  font-size: 16px;
+  font-size: 14px;
 }
 .mine_mainlist ul li p:nth-of-type(1){
   width: 22%;
@@ -213,11 +210,14 @@
 .mine_mainlist ul li p:nth-of-type(1) span{
   display: block;
   margin-top: 15px;
-  margin-left: 15px;
+  padding-left: 15px;
   line-height: 15px;
   width: 100%;
   height: 15px;
+  box-sizing: border-box;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mine_mainlist ul li p:nth-of-type(1) span.mine_time{
   font-size: 12px;
@@ -226,11 +226,11 @@
   white-space: nowrap;
 }
 .mine_mainlist ul li p:nth-of-type(2){
-  width: 17%;
+  width: 22%;
   text-align: center;
 }
 .mine_mainlist ul li p:nth-of-type(3){
-  width: 28%;
+  width: 23%;
 }
 .mine_mainlist ul li p:nth-of-type(4){
   width: 25%;
@@ -239,12 +239,12 @@
   width: 8%;
 }
 .mine_mainlist ul li p:nth-of-type(5) i{
-  width: 12px;
-  height: 21px;
+  width: 10px;
+  height: 17px;
+  margin-top: 21.5px;
   background: url(../../images/prank-ico.png) no-repeat;
   background-size: 100% 100%;
   display: block;
-  margin-top: 20px;
 }
 .mine_mainlist ul li p:nth-of-type(2) span{
   font-style: normal;
@@ -258,10 +258,10 @@
   background: #666;
 }
 .mine_mainlist ul li p:nth-of-type(2) span.not{
-  background: #666;
+  background: #34a247;
 }
 .mine_mainlist ul li p:nth-of-type(2) span.active{
-  background: #34a247;
+  background: #db2323;
 }
 .mine_mainlist ul li p:nth-of-type(2) span.over{
   background: #666;
@@ -282,17 +282,17 @@
           <p>{{mine.rolename}}</p>
           <p>{{mine.servername}}</p>
         </div>
-        <div class="ml_mainimg fl" v-for="title in usertitle">
-            <img :src="title.src" v-if="title.ischeck" />
+        <div class="ml_mainimg fl" v-for="title in usertitle" v-show="title.ischeck == 1 ? true : false">
+            <img :src="title.src"/>
         </div>
         <div class="ml_msg_set fr" v-if='show'>
-          <a v-link="{path:'/mine/tips'}"><span>{{tipsnum}}</span></a>
+          <a v-link="{path:'/mine/tips'}"><span v-if="tipsnum==0 ? false : true">{{tipsnum}}</span></a>
           <a v-link="{path:'/mine/setcof'}"></a>
         </div>
       </div>
       <div class="ml_detail">
         <ul>
-          <li v-link="{name:'rule',query:{type:0}}"><i></i><span>战斗力: <em>{{mine.power}}</em><a>？</a></span></li>
+          <li v-link="{name:'rule',query:{type:0}}"><i></i><span>战斗力: <em>{{mine.power}}</em><a></a></span></li>
           <li v-link="{name:'perrank'}"><i></i><span>国内排行: <em>{{mine.rank}}</em></span></li>
           <li><i></i><span>已参加比赛数: <em>{{mine.matchnum}}</em></span></li>
         </ul>
@@ -309,13 +309,13 @@
               <span class="mine_time">{{list.starttime}}-{{list.endtime}}</span>
             </p>
             <p>
-                <span class="not" v-if="list.type == 0">报名中</span>
-                <span class="active" v-if="list.type == 1">比赛中</span>
-                <span class="over" v-if="list.type == 2">已结束</span>
+                <span class="not" v-if="list.type == 3 ? true : false">报名中</span>
+                <span class="active" v-if="list.type == 1 ? true : false">比赛中</span>
+                <span class="over" v-if="list.type == 2 ? true : false">已结束</span>
             </p>
-            <p v-if="list.type == 2"><em class="mine_num1">+{{list.addpower}}</em></p>
+            <p v-if="list.type == 2 && list.addpower != 0 ? true : false">战斗力<em class="mine_num1">+{{list.addpower}}</em></p>
             <p v-else></p>
-            <p>排名<em class="mine_num2">{{list.rank}}</em></p>
+            <p>排名:<em class="mine_num2">{{list.rank}}</em></p>
             <p><i></i></p>
           </a>
         </li>
@@ -364,13 +364,13 @@ var mine = Vue.extend({
           url: ROOTPATH + '/my/index.lg' + QUERY,
           type: 'POST',
           dataType: 'json',
-          data:{uid:_this.uid},
+          data:{userid:_this.uid},
           beforeSend:function(){
               $(".loading-1").show();
           },
           success: function(data) {
+              $(".loading-1").hide();
               if (data.code == 0) {
-                  $(".loading-1").hide();
                   _this.mine= data.data.mine;
                   _this.lists= data.data.lists;
                   _this.tipsnum= data.data.tipsnum;
@@ -413,8 +413,8 @@ var mine = Vue.extend({
               $(".loading-1").show();
           },
           success: function(data) {
+              $(".loading-1").hide();
               if (data.code == 0) {
-                  $(".loading-1").hide();
                   _this.mine= data.data.mine;
                   _this.lists= data.data.lists;
                   _this.tipsnum= data.data.tipsnum;

@@ -218,8 +218,11 @@
     line-height: 9px;
 }
 .match-live-box .bd-scroll-box .item-time2{
-    font-size:14px;
-    line-height: 14px;
+    font-size:12px;
+    line-height: 12px;
+    font-weight: normal;
+    display: inline-block;
+    margin-top: 3px;
 }
 .match-live-box .bd-scroll-box .item-name1{
     float:left;
@@ -227,6 +230,7 @@
     background:#050d19;
     height:100%;
     line-height:45px;
+    color: #596a8a;
 }
 .match-live-box .bd-scroll-box .item-name2{
     float:left;
@@ -234,6 +238,7 @@
     background:#050d19;
     height:100%;
     line-height:45px;
+    color: #596a8a;
 }
 .match-live-box .bd-scroll-box .item-vs{
     float:left;
@@ -241,6 +246,8 @@
     background:#050d19;
     height:100%;
     line-height:45px;
+    color: #708cc7;
+    font-size: 12px;
 }
 .match-live-box .bd-scroll-box .item-zb{
     float:left;
@@ -255,8 +262,9 @@
     background:#1f2630;
     color:#4c5b76;
     display:inline-block;
-    line-height:22px;
+    line-height:20px;
     border-radius:3px;
+    font-size: 9px;
 }
 .match-live-box .bd-scroll-box .item-zb a i{
     display:inline-block;
@@ -265,6 +273,7 @@
     background:url(../../images/ico_play_small_@3x.png) no-repeat;
     background-size:cover;
     margin-left:3px;
+    vertical-align: -1px;
 }
 .match-live-box .bd-scroll-box a.item-zb0{
     background:#1f2630;
@@ -293,7 +302,7 @@
                    <div class="item-box item-box-fl">
                       <div class="item-ceil-fl">
                            <div class="item-child-hed">
-                                <span class="item-child item-child-hed-a" id="match-offline-1">直播中</span>
+                                <span class="item-child item-child-hed-a" id="match-offline-1">{{zbz}}</span>
                                 <span class="item-child item-child-hed-b" id="match-offline-2">{{matchname}}</span>
                             </div>
                             <div class="item-child-box">
@@ -302,13 +311,13 @@
                             </div>
                       </div>
                    </div>
-                   <div class="item-box item-box-fr">
+                   <div class="item-box item-box-fr" v-if="dataOffList.length>0">
                        <div class="hd-list" id="match-offline-d">
                            <span class="prev"><i></i></span>
                            <span class="next"><i></i></span>
                            <div class="bd-box-list">
                                <div class="bd-list" id="match-offline-e">
-                                   <li v-for="listoff in dataOffList" data-team="{{$index+1}}" v-bind:class="[$index+1=== 1 ? 'on':'']" track-by="$index"><span style="display:inline-block;height:35px;">{{listoff.round}}</span></li>
+                                   <li v-for="listoff in dataOffList" data-team="{{$index+1}}" v-bind:class="[$index=== dataOffNow ? 'on':'']" track-by="$index"><span style="display:inline-block;height:35px;">{{listoff.round}}</span></li>
                                 </div>
                            </div>
                         </div>
@@ -333,6 +342,7 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="item-box item-box-fr" v-else>暂无数据</div>
                </div>
             </div>
     </div>
@@ -361,7 +371,8 @@ module.exports = {
             datapdsubscribe:'0',
             matchname:'',
             matchid:wsCache.get('HEROC').matchid,
-            videoUrl:''
+            videoUrl:'',
+            zbz:''
            
         };
     },
@@ -426,6 +437,7 @@ module.exports = {
                         self.defaultIndex = data.data.defaultIndex;
                         self.videoUrl = data.data.match_info.video_url;
                         self.dataOffList = self.dataOffList.concat(data.data.dataList);
+                        self.zbz = data.data.match_info.state == 0 ? "重播":"直播中";
                         setTimeout(function(){self.sliderFn();$(".loading-1").hide()},50); 
                     }else if(data.code < 0){
                       actions.alert(store,{show:true,msg:data.msg})

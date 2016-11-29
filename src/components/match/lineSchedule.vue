@@ -313,6 +313,9 @@
 .ms-control a.active{
     background: #4566A8;
 }
+.match-video-link{
+    color: #fff;
+}
 
 
 .toe {
@@ -322,36 +325,75 @@
     overflow-y: visible;
     text-overflow: ellipsis;
 }
-
+.videoTc{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    left:0;
+    top:0;
+    z-index:9999999;
+    display: none;
+}
+.videoTc .videoTc-box i{
+    width: 26px;
+    height: 26px;
+    background: url(../../images/ico_gb_@3x.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -18px;
+    top: -18px;
+    z-index:100;
+}
+.videoTc .videoTc-box{
+    position: relative;
+    min-width: auto;
+    min-height: auto;
+}
+.videoTc .videoTc-box .media-holder {
+    position: relative;
+    min-width: 145px;
+    min-height: 80px;
+    width: 100%;
+    display: block;
+}
+.videoTc .videoTc-con{
+    width:50%;
+    position:relative;
+    left:50%;
+    top:0;
+    margin-left:-25%;
+    height:100%;
+}
 </style>
 <template>
 <div class="season-tab">
     <childnav></childnav>
     <div class="season-tab-box">
-    <div class="schedule-box">
-        <div class="matchschedule" id="iscroll">
-
-            <div class="ms-content" :class="msClass">
-                <div class="ms-control clearfix" v-show="poptypeid == 2 ? false : true">
-                    <a href="javascript:" :class="{'active': popp == 2}" @click="msdataFn(2)">胜者组</a>
-                    <a href="javascript:" :class="{'active': popp == 1}" @click="msdataFn(1)">败者组{{popp}}</a>
-                </div>
-                <div class="one-ms normal-group">
-                    <div class="ms-round" v-for="(index,mslist) in mslists" :class="'ms-row-'+(index >= isType ? isType : (index + 1))">
-                        <h3 class="ms-row-title">{{mslist.title}}</h3>
-                        <div class="one-match" v-for="row in mslist.list" :class="isFinal == index ? 'final' : ''">
-                            <div class="players" v-link="{path:row.video_url}">
-                                <a class="player" :class="row.leftScore > row.rightScore ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.leftTeam}}</span>
-                                    <span class="player-score">{{row.leftScore}}</span>
-                                </a>
-                                <div class="player-content" :class="row.video_url ? 'over' : ''">
-                                    <a class="match-video-link">{{row.dataTime | timeData3}}</a>
+        <div class="schedule-box">
+            <div class="matchschedule" id="iscroll">
+                <div class="ms-content" :class="msClass">
+                    <div class="ms-control clearfix" v-show="poptypeid == 2 ? false : true">
+                        <a href="javascript:" :class="{'active': popp == 2}" @click="msdataFn(2)">胜者组</a>
+                        <a href="javascript:" :class="{'active': popp == 1}" @click="msdataFn(1)">败者组</a>
+                    </div>
+                    <div class="one-ms normal-group">
+                        <div class="ms-round" v-for="(index,mslist) in mslists" :class="'ms-row-'+(index >= isType ? isType : (index + 1))">
+                            <h3 class="ms-row-title">{{mslist.title}}</h3>
+                            <div class="one-match" v-for="row in mslist.list" :class="isFinal == index ? 'final' : ''">
+                                <div class="players">
+                                    <a href="javascript:;" class="player" :class="row.leftScore > row.rightScore ? 'player-winner' : ''">
+                                        <span class="player-name toe">{{row.leftTeam}}</span>
+                                        <span class="player-score">{{row.leftScore}}</span>
+                                    </a>
+                                    <div class="player-content" :class="row.video_url ? 'over' : ''" v-on:click="videoTc(row.video_url)">
+                                        <a href="javascript:;" class="match-video-link">{{row.dataTime | timeData3}}</a>
+                                    </div>
+                                    <a href="javascript:;" class="player" :class="row.leftScore < row.rightScore ? 'player-winner' : ''">
+                                        <span class="player-name toe">{{row.rightTeam}}</span>
+                                        <span class="player-score">{{row.rightScore}}</span>
+                                    </a>
                                 </div>
-                                <a class="player" :class="row.leftScore < row.rightScore ? 'player-winner' : ''">
-                                    <span class="player-name toe">{{row.rightTeam}}</span>
-                                    <span class="player-score">{{row.rightScore}}</span>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -359,9 +401,15 @@
             </div>
         </div>
     </div>
-    </div>
 </div> 
-
+<div class="videoTc">
+    <div class="videoTc-con">
+        <div class="videoTc-box">
+            <i></i>
+            <img src="../../images/media-holder.png" class="media-holder">
+        </div>    
+    </div>
+</div>
 </template>
 
 <script>
@@ -385,8 +433,6 @@ module.exports = {
         };
     },
     created:function(){
-
- 
     },
     computed:{
         isFinal: function(){  //判断是否为最后一轮比赛
@@ -413,7 +459,11 @@ module.exports = {
         }else if(self.poptypeid==1){
             self.popp=2
         }
-        self.msdataFn(self.popp)
+        self.msdataFn(self.popp);
+        $(".videoTc-box i").click(function(){
+            $(".videoTc").hide();
+            $(".videoTc-box iframe").remove();
+        })
     },
     components:{
         'childnav':nav
@@ -445,9 +495,16 @@ module.exports = {
 
                 }
             });
-
+        },
+        videoTc:function(o){
+            if(o){
+                $(".videoTc").show();
+                $(".videoTc-box").append('<iframe id="js_sub_web" src="'+common.getBaseUrl()+"/match/video.lg?"+o+'" frameBorder=0 scrolling=no width="100%" height="100%" class="dianbo-img1" name="iframe_btn"></iframe>');
+                setTimeout(function(){
+                   $(".videoTc-box").css({"height":$("#js_sub_web").height(),"top":"50%","margin-top":"-"+$("#js_sub_web").height()/2+"px"}) 
+                },100)
+            } 
         }
-
     }
 }
 

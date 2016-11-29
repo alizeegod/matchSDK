@@ -56,7 +56,7 @@
     <div class="match_reply">
         <div class="match_reply_box">
             <div class="match_top_btns">
-                <textarea class="textarea" contenteditable="true" v-model="content" placeholder="我来说一句..."></textarea>
+                <textarea class="textarea" id="txt3" contenteditable="true" v-model="content" placeholder="我来说一句..."></textarea>
                 <b class="np-btn-submit" v-on:click="submit">发布</b>
             </div>
         </div>
@@ -98,10 +98,8 @@ module.exports = {
 			this.$el.parentNode.querySelectorAll(".textarea")[0].innerHTML = this.content;
 			this.$nextTick(function () {
 				this.$el.parentNode.querySelectorAll(".textarea")[0].focus();
-				
 			});
-
-		},
+        },
 		submit_reply:function(){
 			var  _this = this,el = _this.curEl,content = $.trim(this.content);
 			content =content.replace(/回复 .+：/,"");
@@ -207,6 +205,7 @@ module.exports = {
 			return len;
 		},
 		submit:function(e){
+			
 			if(this.curEl.id){
 				this.submit_reply();
 			}else{

@@ -126,6 +126,46 @@
     top:50%;
     margin: -20px 0 0 -20px;
 }
+.videoTc{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    left:0;
+    top:0;
+    z-index:9999999;
+    display: none;
+}
+.videoTc .videoTc-box i{
+    width: 26px;
+    height: 26px;
+    background: url(../../images/ico_gb_@3x.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -18px;
+    top: -18px;
+    z-index:100;
+}
+.videoTc .videoTc-box{
+    position: relative;
+    min-width: auto;
+    min-height: auto;
+}
+.videoTc .videoTc-box .media-holder {
+    position: relative;
+    min-width: 145px;
+    min-height: 80px;
+    width: 100%;
+    display: block;
+}
+.videoTc .videoTc-con{
+    width:50%;
+    position:relative;
+    left:50%;
+    top:0;
+    margin-left:-25%;
+    height:100%;
+}
 </style>
 <template>
         <div class="team" v-if="teamshow">
@@ -155,7 +195,7 @@
                <p class="team-video-p">战队视频</p>
                <div class="team-video-list">
                    <ul >
-                       <li v-for="team in teamVList" track-by="$index" data-rel="{{team.video_url}}">
+                       <li v-for="team in teamVList" track-by="$index" v-on:click="videoTc(team.video_url)">
                            <div>
                                <img v-bind:src=team.cover_url alt="">
                                <i></i>
@@ -166,6 +206,14 @@
                </div>
             </div>
        </div>
+    </div>
+    <div class="videoTc">
+        <div class="videoTc-con">
+            <div class="videoTc-box">
+                <i></i>
+                <img src="../../images/media-holder.png" class="media-holder">
+            </div>    
+        </div>
     </div>
 </template>
 <script>
@@ -229,12 +277,13 @@ module.exports = {
                 self.teamLogo = data.data.logo;
                 self.teamName = data.data.name;
                 self.teamPlayer = self.teamPlayer.concat(data.data.player);
-                $(".loading-1").hide();
               }else{
                 self.teamshow = false;
-                common.tips("暂无战队介绍");
               }
-            }  
+            },
+            complete:function(xhr,ts){
+              $(".loading-1").hide();
+            } 
            }) 
      },
      teamvideoFn:function(d,g){
@@ -254,11 +303,22 @@ module.exports = {
                 $(".loading-1").hide();
               }else{
                 self.steamVideo = false;
-                common.tips("暂无战队介绍");
               }
-            }  
+            },
+            complete:function(xhr,ts){
+              $(".loading-1").hide();
+            }
            })
-     }
+     },
+      videoTc:function(o){
+          if(o){
+              $(".videoTc").show();
+              $(".videoTc-box").append('<iframe id="js_sub_web" src="'+common.getBaseUrl()+"/match/video.lg?"+o+'" frameBorder=0 scrolling=no width="100%" height="100%" class="dianbo-img1" name="iframe_btn"></iframe>');
+              setTimeout(function(){
+                 $(".videoTc-box").css({"height":$("#js_sub_web").height(),"top":"50%","margin-top":"-"+$("#js_sub_web").height()/2+"px"}) 
+              },100)
+          } 
+      }
         
     }
 }

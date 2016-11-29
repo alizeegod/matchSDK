@@ -6,8 +6,9 @@
 	background-size: 100% 100%;
 	position: fixed;
 	right: 10px;
-	top: 50%;
+	bottom: 10px;
 	margin-top: 0px;
+    z-index: 10;
 }	
 </style>
 <template>
@@ -52,9 +53,11 @@
         	modClickA:function(obj){
         		var self = this;
         		self.matchid = obj.id;
-        		if(obj.enroll == 0 && obj.type==0){
+        		if(obj.enroll == 0 && obj.type==0 && obj.state==3){
         			this.ajaxRegFn(obj);
-        		}else if(obj.enroll == 1 && obj.type==0){
+        		}else if(obj.enroll == 0 && obj.type==0 && self.smx==2){
+                    this.ajaxRegFn(obj);
+                }else if(obj.enroll == 1 && obj.type==0){
         			common.tips("你已报过名");
         			wsCache.set('procA',{status:true});
                 }else if(obj.type==1){
@@ -64,15 +67,15 @@
                 }
         	},
         	ajaxRegFn:function(obj){
-                
+                console.log(wsCache.get('HEROC').matchid)
 	        	var self = this;
-	            var url = common.getBaseUrl()+'/match/enroll.lg'+QUERY;
+	            var url = common.getBaseUrl()+'/ajaxsdk/sdkuser/signup.lg'+QUERY;
 	            var gPost = "POST";
 	            var data = {
-	                match_id : self.matchid,
+	                match_id :wsCache.get('HEROC').matchid,
 	                gameid : gload_conf.gameid
 	            };
-	            if(self.sbindphone !==""){
+	            if(self.sbindphone){
 	                $.ajax({
 	                    url:url,
 	                    type:gPost,
@@ -87,6 +90,7 @@
 
 	                        	}else{
                                     self.senroll = 1;
+                                    self.sshow = 1;
                                 }
                                 wsCache.set('procA',{status:true});
                                 common.tips("报名成功");

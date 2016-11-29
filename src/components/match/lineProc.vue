@@ -36,6 +36,9 @@
 .c_tran p:nth-child(1){
     color: transparent;
 }
+.c_tran{
+    color: transparent;
+}
 .c_608be9{
     color: #608be9;
 }
@@ -146,19 +149,19 @@
     color: #efdf4d;
     margin-top:10px;
 }
-.lineProc-jpc-prize .prize1{
+.lineProc-jpc-prize .prize5{
     left: 16.8%
 }
-.lineProc-jpc-prize .prize2{
+.lineProc-jpc-prize .prize4{
     left: 40.5%
 }
 .lineProc-jpc-prize .prize3{
     left: 61.8%
 }
-.lineProc-jpc-prize .prize4{
+.lineProc-jpc-prize .prize2{
     left: 76.6%
 }
-.lineProc-jpc-prize .prize5{
+.lineProc-jpc-prize .prize1{
     left: 91.37%
 }
 .lineProc-jpc-bar {
@@ -303,11 +306,11 @@
                                 </div>
                             </div>
                             <div class="lineProc-jpc-prize">
-                                <div class="prize prize{{$index+1}}" v-for="item in datajfjpFn">
-                                    <p>{{item.name}}</p>
+                                <div class="prize prize{{$index+1}}" v-for="item in datajfjpFn | limitBy 5">
+                                    <p>{{item.score}}{{rankRules}}</p>
                                     <i></i>
-                                    <p></p>
-                                    <div style="position:relative">
+                                    <p>{{item.name}}</p>
+                                    <div style="position:relative;margin-top:5px;">
                                         <img src="../../images/media-holder.png" class="media-holder1">
                                         <img :src=item.image_url style="position:absolute;left:0;top:0;width:100%;height:100%;">
                                     </div>
@@ -322,8 +325,8 @@
                         <h3>英雄榜</h3>
                         <a v-link="{name:'gamerank',query:{matchid:matchid,userid:userid}}">查看更多<i></i></a>
                     </div>
-                    <div class="lineproc-yxb-list">
-                        <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{path:'/mine/'+list.uid}">
+                    <div class="lineproc-yxb-list" v-if="datayxblist.length>0">
+                        <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{name:'gamerank',query:{matchid:matchid,userid:list.uid}}">
                             <div class="fl tc m4 lh52 c_font_1">
                                 <span class="c_ph_1" v-if="list.rank == 1"></span>
                                 <span class="c_ph_2" v-if="list.rank == 2"></span>
@@ -374,7 +377,8 @@ module.exports = {
             status : '',
             startime : '',
             endtime : '',
-            userLogo : ''
+            userLogo : '',
+            rankRules : ''
         };
     },
     components:{
@@ -415,48 +419,70 @@ module.exports = {
                 success:function(data){
                     if(data.code==0){
                         self.datayxblist = self.datayxblist.concat(data.data.billboard);
-                        self.datajfjpFn = self.datajfjpFn.concat(data.data.price);
+                        self.datajfjpFn = self.datajfjpFn.concat(data.data.price).reverse();
                         self.datajfUsFn = self.datajfUsFn.concat(data.data.user);
                         self.userScore = data.data.user.score ? data.data.user.score : 0;
-                        self.userRank = data.data.user.rank;
-                        self.userLogo = data.data.user.logo;
-                        switch(true){
-                            case  self.userRank==0 :
+                        self.userRank = data.data.user.rank ? data.data.user.rank : 0;
+                        self.userLogo = data.data.user.logo ? data.data.user.logo : "";
+                        self.rankRules = gload_conf.rankRules[data.data.rank_rules].name;
+                        if(self.userRank==0){
+                            setTimeout(function(){
                                 $(".bar2-1").css("width","1.4%");
-                                $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","-3%");
-                            break;
-                            case  self.userRank>self.datajfjpFn[0].section :
-                                $(".bar2-1").css("width","12%");
-                                $(".lineProc-jpc-prize .prize").removeClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","7%");
-                            break;
-                            case  self.userRank>self.datajfjpFn[1].section&&self.userRank<self.datajfjpFn[0].section :
+                                $(".bar1").css("left","-3%");
+                            },50);
+                        }else if(self.userRank > parseInt(self.datajfjpFn[4].section)){
+                            setTimeout(function(){
+                                $(".bar2-1").css("width","11.4%");
+                                $(".bar1").css("left","6.9%");
+                            },50);
+                        }else if(self.userRank == parseInt(self.datajfjpFn[4].section)){
+                            setTimeout(function(){
                                 $(".bar2-1").css("width","22.8%");
-                                $(".lineProc-jpc-prize .prize1").addClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","17.2%");
-                            break;
-                            case  self.userRank>3&&self.userRank<self.datajfjpFn[1].section :
-                                $(".bar2-1").css("width","47.2%");
-                                $(".lineProc-jpc-prize .prize2").addClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","40.5%");
-                            break;
-                            case  self.userRank==3 :
-                                $(".bar2-1").css("width","69.3%");
-                                $(".lineProc-jpc-prize .prize3").addClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","62%");
-                            break;
-                            case  self.userRank==2 :
-                                $(".bar2-1").css("width","84.6%");
-                                $(".lineProc-jpc-prize .prize4").addClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","76.6%");
-                            break;
-                            case  self.userRank==1 :
-                                $(".bar2-1").css("width","99.9%");
-                                $(".lineProc-jpc-prize .prize5").addClass("c_tran");
-                                $(".lineProc-jpc-bar .bar1").css("left","92%");
-                            break;
+                                //$(".lineProc-jpc-prize .prize5").addClass("c_tran");
+                                $(".bar1 > p").addClass("c_tran");
+                                $(".bar1").css("left","16.9%");
+                            },50);
+                        }else if(self.userRank< parseInt(self.datajfjpFn[4].section) && self.userRank> parseInt(self.datajfjpFn[3].section)){
+                               setTimeout(function(){
+                                   $(".bar2-1").css("width","36.7%");
+                                    $(".bar1").css("left","30.5%");
+                                },50);
+                        }else if(self.userRank == parseInt(self.datajfjpFn[3].section)){
+                                setTimeout(function(){
+                                    $(".bar2-1").css("width","47.2%");
+                                    //$(".lineProc-jpc-prize .prize4").addClass("c_tran");
+                                    $(".bar1 > p").addClass("c_tran");
+                                    $(".bar1").css("left","40.5%");
+                                },50);
+                        }else if(self.userRank>3 && self.userRank < parseInt(self.datajfjpFn[3].section)){
+                                setTimeout(function(){
+                                    $(".bar2-1").css("width","58.2%");
+                                    $(".bar1").css("left","51.5%");
+                                },50);
+                        }else if(self.userRank==3){
+                                 setTimeout(function(){
+                                    $(".bar2-1").css("width","69.3%");
+                                    //$(".lineProc-jpc-prize .prize3").addClass("c_tran");
+                                    $(".bar1 > p").addClass("c_tran");
+                                    $(".bar1").css("left","62%");
+                                },50);
+                      
+                        }else if(self.userRank==2){
+                                 setTimeout(function(){
+                                    $(".bar2-1").css("width","84.6%");
+                                    //$(".lineProc-jpc-prize .prize2").addClass("c_tran");
+                                    $(".bar1 > p").addClass("c_tran");
+                                    $(".bar1").css("left","76.6%");
+                                },50);
+                        }else if(self.userRank==1){
+                                setTimeout(function(){
+                                    $(".bar2-1").css("width","99.9%");
+                                    //$(".lineProc-jpc-prize .prize1").addClass("c_tran");
+                                    $(".bar1 > p").addClass("c_tran");
+                                    $(".bar1").css("left","92%");
+                                },50);
                         }
+                        
                         $(".loading-1").hide();
                     }else if(data.code <0){
                         

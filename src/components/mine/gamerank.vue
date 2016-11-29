@@ -11,7 +11,7 @@
     float: left;
     height: 40px;
     line-height: 40px;
-    font-size: 18px;
+    font-size: 16px;
     color: #5d8ca3;
 }
 .grk .grk-til p.p1{
@@ -124,9 +124,9 @@
 }
 .grk-item p.p7 i{
     display: block;
-    width: 12px;
-    height: 21px;
-    margin-top: 14.5px;
+    width: 10px;
+    height: 17px;
+    margin-top: 16.5px;
     background: url(../../images/prank-ico.png) no-repeat;
     background-size: 100% 100%;
 }
@@ -138,13 +138,13 @@
     <div class="grk">
         <h3 class="grank_til">{{title}}</h3>
         <div class="grk-til">
-            <p class="p1">{{grkkey[0]}}</p>
-            <p class="p2">{{grkkey[1]}}</p>
-            <p class="p3">{{grkkey[2]}}</p>
-            <p class="p4">{{grkkey[3]}}</p>
-            <p class="p5">{{grkkey[4]}}</p>
-            <p class="p6">{{grkkey[5]}}</p>
-            <p class="p7">{{grkkey[6]}}</p>
+            <p class="p1">排名</p>
+            <p class="p2"></p>
+            <p class="p3">玩家</p>
+            <p class="p4"></p>
+            <p class="p5">{{rankRule}}</p>
+            <p class="p6"></p>
+            <p class="p7"></p>
         </div>
         <div class="grk-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
             <ul>
@@ -175,10 +175,11 @@ var gamerank = Vue.extend({
     name: 'gamerank',
     data: function() {
         return {
-            grkkey: ['排名','','玩家','','积分','',''],
+            grkkey: ['积分','击杀','K/D'],
             grkdatas: [],
             title: '',
-            page: 0
+            page: 0,
+            rankRule: ''
         };
     },
     store: store,
@@ -213,8 +214,10 @@ var gamerank = Vue.extend({
             url: ROOTPATH + '/my/match-rank.lg' + QUERY,
             dataType: 'json',
             type: 'POST',
-            data: {matchid: me.$route.query.matchid,page: me.page,pagesize:10},
+            data: {matchid: me.$route.query.matchid,page: me.page,pagesize:100},
             success: function(data) {
+                $(".loading-1").hide();
+                console.log(data)
                 if (data.code == 0) {
                     fn(data)
                 } else if (data.code < 0) {
@@ -230,6 +233,7 @@ var gamerank = Vue.extend({
             me.$options.loadListData(function (data) {
                 me.grkdatas = me.grkdatas.concat(data.data.lists);
                 me.title = data.data.title;
+                me.rankRule = gload_conf.rankRules[data.data.rankRule].name;
                 console.log(data.data)
                 if (data.data.totalpage <= me.page) {
                     me.ascroll.noData();

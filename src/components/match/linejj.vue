@@ -41,14 +41,13 @@
 }
 .mi-title a i{
     display: inline-block;
-    width: 12px;
-    height: 12px;
-    font-size: 10px;
-    border-radius: 7px;
-    line-height: 12px;
+    width: 13px;
+    height: 13px;
     text-align: center;
     margin-right: 5px;
-    border: 1px solid #848ea4;
+    vertical-align: middle;
+    background: url(../../images/ssgz_@3x.png) no-repeat;
+    background-size: 100% 100%; 
 }
 .mi-con{
     width: 94%;
@@ -70,8 +69,8 @@
 }
 .mi-bot p:nth-of-type(1) i{
     display: inline-block;
-    width: 12px;
-    height: 16px;
+    width: 8px;
+    height: 11px;
     margin-top: -3px;
     margin-right: 10px;
     vertical-align: middle;
@@ -84,8 +83,8 @@
 }
 .mi-bot p:nth-of-type(2) i{
     display: inline-block;
-    width: 12px;
-    height: 16px;
+    width: 8px;
+    height: 11px;
     margin-top: -3px;
     margin-right: 10px;
     vertical-align: middle;
@@ -121,7 +120,7 @@
 .mp-item .mp-prize{
     width: 100%;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     color: #fad83a;
 }
 .mp-item img{
@@ -192,9 +191,9 @@
              <div class="matchintro" v-for="list in eventprofilelist">
                 <section class="mi-title clearfix">
                     <h3>赛事简介</h3>
-                    <a v-link="{path:'/match/rules/'+matchid}"><i>!</i><span>查看规则</span></a>
+                    <a v-link="{path:'/match/rules/'+matchid}"><i></i><span>查看规则</span></a>
                 </section>
-                <section class="mi-con"><p>{{list.desc}}</p></section>
+                <section class="mi-con"><p>{{{list.desc}}}</p></section>
                 <section class="mi-bot clearfix">
                     <p><i></i><em>比赛时间：</em><span>{{list.startime | timeData3}}开始</span></p>
                     <p v-if="typeid==0"><i></i><em>线上赛</em><span></span></p>

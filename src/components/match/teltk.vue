@@ -243,6 +243,9 @@
                         }else{
                             common.tips(data.msg);
 						}
+					},
+					complete:function(xhr,ts){
+						$(".loading-1").hide();
 					}
 				});
             	

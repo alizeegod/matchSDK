@@ -1,22 +1,22 @@
 <style soped>
 .prank{
 	width: 100%;
-	padding-top: 116px;
+	padding-top: 112px;
 }
 .prank .prank-title{
 	width: 100%;
     position: fixed;
     left: 50px;
-    top: 76px;
+    top: 62px;
     z-index: 1000;
 	background: #050D19;
 	overflow: hidden;
 }
 .prank .prank-title p{
 	float: left;
-	height: 40px;
-	line-height: 40px;
-	font-size: 18px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
 	color: #5d8ca3;
 }
 .prank .prank-title p.p1{
@@ -27,7 +27,8 @@
 	width: 7%;
 }
 .prank .prank-title p.p3{
-	width: 18%;
+  width: 17%;
+  padding-left: 1%;
 }
 .prank .prank-title p.p4{
 	width: 14%;
@@ -38,40 +39,28 @@
 }
 .prank .prank-title p.p5 span{
 	height: 30px;
-	width: 120px;
+	width: 100px;
 	line-height: 30px;
-	margin-top: 4px;
+	margin-top: 9px;
 	display: inline-block;
 	text-align: center;
 	background: #16273F;
 	color: #fff;
 	border: 1px solid #26416C;
-	border-radius: 5px;
+	border-radius: 4px;
 }
 .prank .prank-title p.p5 span i{
 	width: 20px;
 	height: 20px;
-	background: #fff;
-	font-size: 16px;
-	line-height: 20px;
-	text-align: center;
-	border-radius: 13px;
+	background: url(../../images/ico_wh_@3x.png) no-repeat;
+  background-size: 100% 100%;
 	display: inline-block;
-	margin-left: 10px;
-	color: #000;
+  margin-left: 10px;
 	vertical-align: middle;
 }
 .prank .prank-title p.p6{
 	width: 10%;
 }
-/*.prank-con .item-transition{
-	transition: all 1s ease;
-	transform: translateX(0);
-}
-.prank-con .item-enter,.prank-con .item-leave{
-	transition: all 1s ease;
-	transform: translateX(-50px);
-}*/
 .prank-item.prank-mine{
 	background: #2B3A58;
 }
@@ -84,7 +73,7 @@
 	float: left;
 	height: 50px;
 	line-height: 50px;
-	font-size: 16px;
+	font-size: 14px;
 	color: #e1e1e1;
 }
 .prank-item.item:nth-of-type(1) p.p1 span{
@@ -130,12 +119,12 @@
 .prank-item p.p2 img{
 	width: 30px;
 	height: 30px;
-	margin: 8px auto;
+	margin: 10px auto;
 	display: block;
-	border: 1px solid #D1B25B;
 }
 .prank-item p.p3{
-	width: 18%;
+	width: 17%;
+  padding-left: 1%;
 	overflow: hidden;
 }
 .prank-item p.p4{
@@ -146,20 +135,14 @@
 	color: #34a247;
 	text-align: center;
 }
-/*.prank-item p.p5 span{
-	display: block;
-	width: 160px;
-	text-align: center;
-	color: #34a247;
-}*/
 .prank-item p.p6{
 	width: 10%;
 }
 .prank-item p.p6 i{
 	display: block;
-	width: 12px;
-	height: 21px;
-	margin-top: 14.5px;
+	width: 10px;
+	height: 17px;
+	margin-top: 16.5px;
 	background: url(../../images/prank-ico.png) no-repeat;
 	background-size: 100% 100%;
 }
@@ -172,7 +155,7 @@
   			<p class="p3">玩家</p> 
   			<p class="p4"></p>
   			<p class="p5">
-  				<span v-link="{name:'rule',query:{type:0}}">战斗力<i>?</i></span>
+  				<span v-link="{name:'rule',query:{type:0}}">战斗力<i></i></span>
   			</p>
   			<p class="p6"></p>
   		</div>
@@ -188,7 +171,7 @@
   		</div>
   		<div class="prank-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
   			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.id}}"
+  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.uid}}"
   				v-for="(index,allRank) in allRanks" transition="item">
   					<p class="p1"><span>{{allRank.rank}}</span></p>
 		  			<p class="p2">
@@ -241,7 +224,7 @@ var rank = Vue.extend({
         $(".rank-top").width(rW);
         $(".prank-title").width(rW);
 
-        let rH = document.documentElement.clientHeight - 166;
+        let rH = document.documentElement.clientHeight - 162;
         $(".prank .prank-con").height(rH);
 
         
@@ -256,9 +239,10 @@ var rank = Vue.extend({
             type: 'POST',
             data: {type: 1,page:me.page,pagesize:100},
             success: function(data) {
+              $(".loading-1").hide();
               if (data.code == 0) {
                 fn(data)
-                $(".loading-1").hide();
+                
               } else if (data.code < 0) {
                 actions.alert(store,{show:true,msg:data.msg})
               }

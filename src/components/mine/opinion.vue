@@ -147,8 +147,9 @@ var opinion = Vue.extend({
                     success:function(data){
                         //返回1 提交成功
                         //返回0 提交失败
+                        $(".loading-1").hide();
                         if(data.code==1){
-                            $(".loading-1").hide();
+                            
                             actions.alert(store,{show:true,msg:data.msg})
                         }else if(data.code==0){
                             actions.alert(store,{show:true,msg:data.msg})

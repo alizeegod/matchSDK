@@ -129,6 +129,9 @@ var setcof = Vue.extend({
           if (typeof phone == 'number') {
               phone = phone.toString();
           }
+          if (phone == '') {
+              return phone;
+          }
           return phone.substr(0, 3) + '****' + phone.substr(7, 11);
         }
     },

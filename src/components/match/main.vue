@@ -1,5 +1,7 @@
 <style soped>
-
+b{
+    font-weight: normal
+}
 a{
     text-decoration: none;
    
@@ -59,7 +61,7 @@ a{
 
 .match-match-hed{
     width:100%;
-    padding: 8px 0 7px 33px; 
+    padding: 8px 0 7px 16px; 
     background: #1a212e;
     overflow: hidden;
     position: fixed;
@@ -71,13 +73,13 @@ a{
 }
 .match-match-hed span{
     color: #fff;
-    width: 80px;
+    width: 70px;
     height: 24px;
-    line-height: 24px;
+    line-height: 22px;
     text-align: center;
     margin-left: 30px;
     float: left;
-    border-radius: 5px;
+    border-radius: 3px;
     letter-spacing: 1px;
     font-size: 14px;
     text-decoration: none;
@@ -104,6 +106,10 @@ a{
     overflow: hidden;
     font-size: 14px;
 }
+.match-list-zd .item-txt{
+    font-size: 16px;
+    color: #fff;
+}
 .match-list-zd > a{
     color: #ccc;
     font-size: 14px;  
@@ -115,7 +121,7 @@ a{
 .match-list-zd .item-info{
     float:left;
     width: 47.5%;
-    padding-left: 10px;
+    padding-left: 14px;
 }
 .match-list-zd .item-info  p{
     margin-bottom: 10px;
@@ -143,8 +149,9 @@ a{
     line-height:20px;
     font-size:12px;
     color: #fbfbfb;
+    margin-right: 5px;
 }
-.match-list-zd .item-txt{
+.max-match-flex .item-txt{
    letter-spacing: 1px;
    height: 17px;
    line-height: 17px;
@@ -155,15 +162,18 @@ a{
 .match-match-list .item-time{
     height: 14px;
     line-height: 14px;
-    margin-left: 8px;
+    margin-left: 7px;
     color: #ccc;
+}
+.match-list-zd .item-time{
+    margin-left:1px;
 }
 .match-match-list .item-time i{
     width: 10px;
     height: 13px;
     display: inline-block;
     vertical-align: -1px;
-    margin-right: 10px;
+    margin-right: 9px;
     background-image: url(../../images/match_ico_4_@3x.png);
     background-size: 100% auto;
 }
@@ -172,7 +182,7 @@ a{
     height: 13px;
     display: inline-block;
     vertical-align: -1px;
-    margin-right: 10px;
+    margin-right: 9px;
     background-image: url(../../images/match_ico_1_@3x.png);
     background-size: 100% auto;
 }
@@ -183,30 +193,36 @@ a{
     color: #fdbd2f;
 }
 .match-match-list .item-jsd-time i{
-    width: 12px;
-    height: 13px;
+    width: 13px;
+    height: 14px;
     display: inline-block;
-    vertical-align: -1px;
-    margin-right: 10px;
+    vertical-align: -2px;
+    margin-right: 9px;
     background-image: url(../../images/match_ico_3_@3x.png);
     background-size: 100% auto;
 }
-
+.match-list-zd img.dianbo-img{
+    border:#3a5284 solid 1px;
+    box-shadow: 0 0 3px #3a5284;   
+}
 .match-list-zd .item-rmb i{
-    width: 11px;
-    height: 12px;
+    width: 13px;
+    height: 14px;
     display: inline-block;
-    vertical-align: -1px;
-    margin-right: 10px;
+    vertical-align: -2px;
+    margin-right: 9px;
     background-image: url(../../images/match_ico_2_@3x.png);
     background-size: 100% auto;   
 }
 .match-list-zd .item-a{
-    margin-left: 8px;
+    margin-left: 2px;
     color: #ccc;
     font-size: 14px;
     height: 14px;
     line-height: 14px;
+}
+.match-list-zd .item-rmb{
+    margin-left: -1px;
 }
 .match-match-list .item-zbz-btn{
     background:#db2323;
@@ -254,6 +270,10 @@ a{
 }
 .max-match-flex .card-item{
     background: #1c2236;
+    border:#3a5284 solid 1px;
+    overflow: hidden;
+    padding-bottom: 8px;
+    box-shadow: 0 0 3px #3a5284;
 }
 .max-match-flex li > img{
     max-width: 100%;
@@ -284,7 +304,7 @@ a{
     display:block;
     font-size:14px;
     color:#fff;
-    margin-top: 20px;
+    margin-top: 15px;
     position:relative
 }
 .max-match-flex .item-txt{
@@ -294,12 +314,27 @@ a{
     width:100%;
     position:relative;
     color:#fff;
-    margin-top: 15px;
+    margin-top: 10px;
+}
+.max-match-flex .item-txt .item-tit{
+    padding-left: 5px;
+}
+.max-match-flex .item-txt .item-num{
+    padding-right: 5px;
 }
 .max-match-flex .item-num{
     float: right;
     font-size: 12px;
     line-height: 18px;
+}
+.match-list-zd .item-num i{
+    width: 12px;
+    height: 16px;
+    background: url(../../images/ico_bm_@3x.png) no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    vertical-align: -3px;
+    margin-right: 9px;
 }
 
 
@@ -330,17 +365,18 @@ a{
         <div class="dianbo-img-wrap dianbo-img-wrap-width">
           <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM(list)">
               <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
-              <img src="../../images/media-holder.png" class="media-holder">
+              <img src="../../images/media-holder_01.png" class="media-holder">
           </a>
           <a v-if="list.type==0" v-link="'/match/linejj/'+list.id" v-on:click="HeroM(list)">
               <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
-              <img src="../../images/media-holder.png" class="media-holder">
+              <img src="../../images/media-holder_01.png" class="media-holder">
           </a>
         </div>
         <div class="item-info">
             <p class="item-txt">{{ list.name }}</p>
             <p class="item-time p-countdown"></p>
             <p class="item-a item-rmb" v-if="list.type==1"><i></i>奖金：{{ list.bonus }}元</p>
+            <p class="item-a item-num" v-if="list.type==0"><i></i><span>有{{ list.member }}</span>人参加</p>
           <registration-component v-bind:list="list" v-bind:mx="1" v-bind:bindphone="bindphone"></registration-component>
         </div>  
     </div>
@@ -351,11 +387,11 @@ a{
                <div class="dianbo-img-wrap">
                    <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id" v-on:click="HeroM(list)">
                       <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
-                      <img src="../../images/media-holder.png" class="media-holder">
+                      <img src="../../images/media-holder_01.png" class="media-holder">
                   </a>
                   <a v-if="list.type==0" v-link="'/match/linejj/'+list.id" v-on:click="HeroM(list)">
                       <img v-bind:src=list.cover_image alt="{{ list.name }}" class="dianbo-img">
-                      <img src="../../images/media-holder.png" class="media-holder">
+                      <img src="../../images/media-holder_01.png" class="media-holder">
                   </a>  
                </div>
                <span class="item-txt">
@@ -400,6 +436,7 @@ module.exports = {
             matchchannl:'',
             matchstate:'',
             pageTotal:'',
+            pageTotals:'',
             pagesize:12,
             regtype:1,
             comment:'',
@@ -417,7 +454,7 @@ module.exports = {
             var data = {
                 racetype : self.racetype,
                 page : curPage,
-                pagesize : self.pageSize,
+                pagesize : self.pagesize,
                 gameid : gload_conf.gameid
             };
             $.ajax({
@@ -433,16 +470,23 @@ module.exports = {
                         $("#mover").text('还没有哦');
                         return ;
                     }
-                    self.pageTotal = Number(data.totalpage);
+                    self.pageTotal = Number(data.data.totalpage);
+                    self.pageTotals = Number(data.data.total);
                     self.stickTop = self.stickTop.concat(data.data.list);
-                    if(self.pageTotal>12){
-                        $("#mover").html('上拉显示更多')
+                    if(self.pageTotals>12){
+                        if(curPage == self.pageTotal){
+                            $("#mover").html('没有了')
+                        }else{
+                            $("#mover").text("上拉加载更多");
+                        }
+                        
                     }
                     $(".loading-1").hide();
                 }
             })
         },
         LoadMoreData:function(racetype,curPage){// 上啦加载更多
+
             var self = this;
             var _key = 1;
             var hammertime = new Hammer(document.getElementById("match-list-main"));
@@ -456,15 +500,13 @@ module.exports = {
                             $("#mover").html("加载中。。。。")
                         }else if(e.type == "panend"){//事件名称
                             _key = 0;
-                            if(curPage<self.pageTotal){//当前页数 小于总页数
-                                curPage = curPage+1;
+                            curPage = curPage+1;
+                            if(curPage<=self.pageTotal){//当前页数 小于总页数
                                 self.loadMore(curPage);
                                 if(curPage == self.pageTotal){
-                                    $("#mover").text("没有了")
                                 }else{
-                                    $("#mover").text("上拉加载更多");
                                     _key = 1; 
-                                }
+                               }
                             }else{
                                 $("#mover").text("没有了")
                             }
@@ -481,7 +523,7 @@ module.exports = {
             self.stickTop=[];
             window.scrollTo(0, 0);
             self.loadMore(1);
-            self.LoadMoreData(self.racetype,self.curPage);
+           // self.LoadMoreData(self.racetype,self.curPage);
             $("#mover").show();
         },
         HeroM:function(obj){
@@ -524,7 +566,7 @@ module.exports = {
     },
     ready:function(){
         var self = this;
-        self.LoadMoreData();
+        self.LoadMoreData(0,1);
         self.setCur(0);
         setTimeout(function(){
             if($(".match-match-list").height() > ($(window).height()-42)){
@@ -538,7 +580,7 @@ module.exports = {
             };
 
         },100);
-        $(".match-match-hed").width($(window).width()-50-33);
+        $(".match-match-hed").width($(window).width()-50-16);
     }
 }
 </script>

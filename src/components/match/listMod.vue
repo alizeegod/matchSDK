@@ -8,7 +8,6 @@
     vertical-align: top;
     overflow: hidden;
     color: #fff;
-   /* border-bottom: 1px solid #212C3F;*/
 }
 .match-comment-box .mh-post-1 > img{
     position: absolute;
@@ -29,12 +28,12 @@
 }
 .match-comment-box .mh-post-1 .mh-post-footer-area{
     color: #fffefe;
-    background: #e89261;
-    padding:2px 8px;
-    border-radius: 8px;
+    background: url(../../images/qf.png) no-repeat;
+    background-size: 100% 100%;
     font-size: 8px;
     line-height: 8px;
     display: inline-block;
+    text-align: center;
 }
 .match-comment-box .mh-post-1 .mh-user{
     color: #6caaff;
@@ -113,7 +112,12 @@
   color: #6caaff;
   margin-left: 45%;
 }
-.none_tips{color:#fff;font-size:12px;margin-top:20px;text-align:center;}
+.none_tips{
+  color:#fff;
+  font-size:12px;
+  margin-top:20px;
+  text-align:center;
+}
 
 </style>
 <template>
@@ -126,12 +130,12 @@
   	  	  <p class="mh-user">{{el.rolename}}</p>
   	  	  <span class="mh-post-footer-area">{{el.servicename}}</span>
   	  	</div>
-  	  	<div class="mh-post-content" v-on:tap.stop="reply(el)">
+  	  	<div class="mh-post-content" v-on:click.stop="reply(el)">
   	  	  <p>{{{el.content | bbbb}}}</p>
   	  	</div>
   	  	<div class="mh-post-footer-btn">
   	  	  <span class="mh-post-footer-time">{{el.create_time}}</span>
-  	  	  <span class="mh-post-footer-replay" v-on:tap.stop="reply(el)"></span>
+  	  	  <span class="mh-post-footer-replay" v-on:click.stop="reply(el)"></span>
   	  	</div>
   	  </div>
   	  <ul class="children">
@@ -141,7 +145,7 @@
   	  	      <p class="mh-user">{{item.rolename}}</p>
   	  	  	</div>
   	  	  	<div class="mh-post-content">
-  	  	  	  <div v-on:tap.stop="reply(el,item,$event)">
+  	  	  	  <div v-on:click.stop="reply(el,item,$event)">
   	  	  	  	<p v-if="!item.passrepname">{{item.content | bbbb}}<span class="mh-post-footer-time">{{item.create_time}}</span></p>
                 <p v-else class="top_color_3" style="font-size:12px;">
                 回复<span class="mh-user">{{item.passrepname}}</span>&nbsp;&nbsp;{{{item.content | bbbb}}}<span class="mh-post-footer-time">{{item.create_time}}
@@ -211,6 +215,7 @@ module.exports ={
   	},
   	reply:function(el,item,e){//回复评论
         var self = this;
+        document.getElementById('txt3').focus();
         self.$dispatch('openReply',el,item);//派发事件，事件沿着父级链冒泡 el 父  item  儿子
         if(e){
             e.stopImmediatePropagation();

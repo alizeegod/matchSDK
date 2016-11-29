@@ -61,7 +61,6 @@
             </div>
             <input-component v-ref:input></input-component>
 	    </div>
-	    
 	</div>
 </template>
 <script>

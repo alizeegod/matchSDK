@@ -8,7 +8,8 @@ li,ul{list-style: none}
    width: 100%;
    color: #4e748b;
    font-size: 24px;
-   position: relative;
+   font-weight: normal;
+   position: relative; 
 }
 .grank_til{ 
   height: 50px; 
@@ -20,11 +21,12 @@ li,ul{list-style: none}
   font-weight: normal;
 }
 .mine_maintil{
-  font-size: 18px;
+  font-size: 16px;
   height: 49px;
   line-height: 49px;
   margin-left: 18px;
   color: #ccc;
+  font-weight: normal;
 }
 .mine_maintil span{
   display: inline-block;
@@ -63,7 +65,7 @@ li,ul{list-style: none}
   flex-grow:1;
   -webkit-flex-grow:1;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
 }
 .grank_mybs ul li span{
   display: inline-block;
@@ -88,7 +90,7 @@ li,ul{list-style: none}
 }
 .granklist{
   color: #5d8ca3;
-  font-size: 16px;
+  font-size: 14px;
 }
 .granklist .gr_listtil{
   border-bottom: 1px solid #323e56;
@@ -146,7 +148,8 @@ li,ul{list-style: none}
   display: block;
   width: 90%;
   height: 100%;
-  margin-left: 18px;
+  padding-left: 18px;
+  box-sizing: border-box;
 }
 .gr_listcon li span:nth-of-type(6) i{
   width: 12px;
@@ -164,7 +167,6 @@ li,ul{list-style: none}
 }
 </style>
 <template>
- <!-- v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()" -->
   <div class="gamerank">
     <h3 class="grank_til">{{mygame.title}}</h3>
     <div class="grank_main">
@@ -175,7 +177,7 @@ li,ul{list-style: none}
           <img :src="mygame.banner" />
         </div>
         <ul>
-          <li><span class="grankyellow">{{mygame.score}}</span><span class="gr_mbstil">积分</span></li>
+          <li><span class="grankyellow">{{mygame.score}}</span><span class="gr_mbstil">{{rankRule}}</span></li>
           <li><span class="grankyellow"><em>{{mygame.win}}/{{mygame.lost}}</em></span><span class="gr_mbstil">胜/负</span></li>
           <li><span class="grankyellow">{{mygame.rank}}</span><span class="gr_mbstil">排名</span></li>
           <li v-link="{name:'gamerank',query:{matchid:$route.query.matchid,userid:$route.query.userid}}"><span class="grank_icobg"></span><span class="gr_mbstil">查看总榜</span></li>
@@ -195,7 +197,7 @@ li,ul{list-style: none}
           <li v-for='list in mygame.lists'>
             <a v-link="{name:'gamedetail',query:{matchid:$route.query.matchid,fightid:list.fightid}}">
               <span><img :src="list.map" /></span>
-              <span>{{list.mapname}}</span>
+              <span>{{list.modename}}</span>
               <span>{{list.kill}}/{{list.died}}</span>
               <span>{{list.time}}</span>
               <span class="grank_succeed" v-if="list.result == 1">胜</span>
@@ -220,13 +222,13 @@ var mygame = Vue.extend({
     data: function() {
         return {
           mygame: {},
-          gameranktil:'排位赛-连胜之王',
           mine_maintil:'我的比赛',
           grank_note:'我的战斗记录',
           gr_maptil:'地图',
           gr_nametil:'击杀-死亡',
           gr_timetil:'时间',
-          gr_resultil:'结果'
+          gr_resultil:'结果',
+          rankRule: ''
         };
     },
     store: store,
@@ -248,25 +250,26 @@ var mygame = Vue.extend({
           url: ROOTPATH + '/my/match-record.lg' + QUERY,
           dataType: 'json',
           type: 'POST',
-          data: {matchid: _this.$route.query.matchid,user: _this.$route.query.user},
+          data: {matchid: _this.$route.query.matchid,userid: _this.$route.query.userid},
           beforeSend:function(){
               $(".loading-1").show();
           },
           success: function (data) {
+              $(".loading-1").hide();
               console.log(data)
               if (data.code == 0) {
-                  $(".loading-1").hide();
                   _this.mygame = data.data.mygame;
+                  _this.rankRule = gload_conf.rankRules[data.data.mygame.rankRule].name;
               } else if (data.code < 0) {
                   actions.alert(store,{show:true,msg:data.msg})
               }
-            
           }
       })
     },
     ready: function() {
         let a = this.$route.query.userid;
-        let b = this.userMsg.id;
+        let b = this.userMsg.userid;
+        console.log(a,b)
         if (a == b) {
             this.mine_maintil = '我的比赛';
             this.grank_note = '我的战斗记录';
@@ -274,6 +277,7 @@ var mygame = Vue.extend({
             this.mine_maintil = '他的比赛';
             this.grank_note = '他的战斗记录';
         }
+        console.log(gload_conf.rankRules[0].name)
 
     },
     methods: {
