@@ -21,6 +21,11 @@
     text-align: center;
     font-size: 16px;
 }
+.season-tab-hed1 p:nth-child(1){
+    font-size: 15px;
+    height: 27px;
+    line-height: 27px;
+}
 .season-tab-hed p:nth-child(2),.season-tab-hed1 p:nth-child(2){
     background: #1a212e;
     height: 33px;
@@ -28,7 +33,11 @@
     font-size: 12px;
     display: flex;
     flex-wrap: wrap;
-
+}
+.season-tab-hed1 p:nth-child(2){
+    font-size: 13px;
+    height: 27px;
+    line-height: 27px;
 }
 .season-tab-hed p:nth-child(2) a{
     flex: 1;
@@ -268,7 +277,7 @@ module.exports = {
             if(($(".season-tab-box").height() > ($(window).height()-63)) &&  self.$parent.name != "lineSchedule"){
                 common.scroll(function(direction){
                     if(direction=="down"){
-                        $(".season-tab-1").css("top","-62px");
+                        $(".season-tab-1").css("top","-30px");
                     }else{
                         $(".season-tab-1").css("top","0");
                     }

@@ -95,7 +95,7 @@ var common = {
                     if(racetypeId == 1){
                         if(stateId==4 || stateId==3 || stateId==0){
                             $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                            $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                         }
                         $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
                     }else{
@@ -111,66 +111,71 @@ var common = {
                             if($(li).attr("id").split("|")[5]==0){//未报名
                                 if(stateId==4){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|4|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
                                 }else if(stateId==0){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                                 }else if(stateId==1){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("比赛中");
                                 }else if(stateId==2){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                                 }else if(stateId==3){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-djbm-btn").html("点击报名");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-djbm-btn").html("点击报名");
                                 } 
                             }else if($(li).attr("id").split("|")[5]==1){//已报名
                                 if(stateId==0){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                                 }else if(stateId==1){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("比赛中");
                                 }else if(stateId==2){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                                 }else{
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|1");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-ybm-btn").html("已报名");                                
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-ybm-btn").html("已报名");                                
                                 }
                             }
                         }else{
                             $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                            $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                         }
                         
                     }   
                 }else if(now>endTime){//现在时间大于结束时间
                     //比赛结束
                     $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
-                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                    if(racetypeId == 0){
+                        $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"#/match/lineLive/"+albumId}).addClass("item-yjs-btn").html("已结束");
+                    }else{
+                       $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"#/match/linejj/"+albumId}).addClass("item-yjs-btn").html("已结束");
+                    }
+                    
                 }else{
                     //正在拍卖
                     text24 = timeBetweenText24(now,endTime);
                     
                     if(racetypeId == 0){
                         //线上赛
-                        $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
+                        $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|5|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
                         if(text24 == 1){
                             $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart1+"-"+textstart2);
                         }else{
                             text = timeBetweenText(now,endTime);
                             $(li).find("p.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);                           
                         }
-                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                        $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"#/match/lineLive/"+albumId}).addClass("item-zbz-btn").html("比赛中");
                     }else{
                         //线下赛-没有倒计时
                         $(li).find("p.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
-                        if(racetypeId == 5){
-                            $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                        if(stateId == 5){
+                            $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"#/match/linejj/"+albumId}).addClass("item-zbz-btn").html("比赛中");
                         }else{
-                            $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                            $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"#/match/linejj/"+albumId}).addClass("item-zbz-btn").html("直播中");
                         }
                     }
                 }
@@ -233,7 +238,7 @@ var common = {
                     if(racetypeId == 1){
                         if(stateId==4 || stateId==3 || stateId==0){
                             $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                            $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                         }
                         $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
                     }else{
@@ -249,69 +254,69 @@ var common = {
                             if($(li).attr("id").split("|")[5]==0){//未报名
                                 if(stateId==4){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|4|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
                                 }else if(stateId==0){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                                 }else if(stateId==1){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("比赛中");
                                 }else if(stateId==2){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                                 }else if(stateId==3){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-djbm-btn").html("点击报名");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-djbm-btn").html("点击报名");
                                 } 
                             }else if($(li).attr("id").split("|")[5]==1){//已报名
                                 if(stateId==0){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                                 }else if(stateId==1){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("比赛中");
                                 }else if(stateId==2){
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                                 }else{
                                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|1");
-                                    $(li).find(".item-info > a").attr("class","").addClass("item-ybm-btn").html("已报名");                                
+                                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-ybm-btn").html("已报名");                                
                                 }
                             }
                         }else{
                             $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                            $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                         }
                         if($(li).attr("id").split("|")[5]==0){//未报名
                             if(stateId==4){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|4|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-bmyjs-btn").html("报名结束");
                             }else if(stateId==0){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                             }else if(stateId==1){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("直播中");
                             }else if(stateId==2){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                             }else if(stateId==3){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-djbm-btn").html("点击报名");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-djbm-btn").html("点击报名");
                             }
                         }else{//已报名
                             if(stateId==0){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|0|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-jjks-btn").html("即将开始");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-jjks-btn").html("即将开始");
                             }else if(stateId==1){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("直播中");
                             }else if(stateId==2){
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                             }else{
                                 $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|3|"+$(li).attr("id").split("|")[4]+"|1");
-                                $(li).find(".item-info > a").attr("class","").addClass("item-ybm-btn").html("已报名");                                
+                                $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-ybm-btn").html("已报名");                                
                             }
                         }
 
@@ -322,27 +327,27 @@ var common = {
                     $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|2|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
                     //比赛结束
                     $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart1+"-"+textstart2);
-                    $(li).find(".item-info > a").attr("class","").addClass("item-yjs-btn").html("已结束");
+                    $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-yjs-btn").html("已结束");
                 }else{
                     //正在拍卖
                     text24 = timeBetweenText24(now,endTime);
                     if(racetypeId == 0){
                         //线上赛
-                        $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|1|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
+                        $(li).attr("id",""+$(li).attr("id").split("|")[0]+"|"+$(li).attr("id").split("|")[1]+"|"+$(li).attr("id").split("|")[2]+"|5|"+$(li).attr("id").split("|")[4]+"|"+$(li).attr("id").split("|")[5]+"");
                         if(text24 == 1){
                             $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart1+"-"+textstart2);
                         }else{
                             text = timeBetweenText(now,endTime);
                             $(li).find("span.p-countdown").removeClass("item-djs-time").addClass("item-jsd-time").html("<i></i>结束倒计时: "+text);                           
                         }
-                        $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                        $(li).find(".item-info > a[data-abtn='1']").attr({"class":"","href":"/match/lineLive/"+albumId}).addClass("item-zbz-btn").html("比赛中");
                     }else{
                         //线下赛-没有倒计时
-                        $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart);
-                        if(racetypeId == 5){
-                            $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("比赛中");
+                        $(li).find("span.p-countdown").removeClass("item-djs-time item-jsd-time").html("<i></i>比赛时间: "+textstart+"dd"+racetypeId);
+                        if(stateId == 5){
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("比赛中");
                         }else{
-                            $(li).find(".item-info > a").attr("class","").addClass("item-zbz-btn").html("直播中");
+                            $(li).find(".item-info > a[data-abtn='1']").attr("class","").addClass("item-zbz-btn").html("直播中");
                         }
                     }
                 }

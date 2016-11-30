@@ -4,12 +4,12 @@
 }
 .bind-title{
     width: 100%;
-   height: 50px;
+   height: 32px;
   text-align: center;
-  line-height: 50px;
+  line-height: 32px;
   background: #1A212E;
   color: #e1e1e1;
-  font-size: 20px;
+  font-size: 16px;
 }
 .bind-if p{
   margin-left: 20px;

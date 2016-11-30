@@ -1,7 +1,7 @@
 <style soped>
 .prank-item.trank-item p.p3 img{
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   margin: 7px 0;
   display: block;
   float: left;
@@ -66,7 +66,7 @@
   				v-for="(index,teamRank) in teamRanks">
   					<p class="p1"><span>{{teamRank.rank}}</span></p>
 		  			<p class="p2"></p>
-		  			<p class="p3"><image :src="teamRank.logo"/><span>{{teamRank.name}}</span></p>
+		  			<p class="p3"><image onerror="this.src='http://cdn.static.yingxiong.com/match/1.0/images/team_default.png'" :src="teamRank.logo"/><span>{{teamRank.name}}</span></p>
 		  			<p class="p4"></p>
 		  			<p class="p5"><span>{{teamRank.power}}</span></p>
 		  			<p class="p6"><i></i></p>
@@ -108,7 +108,7 @@ var teamrank = Vue.extend({
         $(".prank .prank-title").width(rW);
         
 
-        let rH = document.documentElement.clientHeight - 112;
+        let rH = document.documentElement.clientHeight - 102;
         $(".trank .prank-con").height(rH);
 
         var me = this;

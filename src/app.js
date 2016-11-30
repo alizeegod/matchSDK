@@ -15,16 +15,16 @@ var wsCache = require('./js/web-storage-cache.min.js');
 var wsCache = new wsCache();
 
 window.wsCache = wsCache;
-
+ 
 common.init();  
 
 // 生产环境||开发环境
 var ROOTPATH,QUERY;
-var ENV = 'build';
+var ENV = '';
 
 if (ENV == 'build') {
 	ROOTPATH = gload_conf.api;
-	QUERY = '?token=1003834ec09628a76bea2e33d2372848&gameid=1';
+	QUERY = '?token=a833a94b25bad3f6c93481cc73bb1476&gameid=1';
 } else {
 	ROOTPATH = gload_conf.api;
 	QUERY = '';

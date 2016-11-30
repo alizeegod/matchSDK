@@ -1,22 +1,22 @@
 <style soped>
 .prank{
 	width: 100%;
-	padding-top: 112px;
+	padding-top: 102px;
 }
 .prank .prank-title{
 	width: 100%;
-    position: fixed;
-    left: 50px;
-    top: 62px;
-    z-index: 1000;
+  position: fixed;
+  left: 50px;
+  top: 62px;
+  z-index: 1000;
 	background: #050D19;
 	overflow: hidden;
 }
 .prank .prank-title p{
 	float: left;
-	height: 50px;
-	line-height: 50px;
-	font-size: 14px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 12px;
 	color: #5d8ca3;
 }
 .prank .prank-title p.p1{
@@ -38,10 +38,10 @@
 	text-align: center;
 }
 .prank .prank-title p.p5 span{
-	height: 30px;
-	width: 100px;
-	line-height: 30px;
-	margin-top: 9px;
+	height: 24px;
+	width: 80px;
+	line-height: 24px;
+	margin-top: 7px;
 	display: inline-block;
 	text-align: center;
 	background: #16273F;
@@ -50,8 +50,8 @@
 	border-radius: 4px;
 }
 .prank .prank-title p.p5 span i{
-	width: 20px;
-	height: 20px;
+	width: 14px;
+	height: 14px;
 	background: url(../../images/ico_wh_@3x.png) no-repeat;
   background-size: 100% 100%;
 	display: inline-block;
@@ -71,34 +71,34 @@
 }
 .prank-item p{
 	float: left;
-	height: 50px;
-	line-height: 50px;
-	font-size: 14px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 12px;
 	color: #e1e1e1;
 }
 .prank-item.item:nth-of-type(1) p.p1 span{
 	display: block;
-	width: 28px;
-	height: 28px;
-	margin: 11px auto;
+	width: 24px;
+	height: 24px;
+	margin: 13px auto;
 	color: transparent;
 	background: url(../../images/prank-ico-01.png) no-repeat;
 	background-size: 100% 100%;
 }
 .prank-item.item:nth-of-type(2) p.p1 span{
 	display: block;
-	width: 28px;
-	height: 28px;
-	margin: 11px auto;
+	width: 24px;
+	height: 24px;
+	margin: 8px auto;
 	color: transparent;
 	background: url(../../images/prank-ico-02.png) no-repeat;
 	background-size: 100% 100%;
 }
 .prank-item.item:nth-of-type(3) p.p1 span{
 	display: block;
-	width: 28px;
-	height: 28px;
-	margin: 11px auto;
+	width: 24px;
+	height: 24px;
+	margin: 13px auto;
 	color: transparent;
 	background: url(../../images/prank-ico-03.png) no-repeat;
 	background-size: 100% 100%;
@@ -117,9 +117,9 @@
 	overflow: hidden;
 }
 .prank-item p.p2 img{
-	width: 30px;
-	height: 30px;
-	margin: 10px auto;
+	width: 26px;
+	height: 26px;
+	margin: 7px auto;
 	display: block;
 }
 .prank-item p.p3{
@@ -142,7 +142,7 @@
 	display: block;
 	width: 10px;
 	height: 17px;
-	margin-top: 16.5px;
+	margin-top: 11.5px;
 	background: url(../../images/prank-ico.png) no-repeat;
 	background-size: 100% 100%;
 }
@@ -159,30 +159,34 @@
   			</p>
   			<p class="p6"></p>
   		</div>
-  		<div class="prank-mine prank-item" v-link="{name:'mine',query:{userid:userMsg.userid}}">
-  			<p class="p1"><span>{{mineRank.rank}}</span></p>
-  			<p class="p2">
-  				<image :src="mineRank.logo"/>
-  			</p>
-  			<p class="p3"><span>{{mineRank.rolename}}</span></p>
-  			<p class="p4"><span>{{mineRank.servicename}}</span></p>
-  			<p class="p5"><span>{{mineRank.power}}</span></p>
-  			<p class="p6"><i></i></p>
-  		</div>
+  		
   		<div class="prank-con" v-drapload drapload-key="ascroll" drapload-initialize="true" drapload-down="down_a()">
-  			<ul>
-  				<li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.uid}}"
-  				v-for="(index,allRank) in allRanks" transition="item">
-  					<p class="p1"><span>{{allRank.rank}}</span></p>
-		  			<p class="p2">
-		  				<image :src="allRank.logo"/>
-		  			</p>
-		  			<p class="p3"><span>{{allRank.rolename}}</span></p>
-		  			<p class="p4"><span>{{allRank.servicename}}</span></p>
-		  			<p class="p5"><span>{{allRank.power}}</span></p>
-		  			<p class="p6"><i></i></p>
-  				</li>
-  			</ul>
+        <div>
+          <div class="prank-mine prank-item" v-link="{name:'mine',query:{userid:userMsg.userid}}">
+            <p class="p1"><span>{{mineRank.rank}}</span></p>
+            <p class="p2">
+              <image :src="mineRank.logo" onerror="this.src='http://7xq07i.com1.z0.glb.clouddn.com/avatar/qz/Icon_Head_33.png'"/>
+            </p>
+            <p class="p3"><span>{{mineRank.rolename}}</span></p>
+            <p class="p4"><span>{{mineRank.servicename}}</span></p>
+            <p class="p5"><span>{{mineRank.power}}</span></p>
+            <p class="p6"><i></i></p>
+          </div>
+          <ul>
+            <li class="prank-item item" v-link="{name:'mine',query:{userid:allRank.uid}}"
+            v-for="(index,allRank) in allRanks" transition="item">
+              <p class="p1"><span>{{allRank.rank}}</span></p>
+              <p class="p2">
+                <image :src="allRank.logo" onerror="this.src='http://7xq07i.com1.z0.glb.clouddn.com/avatar/qz/Icon_Head_33.png'"/>
+              </p>
+              <p class="p3"><span>{{allRank.rolename}}</span></p>
+              <p class="p4"><span>{{allRank.servicename}}</span></p>
+              <p class="p5"><span>{{allRank.power}}</span></p>
+              <p class="p6"><i></i></p>
+            </li>
+          </ul>
+        </div>
+  			
   		</div>
   	</div>
 </template>
@@ -224,7 +228,7 @@ var rank = Vue.extend({
         $(".rank-top").width(rW);
         $(".prank-title").width(rW);
 
-        let rH = document.documentElement.clientHeight - 162;
+        let rH = document.documentElement.clientHeight - 102;
         $(".prank .prank-con").height(rH);
 
         

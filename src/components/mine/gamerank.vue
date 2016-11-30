@@ -9,8 +9,8 @@
 }
 .grk .grk-til p{
     float: left;
-    height: 40px;
-    line-height: 40px;
+    height: 32px;
+    line-height: 32px;
     font-size: 16px;
     color: #5d8ca3;
 }
@@ -156,7 +156,7 @@
                     </p>
                     <p class="p3"><span>{{grkdata.rolename}}</span></p>
                     <p class="p4"><span>{{grkdata.servername}}</span></p>
-                    <p class="p5"><span>{{grkdata.score}}</span></p>
+                    <p class="p5"><span>{{grkdata[rankKey]}}</span></p>
                     <p class="p6"><img :src="grkdata.prizeImg" v-if="grkdata.prizeImg == '' ? false : true"></p>
                     <p class="p7"><i></i></p>
                 </li>
@@ -179,7 +179,8 @@ var gamerank = Vue.extend({
             grkdatas: [],
             title: '',
             page: 0,
-            rankRule: ''
+            rankRule: '',
+            rankKey: ''
         };
     },
     store: store,
@@ -196,7 +197,7 @@ var gamerank = Vue.extend({
     },
     created: function() {
         var _this = this;
-        
+        console.log(gload_conf)
     },
     ready: function() {
   		let rH = document.documentElement.clientHeight - 90;
@@ -231,6 +232,7 @@ var gamerank = Vue.extend({
             var me = this;
             me.page += 1;
             me.$options.loadListData(function (data) {
+                me.rankKey = gload_conf.rankRules[data.data.rankRule].key;
                 me.grkdatas = me.grkdatas.concat(data.data.lists);
                 me.title = data.data.title;
                 me.rankRule = gload_conf.rankRules[data.data.rankRule].name;

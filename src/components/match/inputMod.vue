@@ -50,7 +50,13 @@
     border: #b1b1b1 solid 1px;
     border-radius: 5px;
     letter-spacing: 1px;
+    font-size: 15px;
 }	
+.match-comment-box .mh-post-1 ul.children .mh-user{
+margin-top:0;
+line-height: 19px;
+}
+ 
 </style>
 <template>
     <div class="match_reply">
@@ -120,8 +126,9 @@ module.exports = {
 		        	if(data.code == 0){
                         var temp = {
 			                "rtime": data.data.rtime,
-			                "id": _this.myId,
+			                "id": data.data.id,
 			                "rolename":_this.username,
+			                "create_time":data.data.create_time,
 			                "status":"0",
 			                "content": content,
 			                "rnum":0,
@@ -160,8 +167,8 @@ module.exports = {
 		        success:function(data){
 		        	if(data.code==0){
                         var temp = {
-			                "ctime": data.data.ctime,
-	                        "id": _this.myId,
+			                "create_time": data.data.create_time,
+	                        "id": data.data.id,
 	                        "logo": _this.avatar,
 	                        "rolename": _this.nickName,
 	                        "status":"0",
@@ -172,6 +179,7 @@ module.exports = {
 	                        "servicename": _this.userarea,
 	                        "replys":[]
 						};
+						console.log(temp)
                         common.tips("发表成功");
 				        _this.$dispatch('addTotalNum', 1);
 				        _this.$dispatch('addComents',temp);

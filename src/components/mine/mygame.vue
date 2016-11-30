@@ -7,21 +7,20 @@ li,ul{list-style: none}
 .gamerank{
    width: 100%;
    color: #4e748b;
-   font-size: 24px;
    font-weight: normal;
    position: relative; 
 }
 .grank_til{ 
-  height: 50px; 
+  height: 32px; 
   text-align: center;
-  line-height: 50px;
+  line-height: 32px;
   background: #1a212e;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: normal;
 }
 .mine_maintil{
-  font-size: 16px;
+  font-size: 14px;
   height: 49px;
   line-height: 49px;
   margin-left: 18px;
@@ -32,9 +31,9 @@ li,ul{list-style: none}
   display: inline-block;
   background: #608be9;
   width: 4px;
-  height: 22px;
+  height: 18px;
   position: relative;
-  top: 4px;
+  top: 3px;
   margin-right: 8px;
 }
 .grank_main .grank_img{
@@ -65,7 +64,7 @@ li,ul{list-style: none}
   flex-grow:1;
   -webkit-flex-grow:1;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 .grank_mybs ul li span{
   display: inline-block;
@@ -90,7 +89,7 @@ li,ul{list-style: none}
 }
 .granklist{
   color: #5d8ca3;
-  font-size: 14px;
+  font-size: 12px;
 }
 .granklist .gr_listtil{
   border-bottom: 1px solid #323e56;
@@ -152,11 +151,11 @@ li,ul{list-style: none}
   box-sizing: border-box;
 }
 .gr_listcon li span:nth-of-type(6) i{
-  width: 12px;
-  height: 21px;
+  width: 9.6px;
+  height: 17px;
   background: url(../../images/prank-ico.png) no-repeat;
   background-size: 100% 100%;
-  margin-top: 20px;
+  margin-top: 21.5px;
   display: block;
 }
 .gr_listcon li .grank_succeed{
@@ -173,11 +172,11 @@ li,ul{list-style: none}
       <h3 class="mine_maintil"><span></span>{{mine_maintil}}</h3>
       <!--我的比赛-->
       <div class="grank_mybs clearfix">
-        <div class="grank_img">
+        <div class="grank_img" v-link="{path:'/match/linejj/'+$route.query.matchid}">
           <img :src="mygame.banner" />
         </div>
         <ul>
-          <li><span class="grankyellow">{{mygame.score}}</span><span class="gr_mbstil">{{rankRule}}</span></li>
+          <li><span class="grankyellow">{{rankKey}}</span><span class="gr_mbstil">{{rankRule}}</span></li>
           <li><span class="grankyellow"><em>{{mygame.win}}/{{mygame.lost}}</em></span><span class="gr_mbstil">胜/负</span></li>
           <li><span class="grankyellow">{{mygame.rank}}</span><span class="gr_mbstil">排名</span></li>
           <li v-link="{name:'gamerank',query:{matchid:$route.query.matchid,userid:$route.query.userid}}"><span class="grank_icobg"></span><span class="gr_mbstil">查看总榜</span></li>
@@ -228,7 +227,8 @@ var mygame = Vue.extend({
           gr_nametil:'击杀-死亡',
           gr_timetil:'时间',
           gr_resultil:'结果',
-          rankRule: ''
+          rankRule: '',
+          rankKey: ''
         };
     },
     store: store,
@@ -260,6 +260,8 @@ var mygame = Vue.extend({
               if (data.code == 0) {
                   _this.mygame = data.data.mygame;
                   _this.rankRule = gload_conf.rankRules[data.data.mygame.rankRule].name;
+                  var key = gload_conf.rankRules[data.data.mygame.rankRule].key;
+                  _this.rankKey = data.data.mygame[key];
               } else if (data.code < 0) {
                   actions.alert(store,{show:true,msg:data.msg})
               }
@@ -274,8 +276,8 @@ var mygame = Vue.extend({
             this.mine_maintil = '我的比赛';
             this.grank_note = '我的战斗记录';
         } else {
-            this.mine_maintil = '他的比赛';
-            this.grank_note = '他的战斗记录';
+            this.mine_maintil = 'TA的比赛';
+            this.grank_note = 'TA的战斗记录';
         }
         console.log(gload_conf.rankRules[0].name)
 

@@ -126,7 +126,7 @@ a{
 .match-list-zd .item-info  p{
     margin-bottom: 10px;
 }
-.match-list-zd .item-info > a{
+.match-list-zd .item-info > a[data-abtn='1']{
     width: 65px;
     height: 22px;
     position: absolute;
@@ -139,7 +139,7 @@ a{
     line-height: 22px;
     border-radius: 2px;
 }
-.max-match-flex .item-info > a{
+.max-match-flex .item-info > a[data-abtn='1']{
     width:60px;
     height:20px;
     float:right;
@@ -373,10 +373,15 @@ a{
           </a>
         </div>
         <div class="item-info">
-            <p class="item-txt">{{ list.name }}</p>
+            <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id">
+                <p class="item-txt">{{ list.name }}</p>
+            </a>
+            <a v-if="list.type==0" v-link="'/match/linejj/'+list.id">
+                <p class="item-txt">{{ list.name }}</p>
+            </a>
             <p class="item-time p-countdown"></p>
             <p class="item-a item-rmb" v-if="list.type==1"><i></i>奖金：{{ list.bonus }}元</p>
-            <p class="item-a item-num" v-if="list.type==0"><i></i><span>有{{ list.member }}</span>人参加</p>
+            <p class="item-a item-num" v-if="list.type==0"><i></i><span>有{{ list.member }}</span>人</p>
           <registration-component v-bind:list="list" v-bind:mx="1" v-bind:bindphone="bindphone"></registration-component>
         </div>  
     </div>
@@ -395,9 +400,15 @@ a{
                   </a>  
                </div>
                <span class="item-txt">
-                   <span class="item-tit">{{ list.name }}</span>
+               <a v-if="list.type==1" v-link="'/match/lineLive/'+list.id">
+                    <span class="item-tit">{{ list.name }}</span>
+                </a>
+                <a v-if="list.type==0" v-link="'/match/linejj/'+list.id">
+                    <span class="item-tit">{{ list.name }}</span>
+                </a>
+                   
                    <span class="item-num" v-if="list.type==1">{{ list.bonus }}</span>
-                   <span class="item-num" v-else><span>{{ list.member }}</span>人参加</span>
+                   <span class="item-num" v-else><span>{{ list.member }}</span>人</span>
                </span>
                <span class="item-info">
                    <span class="item-time p-countdown"></span>

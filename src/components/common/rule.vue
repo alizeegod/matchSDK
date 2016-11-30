@@ -2,8 +2,8 @@
   	<div class="rule">
   		<h3 class="ruletil">{{ruleinf.title}}</h3>
   		<div class="ruleinf">
-  			{{ruleinf.content}}
-  		</div>
+      {{{ruleinf.content}}}  
+      </div>
   	</div>
 </template>
 <style soped>
@@ -44,6 +44,7 @@ var rule = Vue.extend({
         dataType: 'json',
         data:{type:_this.$route.query.type},
         success: function(data) {
+            $(".loading-1").hide();
             if (data.code == 0) {
                 _this.ruleinf= data.data;
             } else if(data.code < 0) {

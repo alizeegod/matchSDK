@@ -4,12 +4,12 @@
   position: relative;
 }
 .tips_til{
-  height: 50px;
+  height: 32px;
   text-align: center;
-  line-height: 50px;
+  line-height: 32px;
   background: #1a212e;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: normal;
 }
 .tips_main{
@@ -103,7 +103,7 @@ var tips = Vue.extend({
       
     },
   	ready: function() {
-  		let rH = document.documentElement.clientHeight - 92;
+  		let rH = document.documentElement.clientHeight - 74;
         $(".tips_main").height(rH);
 
         
@@ -121,11 +121,7 @@ var tips = Vue.extend({
             data: {page: me.page,pageSize:30},
             success: function(data) {
                 $(".loading-1").hide();
-                if (data.code == 0) {
-                  fn(data)
-                } else if (data.code < 0) {
-                  actions.alert(store,{show:true,msg:data.msg})
-                }
+                fn(data)
             }
         })
     },
@@ -137,10 +133,17 @@ var tips = Vue.extend({
             var me = this;
             me.page += 1;
             me.$options.loadListData(function (data) {
-                me.tipslists = me.tipslists.concat(data.data.list);
-                if (data.data.totalPage <= me.page) {
-                    me.ascroll.noData();
+                if (data.code == 0) {
+                  me.tipslists = me.tipslists.concat(data.data.list);
+                  console.log(data)
+                  if (data.data.totalPage <= me.page) {
+                      me.ascroll.noData();
+                  }
+                } else if (data.code == -1) {
+                  me.ascroll.noData();
                 }
+                
+                
                 // 通过设置的key 方法下拉对象方法
                 // 如果没有更多数据。你可以 调用 me.ascroll.noData()
                 me.ascroll.resetload(true);

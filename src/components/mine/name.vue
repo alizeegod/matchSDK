@@ -5,12 +5,12 @@
     position: relative;
   }
   .set_til{
-    height: 50px;
+    height: 32px;
     text-align: center;
-    line-height: 50px;
+    line-height: 32px;
     background: #1a212e;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: normal;
   }
   .name_title{
@@ -188,10 +188,10 @@ var name = Vue.extend({
                     $(".loading-1").show();
                 },
                 success: function(data) {
-                    if (data.code == 1) {
+                    if (data.code == 0) {
                         $(".loading-1").hide();
                         actions.alert(store,{show:true,msg:data.msg})
-                    } else {
+                    } else if (data.code < 0) {
                         actions.alert(store,{show:true,msg:data.msg})
                     }
                 }

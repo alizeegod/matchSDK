@@ -122,12 +122,12 @@ body{background: #050D19;word-wrap:break-word;word-break:break-all;}
     color: #a09b94;
     font-size: 12px;
     width: 50px;
-    height: 50px;
+    height: 40px;
     display: block;
     position: absolute;
     left: 0;
     top: 50%;
-    margin-top: -25px;
+    margin-top: -20px;
 }
 .main-nav li.v-link-active a{
   color: #fff;

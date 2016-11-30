@@ -28,18 +28,20 @@
 }
 .match-comment-box .mh-post-1 .mh-post-footer-area{
     color: #fffefe;
+    width:46px;
+    height: 11px;
     background: url(../../images/qf.png) no-repeat;
     background-size: 100% 100%;
     font-size: 8px;
-    line-height: 8px;
+    line-height: 11px;
     display: inline-block;
     text-align: center;
 }
 .match-comment-box .mh-post-1 .mh-user{
     color: #6caaff;
-    line-height: 20px;
-    font-weight:bold;
-    margin-bottom: 2px;
+    line-height: 11px;
+    margin-top: 7px;
+    font-size: 11px;
 }
 .match-comment-box .mh-post1 .mh-user{
     color: #6caaff;
@@ -141,14 +143,13 @@
   	  <ul class="children">
   	  	<li class="mh-post1" v-for="item in el.replys">
   	  	  <div class="mah-post-body">
-  	  	  	<div class="mh-post-header">
+  	  	  	<div class="mh-post-header" v-if="!item.passrepname">
   	  	      <p class="mh-user">{{item.rolename}}</p>
   	  	  	</div>
   	  	  	<div class="mh-post-content">
   	  	  	  <div v-on:click.stop="reply(el,item,$event)">
   	  	  	  	<p v-if="!item.passrepname">{{item.content | bbbb}}<span class="mh-post-footer-time">{{item.create_time}}</span></p>
-                <p v-else class="top_color_3" style="font-size:12px;">
-                回复<span class="mh-user">{{item.passrepname}}</span>&nbsp;&nbsp;{{{item.content | bbbb}}}<span class="mh-post-footer-time">{{item.create_time}}
+                <p v-else class="top_color_3" style="font-size:12px;"><span class="mh-user">{{rolenamea}}</span> ：<span class="mh-user">{{item.passrepname}}</span>&nbsp;&nbsp;{{{item.content | bbbb}}}<span class="mh-post-footer-time">{{item.create_time}}</span>
                  </p>
   	  	  	  </div>
   	  	  	</div>
@@ -165,7 +166,8 @@ var common = require('../../js/common.js');
 module.exports ={
   data:function(){
     return {
-      page:1
+      page:1,
+      rolenamea:gload_conf.rolename
     }
   },
   props:{

@@ -15,10 +15,10 @@
     border-bottom: 1px solid #2d394f;
 }
 .mine_wrap .minelink{
-  padding: 12px 15px 5px;
+  padding: 8px 15px 3px;
 }
 .mine_wrap .mine_mainlist{ 
-  margin-top: 10px;
+  margin-top: 5px;
   border-top: 1px solid #2d394f;
 }
 .mine_wrap .mine_mainlist h1{
@@ -63,30 +63,30 @@
 }
 .minelink .ml_msg_set a{
   display: inline-block;
-  margin: 10px 0 0 42px;
+  margin: 12px 0 0 42px;
   position: relative;
 }
 .minelink .ml_msg_set a:first-child{
-  width: 22.5px;
-  height: 27.9px;
+  width: 18px;
+  height: 22.3px;
   background: url(../../images/mine-tip.png) no-repeat;
   background-size: 100% 100%;
 }
 .minelink .ml_msg_set a:last-child{
-  width: 27.9px;
-  height: 27.9px;
+  width: 22.3px;
+  height: 22.3px;
   background: url(../../images/mine-set.png) no-repeat;
   background-size: 100% 100%;
 }
 .minelink .ml_msg_set a span{
   display: block;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
   position: absolute;
-  top: -8px;
-  right: -21px;
+  top: -5px;
+  right: -15px;
   background: #ff3e3e;
   color: #fff;
   border-radius: 50%;
@@ -107,7 +107,7 @@
   display: -webkit-flex;
   -webkit-box-flex: 1;
   color: #a09b94;
-  font-size: 14px;
+  font-size: 12px;
 }
 .minelink .ml_detail ul li i{
   display: inline-block;
@@ -122,17 +122,18 @@
 }
 .minelink .ml_detail ul li:nth-of-type(1) span{
   display: inline-block;
-  height: 28px;
+  height: 24px;
   background: #16273f;
   border: 1px solid #27436f;
   border-radius: 5px;
   padding: 0 8px;
   color: #fff;
+  line-height: 24px;
 }
 .minelink .ml_detail ul li:nth-of-type(1) a{
   display: inline-block;
-  width: 19px;
-  height: 19px;
+  width: 14px;
+  height: 14px;
   margin-left: 12px;
   vertical-align: middle;
   margin-top: -2px;
@@ -161,16 +162,16 @@
   height: 49px;
   line-height: 49px;
   margin-left: 15px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
 }
 .mine_maintil span{
   display: inline-block;
   background: #608be9;
   width: 4px;
-  height: 22px;
+  height: 18px;
   position: relative;
-  top: 4px;
+  top: 3px;
   margin-right: 8px;
 }
 .mine_mainlist ul li{
@@ -201,7 +202,7 @@
   float: left;
   height: 100%;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 12px;
 }
 .mine_mainlist ul li p:nth-of-type(1){
   width: 22%;
@@ -220,7 +221,7 @@
   white-space: nowrap;
 }
 .mine_mainlist ul li p:nth-of-type(1) span.mine_time{
-  font-size: 12px;
+  font-size: 0.6rem;
   margin-top: 3px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -300,7 +301,7 @@
     </div>
     <div class="mine_mainlist">
       <h3 class="mine_maintil" v-if="show"><span></span>我的比赛</h3>
-      <h3 class="mine_maintil" v-else><span></span>他的比赛</h3>
+      <h3 class="mine_maintil" v-else><span></span>TA的比赛</h3>
       <ul>
         <li v-for='list in lists'>
           <a  v-link="{name:'mygame',query:{matchid:list.matchid,userid:uid}}">
@@ -310,7 +311,7 @@
             </p>
             <p>
                 <span class="not" v-if="list.type == 3 ? true : false">报名中</span>
-                <span class="active" v-if="list.type == 1 ? true : false">比赛中</span>
+                <span class="active" v-if="list.type == 5 ? true : false">比赛中</span>
                 <span class="over" v-if="list.type == 2 ? true : false">已结束</span>
             </p>
             <p v-if="list.type == 2 && list.addpower != 0 ? true : false">战斗力<em class="mine_num1">+{{list.addpower}}</em></p>

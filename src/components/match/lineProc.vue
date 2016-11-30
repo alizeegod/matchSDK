@@ -76,10 +76,10 @@
 	letter-spacing: 1px;
 }
 .lineproc-yxb-hed a i{
-    width: 10px;
-    height: 10px;
+    width: 7px;
+    height: 13px;
     display: inline-block;
-    background: url(../../images/prank-ico.png);
+    background: url(../../images/ico_jt_2_@3x2.png) no-repeat;
     background-size: 100% 100%;
     vertical-align: middle;
 }
@@ -98,15 +98,16 @@
     font-size: 12px;
     line-height: 12px;
     color: #848ea4;
+    padding-top: 10px;
 }
 .lineProc-match-time i{
     display: inline-block;
-    width: 12px;
-    height: 12px;
-    background: url(../../images/nav_ico_3_@3x.png) no-repeat;
+    width: 10px;
+    height: 13px;
+    background: url(../../images/match_ico_4_@3x1.png) no-repeat;
     background-size: 100% 100%;
     margin-right: 5px;
-    vertical-align: text-top;
+    vertical-align: -2px;
 }
 .lineProc-match-time span{
     color: #fad83a
@@ -270,7 +271,7 @@
 	width: 10px;
 	height: 15px;
 	display: inline-block;
-	background: url(../../images/prank-ico.png);
+	background: url(../../images/prank-ico.png) no-repeat;
 	background-size: 100% 100%;
 	vertical-align: middle;
 }
@@ -291,14 +292,14 @@
                 <div class="lineproc-yxb">
                     <div class="lineproc-yxb-hed">
                         <h3>奖品池</h3>
-                        <a v-link="{name:'mygame',query:{matchid:matchid,userid:userid}}">我的比赛详情<i></i></a>
+                        <a v-if="userState==5 && datajfUsFn.length>0" v-link="{name:'mygame',query:{matchid:matchid,userid:userid}}">我的比赛详情<i></i></a>
                     </div>
                     <div class="lineProc-jpc">
                         <div class="lineProc-jpc-box">
                             <div class="lineProc-jpc-bar">
                                 <div class="bar1"  v-if="datajfUsFn.length>0">
                                     <img :src=userLogo width="30px">
-                                    <p>{{userScore}}分</p>
+                                    <p>{{userScore}}{{rankRules}}</p>
                                 </div>
                                 <div class="bar2">
                                     <div class="bar2-1" style="width:1.4%"></div>
@@ -321,33 +322,35 @@
                         </div>
                         <p class="lineProc-match-time" data-stime="{{startime}}" data-etime="{{endtime}}"></p>
                     </div>
-                    <div class="lineproc-yxb-hed">
-                        <h3>英雄榜</h3>
-                        <a v-link="{name:'gamerank',query:{matchid:matchid,userid:userid}}">查看更多<i></i></a>
-                    </div>
-                    <div class="lineproc-yxb-list" v-if="datayxblist.length>0">
-                        <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{name:'gamerank',query:{matchid:matchid,userid:list.uid}}">
-                            <div class="fl tc m4 lh52 c_font_1">
-                                <span class="c_ph_1" v-if="list.rank == 1"></span>
-                                <span class="c_ph_2" v-if="list.rank == 2"></span>
-                                <span class="c_ph_3" v-if="list.rank == 3"></span>
-                                <span class="" v-if="list.rank > 3">{{list.rank}}</span>
-                            </div>
-                            <div class="fl m1 item1">
-                                <div class="fl tu_m">
-                                    <img width="32" height="32" alt="" class="img" :src=list.logo>
+                    <div v-if="userState==5 && datajfUsFn.length>0">
+                        <div class="lineproc-yxb-hed">
+                            <h3>英雄榜</h3>
+                            <a v-link="{name:'gamerank',query:{matchid:matchid,userid:userid}}">查看更多<i></i></a>
+                        </div>
+                        <div class="lineproc-yxb-list" v-if="datayxblist.length>0">
+                            <a  class="user-gameData-item"  v-for="list in datayxblist"  v-link="{name:'gamerank',query:{matchid:matchid,userid:list.uid}}">
+                                <div class="fl tc m4 lh52 c_font_1">
+                                    <span class="c_ph_1" v-if="list.rank == 1"></span>
+                                    <span class="c_ph_2" v-if="list.rank == 2"></span>
+                                    <span class="c_ph_3" v-if="list.rank == 3"></span>
+                                    <span class="" v-if="list.rank > 3">{{list.rank}}</span>
                                 </div>
-                                <div class="user-img-text user_name fl">
-                                    <span class="fl">{{list.rolename}}</span>
-                                </div> 
-                            </div>
-                            <div class="fl tl lh52 m2">{{list.servicename}}</div>
-                            <div class="fl tc lh52 m2 c_font_a">{{list.score}}</div>
-                            <div class="fl tc lh52 m10 c_font_b"  v-if="list.rank <= 3">
-                                <img :src="list.price " width="32px">
-                            </div>
-                            <div class="fr tc lh52 m4 c_font_b tu-link"><i></i></div> 
-                        </a>
+                                <div class="fl m1 item1">
+                                    <div class="fl tu_m">
+                                        <img width="32" height="32" alt="" class="img" :src=list.logo>
+                                    </div>
+                                    <div class="user-img-text user_name fl">
+                                        <span class="fl">{{list.rolename}}</span>
+                                    </div> 
+                                </div>
+                                <div class="fl tl lh52 m2">{{list.servicename}}</div>
+                                <div class="fl tc lh52 m2 c_font_a">{{list.score}}</div>
+                                <div class="fl tc lh52 m10 c_font_b"  v-if="list.rank <= 3">
+                                    <img :src="list.price " width="32px">
+                                </div>
+                                <div class="fr tc lh52 m4 c_font_b tu-link"><i></i></div> 
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -372,6 +375,7 @@ module.exports = {
             datajfjpFn:[],
             datajfUsFn:[],
             userScore : 0,
+            userState:'',
             userRank : '',
             state : '',
             status : '',
@@ -421,6 +425,7 @@ module.exports = {
                         self.datayxblist = self.datayxblist.concat(data.data.billboard);
                         self.datajfjpFn = self.datajfjpFn.concat(data.data.price).reverse();
                         self.datajfUsFn = self.datajfUsFn.concat(data.data.user);
+                        self.userState = data.data.state;
                         self.userScore = data.data.user.score ? data.data.user.score : 0;
                         self.userRank = data.data.user.rank ? data.data.user.rank : 0;
                         self.userLogo = data.data.user.logo ? data.data.user.logo : "";
@@ -438,7 +443,7 @@ module.exports = {
                         }else if(self.userRank == parseInt(self.datajfjpFn[4].section)){
                             setTimeout(function(){
                                 $(".bar2-1").css("width","22.8%");
-                                //$(".lineProc-jpc-prize .prize5").addClass("c_tran");
+                                $(".lineProc-jpc-prize .prize5 p").eq(0).css("color","#efdf4d");
                                 $(".bar1 > p").addClass("c_tran");
                                 $(".bar1").css("left","16.9%");
                             },50);
@@ -450,7 +455,7 @@ module.exports = {
                         }else if(self.userRank == parseInt(self.datajfjpFn[3].section)){
                                 setTimeout(function(){
                                     $(".bar2-1").css("width","47.2%");
-                                    //$(".lineProc-jpc-prize .prize4").addClass("c_tran");
+                                    $(".lineProc-jpc-prize .prize4 p").eq(0).css("color","#efdf4d");
                                     $(".bar1 > p").addClass("c_tran");
                                     $(".bar1").css("left","40.5%");
                                 },50);
@@ -462,7 +467,7 @@ module.exports = {
                         }else if(self.userRank==3){
                                  setTimeout(function(){
                                     $(".bar2-1").css("width","69.3%");
-                                    //$(".lineProc-jpc-prize .prize3").addClass("c_tran");
+                                    $(".lineProc-jpc-prize .prize3 p").eq(0).css("color","#efdf4d");
                                     $(".bar1 > p").addClass("c_tran");
                                     $(".bar1").css("left","62%");
                                 },50);
@@ -470,14 +475,14 @@ module.exports = {
                         }else if(self.userRank==2){
                                  setTimeout(function(){
                                     $(".bar2-1").css("width","84.6%");
-                                    //$(".lineProc-jpc-prize .prize2").addClass("c_tran");
+                                    $(".lineProc-jpc-prize .prize2 p").eq(0).css("color","#efdf4d");
                                     $(".bar1 > p").addClass("c_tran");
                                     $(".bar1").css("left","76.6%");
                                 },50);
                         }else if(self.userRank==1){
                                 setTimeout(function(){
                                     $(".bar2-1").css("width","99.9%");
-                                    //$(".lineProc-jpc-prize .prize1").addClass("c_tran");
+                                    $(".lineProc-jpc-prize .prize1 p").eq(0).css("color","#efdf4d");
                                     $(".bar1 > p").addClass("c_tran");
                                     $(".bar1").css("left","92%");
                                 },50);

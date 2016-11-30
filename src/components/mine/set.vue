@@ -4,16 +4,16 @@
   position: relative;
 }
 .set_til{
-  height: 50px;
+  height: 32px;
   text-align: center;
-  line-height: 50px;
+  line-height: 32px;
   background: #1a212e;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: normal;
 }
 .set_main{
-  font-size: 18px;
+  font-size: 14px;
   width: 95%;
   margin: 0 auto;
   padding: 10px 0;
@@ -40,21 +40,21 @@
 .set_main p:nth-of-type(1) .set_ico{
    background: url(../../images/setico1.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 15px;
-   height: 18px;
+   width: 11.6px;
+   height: 14px;
 }
 .set_main p:nth-of-type(2) .set_ico{
    background: url(../../images/setico2.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 12px;
-   height: 18px;
+   width: 9.3px;
+   height: 14px;
    margin-right: 12px;
 }
 .set_main p:nth-of-type(3) .set_ico{
    background: url(../../images/setico3.png) no-repeat left center;
    background-size: 100% 100%;
-   width: 16px;
-   height: 18px;
+   width: 12.4px;
+   height: 14px;
 }
 .set_main p a span{
     display: inline-block;
@@ -70,11 +70,11 @@
     display: inline-block;
     background:url(../../images/prank-ico.png) no-repeat right center;
     background-size: 100% 100%;
-    width: 10px;
-    height: 18px;
+    width: 7.7px;
+    height: 14px;
     margin-left: 14px;
     position: relative;
-    top: 3px;
+    top: 5px;
 }
 </style>
 <template>
@@ -139,7 +139,7 @@ var setcof = Vue.extend({
       var _this = this;
     },
     ready: function() {
-        
+        $(".loading-1").hide();
 
     }
 });

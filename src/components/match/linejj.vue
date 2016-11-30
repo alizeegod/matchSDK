@@ -1,6 +1,6 @@
 <style>
 .line-event{
-    padding-top:72px;
+    padding-top:62px;
     overflow:hidden
 }
 

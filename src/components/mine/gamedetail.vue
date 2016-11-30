@@ -5,12 +5,12 @@
   box-sizing:border-box;
 }
 .grank_til{
-  height: 56px;
+  height: 32px;
   text-align: center;
-  line-height: 56px;
+  line-height: 32px;
   background: #1a212e;
   color: #fff; 
-  font-size: 20px;
+  font-size: 16px;
   font-weight: normal;
 }
 .gamedl_top{
@@ -86,7 +86,7 @@
   overflow: hidden;
 }
 .gd_rtil{
-  font-size: 13px;
+  font-size: 12px;
   color: #fffefe;
   height: 27px;
   line-height: 27px;
@@ -106,7 +106,7 @@
 }
 .gd_res_title,.gdetail_succeed{
   color: #5d8ca3;
-  font-size: 18px;
+  font-size: 14px;
   width: 96%;
   padding-left: 4%;
 }
@@ -142,7 +142,7 @@
   width: 100%;
   height: 64px;
   line-height: 64px;
-  font-size: 17px;
+  font-size: 14px;
   color: #e1e1e1;
 }
 .gdetail_succeed li a{
@@ -202,7 +202,7 @@
           <ul class="gdetail_succeed">
             <li v-for='list in teamlist.lists' :class="list.userid == userMsg.userid ? 'active' : ''">
               <a @click="goto(list)">
-                <span><i class="gdetail_pic"><img :src="list.avatar" /></i>{{list.rolename}}</span>
+                <span><i class="gdetail_pic"><img :src="list.avatar" onerror="this.src='http://7xq07i.com1.z0.glb.clouddn.com/avatar/qz/Icon_Head_33.png'"/></i>{{list.rolename}}</span>
                 <span>{{list.rank}}</span>
                 <span>{{list.duanwei}}</span>
                 <span>{{list.kill}}/{{list.died}}</span>
